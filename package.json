@@ -4,21 +4,23 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha  ./test/*.test.js --require @babel/registers --exit"
+    "test": "nyc --reporter=html --reporter=text ./node_modules/.bin/mocha  ./test/*.test.js --require @babel/register --exit"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1"
   },
   "dependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/node": "^7.2.2",
     "@babel/polyfill": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "@babel/register": "^7.4.0",
     "body-parser": "^1.18.3",
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
     "express": "^4.16.4",
-    "mocha": "^6.1.4",
-    "nodemon": "^1.18.10",
     "nyc": "^14.1.1"
   },
   "author": "Andela Simulations Programme",
