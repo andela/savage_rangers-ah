@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/andela/savage_rangers-ah.svg?branch=develop)](https://travis-ci.com/andela/savage_rangers-ah)
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+
 Authors Haven - A Social platform for the creative at heart.
 =======
 
