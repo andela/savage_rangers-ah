@@ -36,3 +36,7 @@ node_modules
 
 # Npm package lock file
 package-lock.json
+
+
+# nyc test coverage
+.nyc_output
