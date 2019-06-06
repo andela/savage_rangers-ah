@@ -1,23 +1,23 @@
-
-
+language: node_js
+node_js: 
+  - "stable" 
+cache:
+  directories:
+    - "node_modules"
 env:
   global:
-    - CC_TEST_REPORTER_ID=67adc75d217c19d11953e75dc6de8182a7ee803a55d94919192c3022b6741ee1
-    
-language: node_js
-node_js:
- - "stable"
- before_script:
+    - CC_TEST_REPORTER_ID=67adc75d217c19d11953e75dc6de8182a7ee803a55d94919192c3022b6741ee1    
+before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
  - npm test
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT 
 deploy:
   api_key:
     secure: i55LFb5NZhR5SHh0OewcH62VLsg17jipAfMn/42eWYcmGfIern0zvpWnnLRyhg6Gyvn20+VwJIQtK06/jqKHP3stPFLQoNMj3+t7+NCuXjPAmceUkZCvnJXRlzBxp3jgfK5X6iot1ejzjewJEn++jqknYfbbw15WF7lQ2Aqgf2ni0KPix1bTjFAbumAY/J6qt9ZmnGgSFAJaqEbwCtf08TcO3GSFE17EuOYJtW++47uV2IyRZ03RQGPDrp/7TPa3ahc6aZfZczLxM4/yS/D90qvzW19qMWTwV5jAVRw6F2bR8e91ejGeAjBd5HbJHz0MMsotB8aqoWH0yhIp5dtXlMwHL2BXAsbpHYbLlTTPP9omZuJVoLxZu1nN14YPj1Dstp7KdBimBMaTgrYu+lXQlMwEyr3pw4aR4VWL+0wxmVzCEiCZPQYpm9//Jsqxn6wYClHJxdUOxcOpNRGw2Rq7OjBTnREp245n3MSuiYK/vzAIbR7x2vAs+b37FrGfjFbqeLdlRHZu8+D/cpou4zcVa3M4NEFYZZIgpuNHH7lQ+x+NIj0qH+TT/qG4z7iwzrsO2vdE8Mt+3OOESrwbsF86F1WHE7/ZvgR0VcVYjUr6bmuiV4/JQgGXjySrYYwwKJXdM3A7nEYMx8ou1j1fCIYe41R7AZ04Hpcz/kv8Lk/PNSc=
   app:
     develop: savage-rangers-ah-staging
     master : savage-rangers-ah
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
