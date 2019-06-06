@@ -4,7 +4,7 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node index.js",
+    "start": "babel-node src/index.js",
     "test": "nyc --reporter=html --reporter=text ./node_modules/.bin/mocha  ./test/*.test.js --require @babel/register --exit"
   },
   "devDependencies": {
