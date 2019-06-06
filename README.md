@@ -1,16 +1,12 @@
 [![Build Status](https://travis-ci.com/andela/savage_rangers-ah.svg?branch=develop)](https://travis-ci.com/andela/savage_rangers-ah)
-<<<<<<< HEAD
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
-
-Authors Haven - A Social platform for the creative at heart.
-=======
-=======
 [![Coverage Status](https://coveralls.io/repos/github/andela/savage_rangers-ah/badge.svg?branch=develop)](https://coveralls.io/github/andela/savage_rangers-ah?branch=develop)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c05960d83e2ec9822111/maintainability)](https://codeclimate.com/github/andela/savage_rangers-ah/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c05960d83e2ec9822111/test_coverage)](https://codeclimate.com/github/andela/savage_rangers-ah/test_coverage)
+=======
+
 
 # Authors Haven - A Social platform for the creative at heart.
->>>>>>> [chore #166240815] add coveralls,travis and codeclimate badges
 
 ## Vision
 
