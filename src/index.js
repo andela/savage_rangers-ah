@@ -1,24 +1,24 @@
 import express from 'express';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
+import apiRouter from './api/routes/index';
+import environement from './configs/environnements';
+import docsRouter from './api/routes/docs';
+import homeRouter from './api/routes/home';
+import register from './middlewares/register.app';
+
 
 const app = express();
+const env = environement();
 
-dotenv.config();
-// register middlewares
+// Register middleware
+register(app);
 
-app.use(bodyParser.urlencoded({ extended : true }));
-app.use(bodyParser.json());
+app.use('/api/', apiRouter);
+app.use('/docs', docsRouter);
 
-const port = process.env.PORT || 5000;
+app.use('/', homeRouter);
 
-// routes (to be replaced)
-app.use('*', ( req, res, next ) => {
-  return res.status(200).json({
-    message : 'Welcome',
-    purpose : 'heroku test',
-    wish : 'See you soon',
-  });
+app.listen(env.port, () => {
+  console.log(`Server now listening on port ${env.port} in ${env.name} mode!`);
 });
 
-app.listen( port, () => console.log(`listening on port ${port}`));
+export default app;
