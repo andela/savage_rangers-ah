@@ -19,3 +19,4 @@ deploy:
   app:
     develop: savage-rangers-ah-staging
     master : savage-rangers-ah
+after_success : npm run coverage
