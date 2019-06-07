@@ -5,17 +5,20 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node src/index.js",
-    "test": "nyc --reporter=html --reporter=text ./node_modules/.bin/mocha  ./test/*.test.js --require @babel/register --exit",
-    "dev": "nodemon --exec babel-node src/index.js"
+    "test": "NODE_ENV=test nyc --reporter=html --reporter=text ./node_modules/.bin/mocha  ./test/*.test.js --require @babel/register --exit",
+    "dev": "nodemon --exec babel-node src/index.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.1.4",
-    "nodemon": "^1.19.1",
-    "nyc": "^14.1.1",
+    "chai-http": "^4.3.0",
+    "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.3"
+    "eslint-plugin-import": "^2.17.3",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1"
   },
   "dependencies": {
     "@babel/cli": "^7.4.3",
@@ -32,6 +35,14 @@
     "morgan": "^1.9.1",
     "swagger-node-express": "^2.1.3",
     "swagger-ui-express": "^4.0.6"
+  },
+  "nyc": {
+    "per-file": true,
+    "check-coverage": true,
+    "branches": 70,
+    "lines": 80,
+    "functions": 80,
+    "statements": 80
   },
   "author": "Andela Simulations Programme",
   "license": "MIT"

@@ -13,8 +13,6 @@ import environnements from '../configs/environnements';
  * @returns {Boolean} true
  */
 
-const env = environnements();
-
 export default (app) => {
   app
     // Parse req object and make data available on req.body
@@ -22,7 +20,8 @@ export default (app) => {
     .use(bodyParser.urlencoded({ extended: true }))
     .use(cors()); // Allow cross origin requests
 
-  if (env.name === 'development') {
+  if (environnements.currentEnv.name === 'development'
+    || environnements.currentEnv.name === 'test') {
     // Logging http requests
     app.use(logger('dev'));
   }

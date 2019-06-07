@@ -1,13 +1,13 @@
 import express from 'express';
 import apiRouter from './api/routes/index';
-import environement from './configs/environnements';
 import docsRouter from './api/routes/docs';
 import homeRouter from './api/routes/home';
 import register from './middlewares/register.app';
+import environnements from './configs/environnements';
 
 
 const app = express();
-const env = environement();
+const env = environnements.currentEnv;
 
 // Register middleware
 register(app);
