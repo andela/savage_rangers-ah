@@ -5,7 +5,6 @@
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import logger from 'morgan';
-import environnements from '../configs/environnements';
 /**
  * A function to register all the needed middlewares to the
  * app (express instance) every time the server is starting
@@ -18,12 +17,7 @@ export default (app) => {
     // Parse req object and make data available on req.body
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))
-    .use(cors()); // Allow cross origin requests
-
-  if (environnements.currentEnv.name === 'development'
-    || environnements.currentEnv.name === 'test') {
-    // Logging http requests
-    app.use(logger('dev'));
-  }
+    .use(cors()) // Allow cross origin requests
+    .use(logger('dev')); // Logging http requests
   return true;
 };

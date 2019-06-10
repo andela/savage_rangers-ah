@@ -1,19 +1,20 @@
 import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
-import generateToken from '../../helpers/generate.token';
+import generateToken from '../../helpers/tokens/generate.token';
 import mailer from '../../helpers/Mailer';
 import environnement from '../../configs/environnements';
+import sendResult from '../../helpers/results/send.auth';
 
 const { User } = models;
 const env = environnement.currentEnv;
 
 /**
- *  * containing all user's model controllers (signup, login)
+ * containing all user's model controllers (signup, login)
  *
  * @export
  * @class Auth
  */
-export default class {
+export default class Auth {
   /**
    * register a new user
    *
@@ -24,23 +25,17 @@ export default class {
    * @returns {Object} res
    */
   static async signup(req, res) {
-    const { names, email, password } = req.body;
+    const { username, email, password } = req.body;
     const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS) || 10);
     const hashedPassword = hashSync(password, salt);
-    const user = User.create({
-      names,
+    const user = await User.create({
+      username,
       email,
       password: hashedPassword,
     });
-    const token = generateToken(user);
-    return res.status(201).json({
-      message: 'user created successfully',
-      user: {
-        email: user.email,
-        token,
-        username: user.name
-      }
-    });
+    const tokenData = { username, email };
+    const token = generateToken(tokenData, process.env.TOKEN_KEY);
+    return sendResult(res, 201, 'user created successfully', user, token);
   }
 
   /**
@@ -58,21 +53,15 @@ export default class {
       if (user) {
         const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password);
         if (isPasswordValid) {
-          const token = generateToken(user);
-          return res.status(200).json({
-            message: 'user signed in correctly',
-            user: {
-              email: user.email,
-              token,
-              username: user.name
-            }
-          });
+          const tokenData = { username: user.dataValues.username, email };
+          const token = generateToken(tokenData, process.env.TOKEN_KEY);
+          return sendResult(res, 200, 'user logged in successfully', user, token);
         }
         return res.status(401).json({
-          message: 'password incorrect'
+          message: 'password is incorrect'
         });
       }
-      return res.status(401).json({
+      return res.status(404).json({
         message: 'user doesn\'t exist'
       });
     });
