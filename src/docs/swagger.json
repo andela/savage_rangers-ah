@@ -12,14 +12,14 @@
             "Author": "Savage Ranges"
         }
     },
-    "host": "bah-staging.herokuapp.com",
+    "host": "savage-rangers-ah-staging.herokuapp.com",
     "basePath": "/api",
     "schemes": [
         "https",
         "http"
     ],
     "paths": {
-        "/users": {
+        "/auth/signup": {
             "post": {
                 "tags": [
                     "Users"
@@ -48,6 +48,46 @@
                         "description": "User created successfully"
                     },
                     "400": {
+                        "description": "Invalid entries"
+                    },
+                    "default": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "login existing user",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "login existing user",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/signup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User loged in correctly"
+                    },
+                    "400": {
+                        "description": "Invalid entries"
+                    },
+                    "401": {
                         "description": "Invalid entries"
                     },
                     "default": {
