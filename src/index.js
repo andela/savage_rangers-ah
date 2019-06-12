@@ -6,7 +6,6 @@ import register from './middlewares/register.app';
 import { sequelize } from './api/models/index';
 import environments from './configs/environments';
 
-
 const app = express();
 const env = environments.currentEnv;
 

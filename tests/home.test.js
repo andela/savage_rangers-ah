@@ -1,9 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-
-import server from '../src/index';
-import env from '../src/configs/environments';
 import status from '../src/helpers/constants/status.codes';
+import server from '../src/index';
 
 chai.use(chaiHttp);
 chai.should();
@@ -19,12 +17,5 @@ describe('Home', () => {
         res.body.should.have.property('data');
         done();
       });
-  });
-});
-
-describe('environment', () => {
-  it('Should show the current environment', () => {
-    env.currentEnv.should.be.an('object');
-    env.env.should.be.eql('test');
   });
 });

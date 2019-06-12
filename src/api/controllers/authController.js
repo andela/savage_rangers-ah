@@ -1,5 +1,5 @@
 import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
-import models from '../models/index';
+import models from '../models';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
 import status from '../../helpers/constants/status.codes';

@@ -13,7 +13,7 @@ const env = environment.currentEnv;
  */
 export default (link, payLoad) => {
   const options = {
-    expiresIn: '1d',
+    expiresIn: '1d'
   };
   const token = jwt.sign(payLoad, env.secret, options);
   const Link = `${link}/${token}`;

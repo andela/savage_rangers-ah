@@ -1,13 +1,28 @@
 const user = (sequelize, DataTypes) => {
   const User = sequelize.define('Users', {
     username: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
     email: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     },
     password: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    profileImage: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    provider: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    uniqueId: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     verified: {
       type: DataTypes.BOOLEAN,
@@ -22,7 +37,6 @@ const user = (sequelize, DataTypes) => {
 
     return queryResult;
   };
-
   return User;
 };
 
