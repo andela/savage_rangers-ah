@@ -6,6 +6,7 @@ import homeRouter from './api/routes/home';
 import register from './middlewares/register.app';
 import { sequelize } from './api/models/index';
 import environnements from './configs/environnements';
+import verifyEmail from './api/routes/verifyEmail';
 
 
 const app = express();
@@ -18,6 +19,7 @@ register(app);
 
 app.use('/api/', apiRouter);
 app.use('/docs', docsRouter);
+app.use('/verifyEmail', verifyEmail);
 
 app.use('/', homeRouter);
 
