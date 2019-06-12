@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const env = process.env.NODE_ENV;
 const jwtSecret = process.env.TOKEN_KEY;
 

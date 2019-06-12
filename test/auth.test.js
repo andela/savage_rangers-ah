@@ -30,9 +30,9 @@ describe('Signup', () => {
       .end((err, res) => {
         res.should.have.status(201);
         res.body.should.have.property('user');
-        res.body.user.should.have.property('email');
+        res.body.user.should.have.property('email', data.email);
         res.body.user.should.have.property('token');
-        res.body.user.should.have.property('username');
+        res.body.user.should.have.property('username', data.username);
         const valid = isTokenValid(res.body.user.token, data);
         valid.should.be.a('boolean').equal(true);
         done();
@@ -51,9 +51,9 @@ describe('Login', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.have.property('user');
-        res.body.user.should.have.property('email');
+        res.body.user.should.have.property('email', data.email);
         res.body.user.should.have.property('token');
-        res.body.user.should.have.property('username');
+        res.body.user.should.have.property('username', data.username);
         const valid = isTokenValid(res.body.user.token, data);
         valid.should.be.a('boolean').equal(true);
         done();

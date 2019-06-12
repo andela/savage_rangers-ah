@@ -7,7 +7,7 @@ const { Token } = models;
  *
  * @class signout
  */
-class signout {
+class Signout {
   /**
    * Signout a user from the system
    *
@@ -34,10 +34,10 @@ class signout {
     }
     res.status(404).json({
       status: 404,
-      message: 'You must first sign in, Thanks'
+      message: 'Token not found Please sign in again, Thanks'
     });
   }
 }
 
 
-export default signout;
+export default Signout;

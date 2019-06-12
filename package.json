@@ -49,7 +49,7 @@
     "functions": 100,
     "statements": 80,
     "exclude": [
-      "src/index.js"
+      "src/configs/environments.js"
     ]
   },
   "author": "Andela Simulations Programme",

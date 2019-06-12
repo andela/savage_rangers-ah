@@ -95,6 +95,35 @@
                     }
                 }
             }
+        },
+        "/auth/signout": {
+            "get":{
+                "tags":["auth"],
+                "summary":"signs out the logged in user",
+                "description":"destroy the token",
+                "produces":["application/json"],
+                "parameters":[
+                    {
+                        "in":"header",
+                        "name":"authorization",
+                        "description":"token to be destroyed",
+                        "required":true
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"You are signed out"
+                    },
+                    "404":{
+                        "description":"You must first sign in, Thanks"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key":[]
+                    }
+                ]
+            }
         }
     },
     "externalDocs": {
