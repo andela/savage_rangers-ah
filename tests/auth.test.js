@@ -1,10 +1,9 @@
-import 'babel-polyfill';
+import '@babel/polyfill';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import models from '../src/api/models/index';
 import isTokenValid from '../src/helpers/tokens/validate.token';
 import generateToken from '../src/helpers/tokens/generate.token';
-
 
 import server from '../src/index';
 
@@ -14,18 +13,19 @@ chai.should();
 const data = {
   username: 'Burindi Alain',
   email: 'alain@gmail.com',
-  password: 'password',
+  password: 'password'
 };
 
 describe('Signup', () => {
   it('should register and give the token', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/signup')
       .send({
         username: data.username,
         email: data.email,
         password: data.password,
-        confirmPassword: data.password,
+        confirmPassword: data.password
       })
       .end((err, res) => {
         res.should.have.status(201);
@@ -42,11 +42,12 @@ describe('Signup', () => {
 
 describe('Login', () => {
   it('should login and give a valid token', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login')
       .send({
         email: data.email,
-        password: data.password,
+        password: data.password
       })
       .end((err, res) => {
         res.should.have.status(200);
@@ -61,11 +62,12 @@ describe('Login', () => {
   });
 
   it('should not login with a wrong password', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login')
       .send({
         email: data.email,
-        password: 'passwor5535',
+        password: 'passwor5535'
       })
       .end((err, res) => {
         res.should.have.status(401);
@@ -75,15 +77,16 @@ describe('Login', () => {
   });
 
   it('should not login an unexisting user', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .post('/api/auth/login')
       .send({
         email: 'alain666326@gmail.com',
-        password: 'password',
+        password: 'password'
       })
       .end((err, res) => {
         res.should.have.status(404);
-        res.body.should.have.property('message', 'user doesn\'t exist');
+        res.body.should.have.property('message', "user doesn't exist");
         done();
       });
   });
