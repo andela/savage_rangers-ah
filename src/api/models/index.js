@@ -1,6 +1,6 @@
 
 import Sequelize from 'sequelize';
-import environments from '../../configs/environnements';
+import environments from '../../configs/environments';
 
 const env = environments.currentEnv;
 
@@ -9,14 +9,9 @@ const sequelize = new Sequelize(env.dbUrl, {
 });
 
 const models = {
-  Test: sequelize.import('./test')
+  User: sequelize.import('./user'),
+  Token: sequelize.import('./token'),
 };
-
-Object.keys(models).forEach((key) => {
-  if ('associate' in models[key]) {
-    models[key].associate(models);
-  }
-});
 
 export { sequelize };
 
