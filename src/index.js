@@ -13,7 +13,7 @@ const env = environnements.currentEnv;
 // Register middleware
 register(app);
 
-app.use('/api/', apiRouter);
+app.use('/api', apiRouter);
 app.use('/docs', docsRouter);
 
 app.use('/', homeRouter);
