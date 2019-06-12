@@ -9,7 +9,8 @@ const sequelize = new Sequelize(env.dbUrl, {
 });
 
 const models = {
-  Test: sequelize.import('./test')
+  Test: sequelize.import('./test'),
+  Token: sequelize.import('./token')
 };
 
 Object.keys(models).forEach((key) => {

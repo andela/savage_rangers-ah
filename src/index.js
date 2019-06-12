@@ -16,7 +16,7 @@ const syncDbOnStart = env.name === 'test';
 // Register middleware
 register(app);
 
-app.use('/api/', apiRouter);
+app.use('/api', apiRouter);
 app.use('/docs', docsRouter);
 
 app.use('/', homeRouter);
