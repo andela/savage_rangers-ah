@@ -1,5 +1,5 @@
-import resetPassword from './reset.password';
+import notifications from './notifications';
 
 export default {
-  resetPassword,
+  notifications,
 };

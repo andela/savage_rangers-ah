@@ -1,6 +1,6 @@
 import mailer from '@sendgrid/mail';
 import templates from './templates';
-import environnements from '../../configs/environnements';
+import environnements from '../../configs/environments';
 
 const env = environnements.currentEnv;
 mailer.setApiKey(env.mailerToken);

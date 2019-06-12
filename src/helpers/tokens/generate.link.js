@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import environment from '../../configs/environnements';
+import environment from '../../configs/environments';
 
 const env = environment.currentEnv;
 

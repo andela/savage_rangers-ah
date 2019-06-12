@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import environment from '../../configs/environnements';
+import environment from '../../configs/environments';
 
 /**
  * A function to decode the token
@@ -10,7 +10,7 @@ import environment from '../../configs/environnements';
  */
 const decodeJwt = (token) => {
   let retObj;
-  jwt.verify(token, environment.jwtKey, (err, decodedObj) => {
+  jwt.verify(token, environment.currentEnv.secret, (err, decodedObj) => {
     if (!err) retObj = decodedObj;
   });
   return retObj;

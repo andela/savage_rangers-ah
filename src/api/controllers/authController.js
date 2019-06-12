@@ -2,7 +2,7 @@ import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
 import generateToken from '../../helpers/tokens/generate.token';
 import mailer from '../../helpers/Mailer';
-import environnement from '../../configs/environnements';
+import environnement from '../../configs/environments';
 import sendResult from '../../helpers/results/send.auth';
 
 const { User } = models;
@@ -85,11 +85,14 @@ export default class Auth {
     await mailer(`Password recovery for ${userEmail}`,
       'Password recovery',
       userEmail,
-      'resetPassword',
+      'notifications',
       {
         email: userEmail,
         link: `${env.baseUrl}/api/auth/reset`,
         userName: username,
+        buttonText: 'RESET',
+        message: 'You are recieving this email beacause you\'ve requested the recovery '
+           + 'of your Authors Heaven password. Kindly click the button bellow.'
       });
 
     // Sending the result
@@ -106,17 +109,18 @@ export default class Auth {
    * @param {Object} res - the result object
    * @returns {Boolean} true
    */
-  static async updateEmail(req, res) {
+  static async updatePassword(req, res) {
     // Initialising variables
     const result = {};
     const status = 200;
-    const userEmail = req.body.email;
+    const userEmail = req.params.email;
     const userPassword = req.body.password;
 
     await User.update({
-      password: userPassword,
+      password: userPassword
+    }, {
       where: {
-        emai: userEmail,
+        email: userEmail,
       }
     });
 

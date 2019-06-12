@@ -2,8 +2,8 @@ import { Router } from 'express';
 import authController from '../controllers/authController';
 import validateInputs from '../../middlewares/validations/body.inputs';
 import verifyBody from '../../middlewares/body.verifier';
-import validateResetEmail from '../../middlewares/validate.reset.email';
-import validateResetLink from '../../middlewares/validate.reset.link';
+import validateResetEmail from '../../middlewares/validations/validate.reset.email';
+import validateResetLink from '../../middlewares/validations/validate.reset.link';
 
 const authRouter = Router();
 
@@ -16,8 +16,10 @@ authRouter.post('/reset',
   validateResetEmail,
   authController.sendRecoveryEmail);
 
-authRouter.post('/reset/:email',
-  authController.updateEmail);
+authRouter.post('/reset/update/:email',
+  verifyBody,
+  validateInputs(true, 'updatePassword', ['password']),
+  authController.updatePassword);
 
 authRouter.get('/reset/:token',
   validateResetLink,

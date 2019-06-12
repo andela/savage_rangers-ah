@@ -1,5 +1,5 @@
-import models from '../api/models';
-import sendError from '../helpers/error.sender';
+import models from '../../api/models';
+import sendError from '../../helpers/error.sender';
 
 export default async (req, res, next) => {
   // Initializing variables
@@ -7,7 +7,7 @@ export default async (req, res, next) => {
   let tempUser;
 
   try {
-    tempUser = await models.Users.findAll({
+    tempUser = await models.User.findAll({
       where: {
         email: userEmail,
       },
