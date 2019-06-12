@@ -1,9 +1,22 @@
-/* eslint-disable require-jsdoc */
 import models from '../models';
 
 const { Token } = models;
 
+/**
+ * The signout controller
+ *
+ * @class signout
+ */
 class signout {
+  /**
+   * Signout a user from the system
+   *
+   * @static
+   * @param {object} req - the request object
+   * @param {object} res - the result object
+   * @memberof signout
+   * @returns {object} - the response body
+   */
   static async signout(req, res) {
     const getToken = req.headers.authorization;
 

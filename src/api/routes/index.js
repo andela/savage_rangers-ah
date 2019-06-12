@@ -1,10 +1,8 @@
 import express from 'express';
-import dbTestRouter from './db.test';
-import authRouter from './signout';
+import authRouter from './authRouter';
 
-const v2router = express();
+const router = express();
 
-v2router.use('/dbTest', dbTestRouter);
-v2router.use('/auth', authRouter);
+router.use('/auth', authRouter);
 
-export default v2router;
+export default router;
