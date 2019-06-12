@@ -1,23 +1,12 @@
 language: node_js
 node_js:
-  - stable
-cache:
-  directories:
-    - "node_modules"
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-    /cc-test-reporter
+  - "10"
+  before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
-  - "./cc-test-reporter before-build"
+  - ./cc-test-reporter before-build
 script:
   - npm test
-after_script:
-  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
-deploy:
-  provider: heroku
-  api_key:
-    secure: 71e7c70f-935e-42ab-8223-3e45ce99e599
-  app:
-    develop: savage-rangers-ah-staging
-    master: savage-rangers-ah
+  after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 after_success: npm run coverage
