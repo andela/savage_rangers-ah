@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const env = process.env.NODE_ENV;
 const jwtSecret = process.env.TOKEN_KEY;
 const mailerEmail = process.env.MAILER_EMAIL;
@@ -16,6 +16,7 @@ const environnements = [
     dbUrl: process.env.TEST_DB_URL,
     secret: jwtSecret,
     mailerEmail,
+    mailerToken,
     baseUrl,
   },
   {

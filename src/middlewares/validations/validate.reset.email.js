@@ -12,12 +12,10 @@ export default async (req, res, next) => {
         email: userEmail,
       },
     });
-    req.user = tempUser.dataValues;
+    req.user = tempUser[0].dataValues;
     next();
-  } catch (error) {
-    if (tempUser.length === 0) {
-      const mess = 'A user with the provided email doesn\'t exit';
-      sendError(404, {}, res, mess);
-    } else sendError(400, {}, res, error);
+  } catch (TypeError) {
+    const mess = 'A user with the provided email doesn\'t exit';
+    sendError(404, {}, res, mess);
   }
 };

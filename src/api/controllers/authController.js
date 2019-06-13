@@ -91,7 +91,7 @@ export default class Auth {
     const result = {};
     const status = 200;
     const userEmail = req.body.email;
-    const username = 'premices';
+    const { username } = req.user;
 
     await mailer(`Password recovery for ${userEmail}`,
       'Password recovery',
@@ -126,9 +126,11 @@ export default class Auth {
     const status = 200;
     const userEmail = req.params.email;
     const userPassword = req.body.password;
+    const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS) || 10);
+    const hashedPassword = hashSync(userPassword, salt);
 
-    await User.update({
-      password: userPassword
+    const user = await User.update({
+      password: hashedPassword
     }, {
       where: {
         email: userEmail,
@@ -138,6 +140,7 @@ export default class Auth {
     // Sending the result
     result.status = status;
     result.message = 'Password reset sucessfully';
+    result.user = user;
     res.status(status).json(result);
   }
 

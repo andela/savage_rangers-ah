@@ -5,6 +5,7 @@ import validateInputs from '../../middlewares/validations/body.inputs';
 import verifyBody from '../../middlewares/body.verifier';
 import validateResetEmail from '../../middlewares/validations/validate.reset.email';
 import validateResetLink from '../../middlewares/validations/validate.reset.link';
+import validateUpdatePassword from '../../middlewares/validations/validate.update.password';
 
 
 const authRouter = Router();
@@ -23,6 +24,7 @@ authRouter.post('/reset',
 authRouter.post('/reset/update/:email',
   verifyBody,
   validateInputs(true, 'updatePassword', ['password']),
+  validateUpdatePassword,
   authController.updatePassword);
 
 authRouter.get('/reset/:token',
