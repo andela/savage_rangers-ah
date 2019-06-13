@@ -1,5 +1,6 @@
-import notification from './notification';
+
+import notifications from './notifications';
 
 export default {
-  notification,
+  notifications,
 };

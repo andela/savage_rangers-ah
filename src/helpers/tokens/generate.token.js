@@ -4,7 +4,7 @@ import models from '../../api/models';
 const { Token } = models;
 
 const createToken = (user, secret) => {
-  try {    
+  try {
     const token = jwt.sign(
       { user },
       secret,

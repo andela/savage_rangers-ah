@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import '@babel/polyfill';
 import express from 'express';
 import apiRouter from './api/routes/index';
 import docsRouter from './api/routes/docs';
@@ -13,7 +13,7 @@ const env = environment.currentEnv;
 // Register middleware
 register(app);
 
-app.use('/api/', apiRouter);
+app.use('/api', apiRouter);
 app.use('/docs', docsRouter);
 
 

@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import models from '../src/api/models/index';
@@ -15,10 +14,6 @@ const data = {
   username: 'Burindi Alain',
   email: 'alain@gmail.com',
   password: 'password',
-};
-
-const tokenTester = {
-  token: 'hbhgf',
 };
 
 describe('Signup', () => {
@@ -72,7 +67,7 @@ describe('Login', () => {
         password: 'passwor5535',
       })
       .end((err, res) => {
-        res.should.have.status(404);
+        res.should.have.status(401);
         res.body.should.have.property('message', 'password is incorrect');
         done();
       });
@@ -101,6 +96,8 @@ describe('Login', () => {
 describe('Model', () => {
   it('should return an object', (done) => {
     models.should.be.an('Object');
+    models.User.truncate({ cascade: true });
+    models.Token.truncate({ cascade: true });
     done();
   });
 });
