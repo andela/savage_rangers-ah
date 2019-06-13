@@ -30,7 +30,7 @@ export default class Auth {
       email,
       password: hashedPassword,
     });
-    const tokenData = { username, email };
+    const tokenData = { id: user.dataValues.id, username, email };
     const token = generateToken(tokenData, process.env.TOKEN_KEY);
     return sendResult(res, 201, 'user created successfully', user, token);
   }
@@ -50,7 +50,7 @@ export default class Auth {
       if (user) {
         const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password);
         if (isPasswordValid) {
-          const tokenData = { username: user.dataValues.username, email };
+          const tokenData = { id: user.dataValues.id, username: user.dataValues.username, email };
           const token = generateToken(tokenData, process.env.TOKEN_KEY);
           return sendResult(res, 200, 'user logged in successfully', user, token);
         }
