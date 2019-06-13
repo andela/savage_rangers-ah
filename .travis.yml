@@ -15,8 +15,6 @@ after_script:
   - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 deploy:
   provider: heroku
-  api_key:
-    secure: 71e7c70f-935e-42ab-8223-3e45ce99e599
   app:
     develop: savage-rangers-ah-staging
     master: savage-rangers-ah
