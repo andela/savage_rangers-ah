@@ -12,15 +12,16 @@ chai.use(chaiHttp);
 chai.should();
 
 const data = {
-  username: 'Burindi Alain',
+  username: 'alain',
   email: 'alain@gmail.com',
-  password: 'password',
+  password: 'diane3456',
+  confirmPassword: 'diane3456'
 };
 
 describe('Signup', () => {
   it('should register and give the token', (done) => {
     chai.request(server)
-      .post('/api/auth/signup')
+      .post('/api/users/signup')
       .send({
         username: data.username,
         email: data.email,
@@ -43,7 +44,7 @@ describe('Signup', () => {
 describe('Login', () => {
   it('should login and give a valid token', (done) => {
     chai.request(server)
-      .post('/api/auth/login')
+      .post('/api/users/login')
       .send({
         email: data.email,
         password: data.password,
@@ -62,7 +63,7 @@ describe('Login', () => {
 
   it('should not login with a wrong password', (done) => {
     chai.request(server)
-      .post('/api/auth/login')
+      .post('/api/users/login')
       .send({
         email: data.email,
         password: 'passwor5535',
@@ -76,7 +77,7 @@ describe('Login', () => {
 
   it('should not login an unexisting user', (done) => {
     chai.request(server)
-      .post('/api/auth/login')
+      .post('/api/users/login')
       .send({
         email: 'alain666326@gmail.com',
         password: 'password',
