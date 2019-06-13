@@ -9,7 +9,7 @@ export default {
     const result = {
       status,
       data: {
-        message: 'Welcome on Authors Heaven',
+        message: 'Welcome on Authors Heaven, and test',
       },
     };
     res.status(status).json(result);
