@@ -112,7 +112,12 @@ export default class ProfileController {
             userId: id
           }
         });
+<<<<<<< HEAD
         sendProfile(res, 200, undefined, profile, { username, email });
+=======
+        sendProfile(res, 200, undefined, profile,
+          { username, email });
+>>>>>>> [Ft 166240825] allow user to create his profile
       } else {
         return res.status(404).json({ message: 'User doesn\'t exist' });
       }
