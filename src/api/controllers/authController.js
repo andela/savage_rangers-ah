@@ -1,4 +1,4 @@
-import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import models from '../models/index';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
@@ -11,43 +11,43 @@ const { User } = models;
 const env = environments.currentEnv;
 /**
  * containing all user's model controllers (signup, login)
- *
  * @export
  * @class Auth
  */
 export default class Auth {
   /**
-   * register a new user
-   *
-   * @static
-   * @param {*} req the request
-   * @param {*} res the response to be sent
-   * @memberof Auth
-   * @returns {Object} res
-   */
+	 * @static
+	 * @description register a new user
+	 * @param {object} req the request
+	 * @param {object} res the response to be sent
+	 * @memberof Auth
+	 * @returns {object} res
+	 */
   static async signup(req, res) {
+    const { TOKEN_KEY } = process.env;
     const { username, email, password } = req.body;
-    const salt = genSaltSync(parseFloat(env.hashRounds));
-    const hashedPassword = hashSync(password, salt);
     const user = await User.create({
       username,
       email,
-      password: hashedPassword
+      password
     });
+    const tokenData = {
+      username,
+      email
+    };
     const tokenData = { username, email };
     const token = generateToken(tokenData, env.secret);
     return sendResult(res, status.CREATED, 'user created successfully', user, token);
   }
 
   /**
-   *login an existing user
-   *
-   * @static
-   * @param {*} req the request
-   * @param {*} res the response to be sent
-   * @memberof Auth
-   * @returns {Object} res
-   */
+	 * @static
+	 * @description login an existing user
+	 * @param {object} req the request
+	 * @param {object} res the response to be sent
+	 * @memberof Auth
+	 * @returns {object} res
+	 */
   static async login(req, res) {
     const { email, password } = req.body;
     User.findByEmail(email).then((user) => {

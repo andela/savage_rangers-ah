@@ -17,6 +17,13 @@ by leveraging the modern web.
 ## API Spec
 
 The preferred JSON object to be returned by the API should be structured as follows:
+### commands to install and run the project 
+After cloning the repository on local machine 
+run npm i  : To install all modeules ,
+npm test :   to run unit test 
+npm run dev:  to run the server
+npm run migrate:undo:  to drop migrations
+npm run migrate: to create migrations
 
 ### Users (for authentication)
 

@@ -1,25 +1,23 @@
 import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import logger from 'morgan';
 import apiRouter from './api/routes/index';
 import docsRouter from './api/routes/docs';
 import homeRouter from './api/routes/home';
-import register from './middlewares/register.app';
-import { sequelize } from './api/models/index';
-import environnements from './configs/environments';
 
-
+dotenv.config();
 const app = express();
-const env = environnements.currentEnv;
 
-// Register middleware
-register(app);
+app
+  .use(cors())
+  .use(express.json())
+  .use(express.urlencoded({ extended: false }))
+  .use(logger('dev'))
+  .use(express.static(`${__dirname}/public`));
 
 app.use('/api', apiRouter);
 app.use('/docs', docsRouter);
-
 app.use('/', homeRouter);
-
-sequelize.sync().then(() => {
-  app.listen(env.port);
-});
 
 export default app;

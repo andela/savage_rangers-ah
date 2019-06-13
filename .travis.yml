@@ -1,12 +1,22 @@
 language: node_js
 node_js:
-  - '10.15.3'
+  - "10.15.3"
 cache:
   directories:
-    - 'node_modules'
-script:
-  - npm test
-
+    - "node_modules"
+services:
+  - postgresql
+rvm:
+  - 2.2.0
+before_script:
+  - psql -c 'create database rangers_test' -U postgres
+  - yarn
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+after_success: npm run coverage
 deploy:
   provider: heroku
   api_key:
@@ -14,4 +24,3 @@ deploy:
   app:
     develop: savage-rangers-ah-staging
     master: savage-rangers-ah
-after_success: npm run coverage
