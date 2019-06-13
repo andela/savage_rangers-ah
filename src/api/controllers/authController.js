@@ -35,7 +35,7 @@ export default class Auth {
       email,
       password: hashedPassword,
     });
-    mailer('Please verify your email', 'Email verification', email, 'notifications', {
+    await mailer('Please verify your email', 'Email verification', email, 'notifications', {
       email,
       buttonText: 'Verify',
       userName: username,

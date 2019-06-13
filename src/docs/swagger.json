@@ -95,6 +95,43 @@
                     }
                 }
             }
+        },
+        "/auth/verifyEmail": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Verify user's email",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "token",
+                        "description": "",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Your email is successfully verified"
+                    },
+                    "400": {
+                        "description": "The link provided is  corrupt, please request a new one or try to click it again"
+                    },
+                    "404": {
+                        "description": "User doesn't exist."
+                    },
+                    "default": {
+                        "description": "Something went wrong"
+                    }
+                }
+            }
         }
     },
     "externalDocs": {

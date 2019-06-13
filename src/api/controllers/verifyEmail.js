@@ -5,7 +5,7 @@ import models from '../models/index';
  */
 export default class {
   /**
-     *
+     * @description verification link controller
      * @param {*} req
      * @param {*} res
      * @returns {*} void
