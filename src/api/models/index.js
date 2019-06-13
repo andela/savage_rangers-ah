@@ -11,8 +11,13 @@ const sequelize = new Sequelize(env.dbUrl, {
 const models = {
   User: sequelize.import('./user'),
   Token: sequelize.import('./token'),
+  Profile: sequelize.import('./profile'),
 };
-
+Object.keys(models).forEach((key) => {
+  if ('associate' in models[key]) {
+    models[key].associate(models);
+  }
+});
 export { sequelize };
 
 export default models;

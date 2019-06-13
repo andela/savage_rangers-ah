@@ -13,9 +13,10 @@ chai.use(chaiHttp);
 chai.should();
 
 const data = {
-  username: 'Burindi Alain',
-  email: 'premices.tuvere@gmail.com',
-  password: 'password'
+  username: 'alain',
+  email: 'alain@gmail.com',
+  password: 'diane3456',
+  confirmPassword: 'diane3456'
 };
 
 // The email of the user from the reset password endpoint
@@ -23,9 +24,8 @@ let userEmail;
 
 describe('Signup', () => {
   it('should register and give the token', (done) => {
-    chai
-      .request(server)
-      .post('/api/auth/signup')
+    chai.request(server)
+      .post('/api/users/signup')
       .send({
         username: data.username,
         email: data.email,
@@ -47,9 +47,8 @@ describe('Signup', () => {
 
 describe('Login', () => {
   it('should login and give a valid token', (done) => {
-    chai
-      .request(server)
-      .post('/api/auth/login')
+    chai.request(server)
+      .post('/api/users/login')
       .send({
         email: data.email,
         password: data.password
@@ -67,9 +66,8 @@ describe('Login', () => {
   });
 
   it('should not login with a wrong password', (done) => {
-    chai
-      .request(server)
-      .post('/api/auth/login')
+    chai.request(server)
+      .post('/api/users/login')
       .send({
         email: data.email,
         password: 'passwor5535'
@@ -82,9 +80,8 @@ describe('Login', () => {
   });
 
   it('should not login an unexisting user', (done) => {
-    chai
-      .request(server)
-      .post('/api/auth/login')
+    chai.request(server)
+      .post('/api/users/login')
       .send({
         email: 'alain666326@gmail.com',
         password: 'password'
