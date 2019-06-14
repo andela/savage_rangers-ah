@@ -48,6 +48,5 @@ const environnements = [
   }
 ];
 
-
 const currentEnv = environnements.find(el => el.name === env.toLocaleLowerCase());
 export default { currentEnv, env };
