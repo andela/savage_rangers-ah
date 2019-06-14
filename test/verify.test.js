@@ -3,7 +3,6 @@ import chaihttp from 'chai-http';
 import createToken from '../src/helpers/tokens/generate.token';
 import environment from '../src/configs/environments';
 import server from '../src/index';
-import models from '../src/api/models';
 
 const env = environment.currentEnv;
 

@@ -1,157 +1,251 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "version": "1.0.0",
-        "title": "Authors Heaven",
-        "description": "Authors Heaven Appi Documentation",
-        "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/licenses/MIT"
-        },
-        "contact": {
-            "Author": "Savage Ranges"
-        }
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Authors Heaven",
+    "description": "Authors Heaven Appi Documentation",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
     },
-    "host": "savage-rangers-ah-staging.herokuapp.com",
-    "basePath": "/api",
-    "schemes": [
-        "https",
-        "http"
-    ],
-    "paths": {
-        "/auth/signup": {
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Sign up new user",
-                "description": "",
-                "produces": [
-                    "application/json"
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Register new user",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/signup"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "User created successfully"
-                    },
-                    "400": {
-                        "description": "Invalid entries"
-                    },
-                    "default": {
-                        "description": "Something went wrong"
-                    }
-                }
+    "contact": {
+      "Author": "Savage Ranges"
+    }
+  },
+  "host": "savage-rangers-ah-staging.herokuapp.com",
+  "basePath": "/api",
+  "schemes": ["https", "http"],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Sign up new user",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Register new user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/signup"
             }
-        },
-        "/auth/login": {
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "login existing user",
-                "description": "",
-                "produces": [
-                    "application/json"
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "login existing user",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/signup"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "User loged in correctly"
-                    },
-                    "400": {
-                        "description": "Invalid entries"
-                    },
-                    "401": {
-                        "description": "Invalid entries"
-                    },
-                    "default": {
-                        "description": "Something went wrong"
-                    }
-                }
-            }
-        },
-        "/auth/verifyEmail": {
-            "get": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Verify user's email",
-                "description": "",
-                "produces": [
-                    "application/json"
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "token",
-                        "description": "",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Your email is successfully verified"
-                    },
-                    "400": {
-                        "description": "The link provided is  corrupt, please request a new one or try to click it again"
-                    },
-                    "404": {
-                        "description": "User doesn't exist."
-                    },
-                    "default": {
-                        "description": "Something went wrong"
-                    }
-                }
-            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Invalid entries"
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
         }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "login existing user",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "login existing user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/signup"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User loged in correctly"
+          },
+          "400": {
+            "description": "Invalid entries"
+          },
+          "401": {
+            "description": "Invalid entries"
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    },
+    "/reset": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Reset the password of the user via email",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "login existing user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/resetPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully"
+          },
+          "400": {
+            "description": "Invalid entries"
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    },
+    "/reset/{token}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "check the link provided via email to a user for password reset",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "description": "login existing user",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Valid link provided"
+          },
+          "400": {
+            "description": "Invalid link or server error"
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    },
+    "/reset/update/{email}": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "update the password of the user after verification of the reset password link",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "description": "login existing user",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "login existing user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updatePassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Password updated successfully"
+          },
+          "400": {
+            "description": "invalid email provided"
+          },
+          "404": {
+            "description": "Unknown email provided"
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    },
+    "/auth/verifyEmail": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Verify user's email",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "description": "",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your email is successfully verified"
+          },
+          "400": {
+            "description": "The link provided is  corrupt, please request a new one or try to click it again"
+          },
+          "404": {
+            "description": "User doesn't exist."
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
+        }
+      }
     },
     "externalDocs": {
-        "description": "Find out more about Swagger",
-        "url": "http://swagger.io"
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
     },
     "definitions": {
-        "signup": {
-            "type": "object",
-            "properties": {
-                "username": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
+      "signup": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
         }
+      },
+      "resetPassword": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "updatePassword": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      }
     }
+  }
 }

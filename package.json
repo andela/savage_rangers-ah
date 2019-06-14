@@ -29,7 +29,6 @@
     "@babel/register": "^7.4.4",
     "@hapi/joi": "^15.0.3",
     "@sendgrid/mail": "^6.4.0",
-    "babel-plugin-istanbul": "^5.1.2",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",

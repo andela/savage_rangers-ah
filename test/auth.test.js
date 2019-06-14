@@ -115,7 +115,7 @@ describe('Password reset', () => {
     it('it should send an email to the user', (done) => {
       chai
         .request(server)
-        .post('/api/auth/reset')
+        .post('/api/reset')
         .send({ email: data.email })
         .end((err, res) => {
           res.should.have.status(200);
@@ -125,7 +125,7 @@ describe('Password reset', () => {
     it('it should no send an email when an invalid email addres is provided', (done) => {
       chai
         .request(server)
-        .post('/api/auth/reset')
+        .post('/api/reset')
         .send({ email: 'email.email' })
         .end((err, res) => {
           res.should.have.status(400);
@@ -135,7 +135,7 @@ describe('Password reset', () => {
     it('it should no send an email when an unknown email addres is provided', (done) => {
       chai
         .request(server)
-        .post('/api/auth/reset')
+        .post('/api/reset')
         .send({ email: 'email@email.com' })
         .end((err, res) => {
           res.should.have.status(404);
@@ -148,7 +148,7 @@ describe('Password reset', () => {
     it('it should verify the link sent to the user', (done) => {
       chai
         .request(server)
-        .get(`/api/auth/reset/${token}`)
+        .get(`/api/reset/${token}`)
         .end((err, res) => {
           res.should.have.status(200);
           userEmail = res.body.data.email;
@@ -158,7 +158,7 @@ describe('Password reset', () => {
     it('it should raise an error when a invalid token is provided', (done) => {
       chai
         .request(server)
-        .get('/api/auth/reset/sdfgfhsdgfe')
+        .get('/api/reset/sdfgfhsdgfe')
         .end((err, res) => {
           res.should.have.status(400);
           done();
@@ -169,7 +169,7 @@ describe('Password reset', () => {
     it('it should update the password', (done) => {
       chai
         .request(server)
-        .post(`/api/auth/reset/update/${userEmail}`)
+        .post(`/api/reset/update/${userEmail}`)
         .send({ password: 'passWORD123' })
         .end((err, res) => {
           res.should.have.status(200);
@@ -179,7 +179,7 @@ describe('Password reset', () => {
     it('it should raise an error when an unknown email is provided', (done) => {
       chai
         .request(server)
-        .post('/api/auth/reset/update/email@gmail.com')
+        .post('/api/reset/update/email@gmail.com')
         .send({ password: 'passWORD123' })
         .end((err, res) => {
           res.should.have.status(404);
@@ -189,7 +189,7 @@ describe('Password reset', () => {
     it('it should raise an error when an invalid email is provided', (done) => {
       chai
         .request(server)
-        .post('/api/auth/reset/update/email@gmai')
+        .post('/api/reset/update/email@gmai')
         .send({ password: 'passWORD123' })
         .end((err, res) => {
           res.should.have.status(400);
@@ -203,7 +203,7 @@ describe('Routes', () => {
   it('should not use an empty body object', (done) => {
     chai
       .request(server)
-      .post('/api/auth/reset/')
+      .post('/api/reset/')
       .send({})
       .end((err, res) => {
         res.should.have.status(400);
@@ -219,7 +219,7 @@ describe('Mailer', async () => {
   });
 
   it('should execute with one param', async () => {
-    const test = await Mailer('title', 'subject', 'reciever@example.com', 'notifications', {});
+    await Mailer('title', 'subject', 'reciever@example.com', 'notifications', {});
   });
 });
 
