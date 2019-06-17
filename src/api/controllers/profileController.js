@@ -82,9 +82,7 @@ export default class ProfileController {
         }
       });
       const { username, email } = req.user;
-      return sendProfile(
-        res, 200, undefined, userProfile, { username, email }
-      );
+      return sendProfile(res, 200, undefined, userProfile, { username, email });
     } catch (error) {
       return res.status(500).json({ message: error });
     }
@@ -114,9 +112,7 @@ export default class ProfileController {
             userId: id
           }
         });
-        sendProfile(
-          res, 200, undefined, profile, { username, email }
-        );
+        sendProfile(res, 200, undefined, profile, { username, email });
       } else {
         return res.status(404).json({ message: 'User doesn\'t exist' });
       }
