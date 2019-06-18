@@ -28,7 +28,7 @@ export default class Auth {
     const user = await User.create({
       username,
       email,
-      password: hashedPassword,
+      password: hashedPassword
     });
     const tokenData = { username, email };
     const token = generateToken(tokenData, process.env.TOKEN_KEY);
@@ -44,7 +44,7 @@ export default class Auth {
    * @memberof Auth
    * @returns {Object} res
    */
-  static login(req, res) {
+  static async login(req, res) {
     const { email, password } = req.body;
     User.findByEmail(email).then((user) => {
       if (user) {
@@ -59,7 +59,7 @@ export default class Auth {
         });
       }
       return res.status(404).json({
-        message: 'user doesn\'t exist'
+        message: "user doesn't exist"
       });
     });
   }
