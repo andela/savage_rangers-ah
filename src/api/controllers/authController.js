@@ -2,9 +2,11 @@ import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
+import status from '../../helpers/constants/status.codes';
+import environments from '../../configs/environments';
 
 const { User } = models;
-
+const env = environments.currentEnv;
 /**
  * containing all user's model controllers (signup, login)
  *
@@ -23,7 +25,7 @@ export default class Auth {
    */
   static async signup(req, res) {
     const { username, email, password } = req.body;
-    const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS) || 10);
+    const salt = genSaltSync(parseFloat(env.hashRounds));
     const hashedPassword = hashSync(password, salt);
     const user = await User.create({
       username,
@@ -31,8 +33,8 @@ export default class Auth {
       password: hashedPassword
     });
     const tokenData = { username, email };
-    const token = generateToken(tokenData, process.env.TOKEN_KEY);
-    return sendResult(res, 201, 'user created successfully', user, token);
+    const token = generateToken(tokenData, env.secret);
+    return sendResult(res, status.CREATED, 'user created successfully', user, token);
   }
 
   /**
@@ -51,14 +53,14 @@ export default class Auth {
         const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password);
         if (isPasswordValid) {
           const tokenData = { username: user.dataValues.username, email };
-          const token = generateToken(tokenData, process.env.TOKEN_KEY);
-          return sendResult(res, 200, 'user logged in successfully', user, token);
+          const token = generateToken(tokenData, env.secret);
+          return sendResult(res, status.OK, 'user logged in successfully', user, token);
         }
-        return res.status(401).json({
+        return res.status(status.UNAUTHORIZED).json({
           message: 'password is incorrect'
         });
       }
-      return res.status(404).json({
+      return res.status(status.NOT_FOUND).json({
         message: "user doesn't exist"
       });
     });

@@ -1,13 +1,13 @@
 const user = (sequelize, DataTypes) => {
   const User = sequelize.define('Users', {
     username: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     verified: {
       type: DataTypes.BOOLEAN,
@@ -17,7 +17,7 @@ const user = (sequelize, DataTypes) => {
 
   User.findByEmail = (email) => {
     const queryResult = User.findOne({
-      where: { email },
+      where: { email }
     });
 
     return queryResult;
