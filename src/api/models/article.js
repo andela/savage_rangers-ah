@@ -26,7 +26,11 @@ export default (sequelize, DataTypes) => {
 			},
 			body: {
 				type:
-          DataTypes.STRING
+		  DataTypes.TEXT
+			},
+			tagList: {
+				type: DataTypes.ARRAY(DataTypes.TEXT),
+				allowNull: false,
 			},
 			readTime: {
 				type:

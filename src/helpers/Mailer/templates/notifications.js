@@ -1,10 +1,10 @@
 import generateLink from '../../tokens/generate.link';
 
 export default (userData) => {
-  const link = generateLink(userData.link, {
-    email: userData.email,
-  });
-  const html = `<div style="background: #F5F4F4; padding: 3%; ">
+	const link = generateLink(userData.link, {
+		email: userData.email,
+	});
+	const html = `<div style="background: #F5F4F4; padding: 3%; ">
                 Hello ${userData.userName}!!<br><br>
                 
                 ${userData.message}<br><br>
@@ -14,5 +14,5 @@ export default (userData) => {
                 If it doesn't 
                 work, click this link <a target="_blank" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='blue'" href="${link}">${link}</a>
                 </div>`;
-  return html;
+	return html;
 };

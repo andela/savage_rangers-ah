@@ -1,5 +1,6 @@
-import chai from 'chai';
 import '@babel/polyfill';
+
+import chai from 'chai';
 import chaiHttp from 'chai-http';
 import models from '../src/api/models/index';
 import isTokenValid from '../src/helpers/tokens/validate.token';
@@ -17,7 +18,6 @@ const data = {
 	email: 'premices.tuvere@gmail.com',
 	password: 'password'
 };
-
 // The email of the user from the reset password endpoint
 let userEmail;
 

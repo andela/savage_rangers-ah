@@ -1,4 +1,4 @@
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 
 dotenv.config();
 const {
@@ -13,7 +13,6 @@ module.exports = {
 		host: DB_HOST,
 		port: DB_PORT,
 		dialect: 'postgres',
-		// url: DEV_DB_URL,
 		logging: true
 	},
 	test: {
@@ -22,7 +21,6 @@ module.exports = {
 		database: TEST_DB_NAME,
 		host: DB_HOST,
 		port: DB_PORT,
-		// url: TEST_DB_URL,
 		dialect: 'postgres',
 		logging: false
 	},

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	up: (queryInterface,
 		Sequelize) => queryInterface.createTable('articles',
 		{
@@ -21,7 +21,11 @@ module.exports = {
 			},
 			body: {
 				type:
-						Sequelize.STRING
+						Sequelize.TEXT
+			},
+			tagList: {
+				type: Sequelize.ARRAY(Sequelize.TEXT),
+				allowNull: false,
 			},
 			readTime: {
 				type:

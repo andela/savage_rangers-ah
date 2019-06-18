@@ -9,7 +9,7 @@
 		"migrate:undo": "sequelize db:migrate:undo:all",
 		"seed": "sequelize db:seed:all",
 		"seed:undo": "sequelize db:seed:undo",
-		"test": "NODE_ENV=test npm run migrate:undo && npm run migrate && npm run seed && nyc --reporter=html --reporter=text --reporter=lcov ./node_modules/.bin/mocha --exclude src/index.js ./tests/* --require @babel/register --exit",
+		"test": "NODE_ENV=test npm run migrate:undo && NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed && NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov ./node_modules/.bin/mocha --exclude src/index.js ./test/* --require @babel/register --exit",
 		"dev": "nodemon --exec babel-node src/index.js",
 		"coverage": "nyc report --reporter=text-lcov | coveralls"
 	},
@@ -31,6 +31,8 @@
 		"@babel/polyfill": "^7.4.4",
 		"@babel/preset-env": "^7.4.5",
 		"@babel/register": "^7.4.4",
+		"@hapi/joi": "^15.0.3",
+		"@sendgrid/mail": "^6.4.0",
 		"bcrypt": "^3.0.6",
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",
