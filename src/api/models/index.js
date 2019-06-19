@@ -11,6 +11,7 @@ const models = {
   Article: sequelize.import('./article'),
   Category: sequelize.import('./category'),
   Rating: sequelize.import('./rating'),
+  Token: sequelize.import('./token')
 };
 Object.keys(models).forEach((key) => {
   if ('associate' in models[key]) {
