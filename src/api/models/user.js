@@ -1,8 +1,7 @@
 import { hashSync, genSaltSync } from 'bcrypt';
 
 export default (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    'User',
+  const User = sequelize.define('User',
     {
       id: {
         allowNull: false,
@@ -13,18 +12,18 @@ export default (sequelize, DataTypes) => {
       },
       username: {
         type: DataTypes.STRING,
-        unique: true,
+        unique: true
       },
       email: {
         type: DataTypes.STRING,
-        unique: true,
+        unique: true
       },
       password: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING
       },
       verified: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: false
       }
     },
     {
@@ -38,8 +37,14 @@ export default (sequelize, DataTypes) => {
           user.password = hashedPassword;
         }
       }
-    }
-  );
+    });
   User.associate = () => {};
+  User.findByEmail = (email) => {
+    const queryResult = User.findOne({
+      where: { email }
+    });
+
+    return queryResult;
+  };
   return User;
 };

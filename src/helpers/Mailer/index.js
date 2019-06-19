@@ -1,16 +1,15 @@
 import mailer from '@sendgrid/mail';
 import templates from './templates';
-import environnements from '../../configs/environments';
 
-const env = environnements.currentEnv;
-mailer.setApiKey(env.mailerToken);
+const { mailerToken, mailerEmail } = process.env;
+mailer.setApiKey(mailerToken);
 
 export default async (messageTitle, emailSubject, reciever, operation, userData) => {
   try {
     const messageBody = templates[operation](userData);
     const message = {
       to: reciever,
-      from: env.mailerEmail,
+      from: mailerEmail,
       subject: emailSubject,
       text: 'Authors Haven',
       html: `<div style="width:100%; font-family: 'lato';">

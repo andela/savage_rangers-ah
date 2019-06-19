@@ -20,4 +20,5 @@ app.use('/api', apiRouter);
 app.use('/docs', docsRouter);
 app.use('/', homeRouter);
 
+app.listen(process.env.PORT, () => {});
 export default app;

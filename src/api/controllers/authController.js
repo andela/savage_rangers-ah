@@ -3,12 +3,10 @@ import models from '../models/index';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
 import status from '../../helpers/constants/status.codes';
-import environments from '../../configs/environments';
 import sendError from '../../helpers/error.sender';
 import errors from '../../helpers/constants/error.messages';
 
 const { User } = models;
-const env = environments.currentEnv;
 /**
  * containing all user's model controllers (signup, login)
  * @export
@@ -31,12 +29,8 @@ export default class Auth {
       email,
       password
     });
-    const tokenData = {
-      username,
-      email
-    };
     const tokenData = { username, email };
-    const token = generateToken(tokenData, env.secret);
+    const token = generateToken(tokenData, TOKEN_KEY);
     return sendResult(res, status.CREATED, 'user created successfully', user, token);
   }
 
@@ -49,13 +43,14 @@ export default class Auth {
 	 * @returns {object} res
 	 */
   static async login(req, res) {
+    const { TOKEN_KEY } = process.env;
     const { email, password } = req.body;
     User.findByEmail(email).then((user) => {
       if (user) {
         const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password);
         if (isPasswordValid) {
           const tokenData = { username: user.dataValues.username, email };
-          const token = generateToken(tokenData, env.secret);
+          const token = generateToken(tokenData, TOKEN_KEY);
           return sendResult(res, status.OK, 'user logged in successfully', user, token);
         }
         return sendError(status.UNAUTHORIZED, res, 'password', errors.incorectPassword);

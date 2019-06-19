@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import environment from '../../configs/environments';
 
 /**
  * A function to decode the token
@@ -9,8 +8,9 @@ import environment from '../../configs/environments';
  * decoded playloads
  */
 const decodeJwt = (token) => {
+  const { secret } = process.env;
   let retObj;
-  jwt.verify(token, environment.currentEnv.secret, (err, decodedObj) => {
+  jwt.verify(token, secret, (err, decodedObj) => {
     if (!err) retObj = decodedObj;
   });
   return retObj;
