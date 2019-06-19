@@ -5,7 +5,7 @@ const Article = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
         primaryKey: true,
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         defaultValue: DataTypes.UUIDV4
       },
       title: {
@@ -23,7 +23,7 @@ const Article = (sequelize, DataTypes) => {
       },
       category: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       body: {
         type: DataTypes.TEXT,

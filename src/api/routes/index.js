@@ -1,7 +1,7 @@
 import express from 'express';
 import authRouter from './authRouter';
 import resetRouter from './password.reset';
-import articleRouter from './articleRouter';
+import articleRouter from './articleRoutes';
 
 const router = express();
 
