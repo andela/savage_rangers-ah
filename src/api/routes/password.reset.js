@@ -6,7 +6,7 @@ import validateResetEmail from '../../middlewares/validations/validate.reset.ema
 import validateResetLink from '../../middlewares/validations/validate.reset.link';
 import validateUpdatePassword from '../../middlewares/validations/validate.update.password';
 
-const router = Router();
+const router = new Router();
 
 router.post(
   '/',

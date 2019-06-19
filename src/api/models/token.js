@@ -1,7 +1,7 @@
 const token = (sequelize, DataTypes) => {
   const Token = sequelize.define('Tokens', {
     data: {
-      type: DataTypes.TEXT,
+      type: DataTypes.TEXT
     }
   });
   return Token;

@@ -44,3 +44,6 @@ package-lock.json
 
 # vscode config file
 .vscode
+
+# Eslint cache 
+.eslintcache
