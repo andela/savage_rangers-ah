@@ -1,9 +1,13 @@
+import path from 'path';
+import cloudinary from 'cloudinary';
 import models from '../models/index';
 import sendProfile from '../../helpers/results/send.profile';
-
+import Resize from '../../helpers/images/resize';
 
 const { Profile } = models;
 const { User } = models;
+
+const c = cloudinary.v2;
 /**
  *
  *
@@ -23,8 +27,18 @@ export default class ProfileController {
   static async create(req, res) {
     const {
       country, firstName, lastName,
-      address, gender, avatar, phoneNumber, bio
+      address, gender, phoneNumber, bio
     } = req.body;
+    const avatar = 'noimage.jpg';
+    if (req.file) {
+      try {
+        await c.uploader
+          .upload(req.file.buffer, (error, result) => { console.log({ img: result, error }); });
+      } catch (error) {
+        console.log(error);
+        return res.status(500).json(error);
+      }
+    }
     try {
       const createdProfile = await Profile.create({
         country, firstName, lastName, bio, address, gender, avatar, phoneNumber, userId: req.user.id

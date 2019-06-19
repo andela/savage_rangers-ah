@@ -2,17 +2,17 @@ const user = (sequelize, DataTypes) => {
   const User = sequelize.define('Users', {
     username: {
       type: DataTypes.STRING,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: false
     },
     password: {
       type: DataTypes.STRING,
+      allowNull: false
     },
-    verified: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
-    }
+    
   });
 
   User.findByEmail = (email) => {
