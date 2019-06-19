@@ -13,8 +13,8 @@ const sendError = (status, res, field, error) => {
     errors: {}
   };
   resultObj.errors[field] = error;
-  res.status(status).json(resultObj);
-  return true;
+  return res.status(status).json(resultObj);
+  // return true;
 };
 
 export default sendError;
