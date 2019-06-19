@@ -3,6 +3,7 @@ import models from '../../api/models';
 import sendError from '../../helpers/error.sender';
 import validationSchemas from '../../helpers/constants/validation.schemas';
 import status from '../../helpers/constants/status.codes';
+import errors from '../../helpers/constants/error.messages';
 
 /**
  * A function to validate the an email provided in the url parms
@@ -24,12 +25,10 @@ export default async (req, res, next) => {
         req.user = tempUser.dataValues;
         next();
       } catch (TypeError) {
-        const message = "A user with the provided email doesn't exist";
-        sendError(status.NOT_FOUND, {}, res, message);
+        sendError(status.NOT_FOUND, res, 'email', errors.unkownEmail);
       }
     } else {
-      const error = 'Invalid email provided';
-      sendError(status.BAD_REQUEST, {}, res, error);
+      sendError(status.BAD_REQUEST, res, 'email', errors.email);
     }
   });
 };

@@ -8,21 +8,17 @@ import validateUpdatePassword from '../../middlewares/validations/validate.updat
 
 const router = new Router();
 
-router.post(
-  '/',
+router.post('/',
   verifyBody,
   validateInputs(true, 'resetPassword', ['email']),
   validateResetEmail,
-  resetController.sendRecoveryEmail
-);
+  resetController.sendRecoveryEmail);
 
-router.post(
-  '/update/:email',
+router.post('/update/:email',
   verifyBody,
   validateInputs(true, 'updatePassword', ['password']),
   validateUpdatePassword,
-  resetController.updatePassword
-);
+  resetController.updatePassword);
 
 router.get('/:token', validateResetLink, resetController.verifyRecoveryLink);
 

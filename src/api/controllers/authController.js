@@ -4,6 +4,8 @@ import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
 import status from '../../helpers/constants/status.codes';
 import environments from '../../configs/environments';
+import sendError from '../../helpers/error.sender';
+import errors from '../../helpers/constants/error.messages';
 
 const { User } = models;
 const env = environments.currentEnv;
@@ -56,13 +58,9 @@ export default class Auth {
           const token = generateToken(tokenData, env.secret);
           return sendResult(res, status.OK, 'user logged in successfully', user, token);
         }
-        return res.status(status.UNAUTHORIZED).json({
-          message: 'password is incorrect'
-        });
+        return sendError(status.UNAUTHORIZED, res, 'password', errors.incorectPassword);
       }
-      return res.status(status.NOT_FOUND).json({
-        message: "user doesn't exist"
-      });
+      return sendError(status.NOT_FOUND, res, 'email', errors.unkownEmail);
     });
   }
 }
