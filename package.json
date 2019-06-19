@@ -34,6 +34,8 @@
 		"@babel/polyfill": "^7.4.4",
 		"@babel/preset-env": "^7.4.5",
 		"@babel/register": "^7.4.4",
+		"@hapi/joi": "^15.0.3",
+		"@sendgrid/mail": "^6.4.0",
 		"bcrypt": "^3.0.6",
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",
