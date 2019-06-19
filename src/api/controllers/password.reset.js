@@ -1,13 +1,13 @@
 import { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
 import mailer from '../../helpers/Mailer';
-import environment from '../../configs/environments';
+import environnement from '../../configs/environments';
 
 const { User } = models;
-const env = environment.currentEnv;
+const env = environnement.currentEnv;
 
 /**
- * containing aal controllers of the signup process
+ * containing all user's model controllers (signup, login)
  *
  * @export
  * @class Auth
@@ -24,27 +24,35 @@ export default class PasswordReset {
   static async sendRecoveryEmail(req, res) {
     // Initialising variables
     const result = {};
-    const { username, email } = req.user;
+    const status = 200;
+    const userEmail = req.body.email;
+    const { username } = req.user;
 
-    await mailer(`Password recovery for ${email}`, 'Password recovery', email, 'notifications', {
-      email,
-      link: `${env.baseUrl}/api/password-reset`,
-      userName: username,
-      buttonText: 'RESET',
-      message:
-        "You are receiving this email beacause you've requested the recovery "
-        + 'of your Authors Heaven password. Kindly click the button below.'
-    });
+    await mailer(
+      `Password recovery for ${userEmail}`,
+      'Password recovery',
+      userEmail,
+      'notifications',
+      {
+        email: userEmail,
+        link: `${env.baseUrl}/api/auth/reset`,
+        userName: username,
+        buttonText: 'RESET',
+        message:
+          "You are recieving this email beacause you've requested the recovery "
+          + 'of your Authors Heaven password. Kindly click the button bellow.'
+      }
+    );
 
     // Sending the result
-    result.status = 200;
+    result.status = status;
     result.message = 'Password reset instructions have been sent '
-      + "to your account's primary email address. Please check the spam if you don't see the email";
-    res.status(200).json(result);
+      + "to your account's primary email address. If you don't find it, check your spams";
+    res.status(status).json(result);
   }
 
   /**
-   * A controller update the users password
+   * A controller update the users email
    *
    * @param {Object} req - the request object
    * @param {Object} res - the result object
@@ -53,6 +61,7 @@ export default class PasswordReset {
   static async updatePassword(req, res) {
     // Initialising variables
     const result = {};
+    const status = 200;
     const userEmail = req.params.email;
     const userPassword = req.body.password;
     const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS) || 10);
@@ -70,10 +79,10 @@ export default class PasswordReset {
     );
 
     // Sending the result
-    result.status = 200;
+    result.status = status;
     result.message = 'Password reset sucessfully';
     result.user = user;
-    res.status(200).json(result);
+    res.status(status).json(result);
   }
 
   /**

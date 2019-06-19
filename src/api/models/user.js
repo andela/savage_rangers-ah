@@ -11,7 +11,7 @@ const user = (sequelize, DataTypes) => {
     },
     verified: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true
+      defaultValue: false
     }
   });
 

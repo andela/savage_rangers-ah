@@ -1,5 +1,4 @@
 import chai from 'chai';
-import '@babel/polyfill';
 import chaiHttp from 'chai-http';
 import models from '../src/api/models/index';
 import isTokenValid from '../src/helpers/tokens/validate.token';

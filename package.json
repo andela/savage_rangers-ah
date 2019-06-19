@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node src/index.js",
-    "test": "NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov ./node_modules/.bin/mocha  ./test/* --require @babel/register --timeout 4000 --exit",
-    "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
+    "seed": "sequelize db:seed:all",
+    "migrate": "sequelize db:migrate",
+    "migrate:undo": "sequelize db:migrate:undo:all",
+    "test": "NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed && NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov ./node_modules/.bin/mocha  ./test/* --require @babel/register --timeout 4000 --exit && npm run migrate:undo",
+    "dev": "NODE_ENV=development nodemon --exec npm start",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "devDependencies": {
