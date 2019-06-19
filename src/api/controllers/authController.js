@@ -24,12 +24,12 @@ export default class Auth {
    */
   static async signup(req, res) {
     const { username, email, password } = req.body;
-    const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS) || 10);
+    const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS));
     const hashedPassword = hashSync(password, salt);
     const user = await User.create({
       username,
       email,
-      password: hashedPassword,
+      password: hashedPassword
     });
     const tokenData = { username, email };
     const token = generateToken(tokenData, process.env.TOKEN_KEY);

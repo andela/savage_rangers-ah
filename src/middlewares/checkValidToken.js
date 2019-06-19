@@ -25,22 +25,16 @@ const validToken = async (req, res, next) => {
       username: decodeToken.user.username,
       email: decodeToken.user.email
     };
-    const findUser = await User.findOne({
+    await User.findOne({
       where: {
         email: req.user.email
       }
     });
-    if (!findUser) {
-      return res.status(403).json({
-        status: 403,
-        message: 'Forbiden access'
-      });
-    }
     next();
   } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: err
+    res.status(403).json({
+      status: 403,
+      message: 'Forbiden access'
     });
   }
 };
