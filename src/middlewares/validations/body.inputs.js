@@ -1,24 +1,14 @@
+/* eslint-disable no-unused-expressions */
 /**
  * Schemas description file
  * @name validationMiddleware
  */
-
+/* eslint-disable no-underscore-dangle */
 import _ from 'lodash';
 import Joi from '@hapi/joi';
-import Schemas from '../../helpers/constants/validation.schemas';
+import Schemas from '../../helpers/validation.schemas';
 import sendError from '../../helpers/error.sender';
-import errorMessages from '../../helpers/constants/error.messages';
-
-// Initializing variables
-// Allowed http methods
-const supportedMethods = ['get', 'post', 'patch', 'delete'];
-
-// Joi validation options
-const validationOptions = {
-  abortEarly: false, // abort after the last validation error
-  allowUnknown: true, // allow unknown keys that will be ignored
-  stripUnknown: true // remove unknown keys from the validated data
-};
+import errorMessages from '../../helpers/error.messages';
 
 /**
  * A function to save an account when requested by the controller
@@ -26,12 +16,21 @@ const validationOptions = {
  * validation errors should be used
  * @param {object} schema - The validation schema comming from
  * the helper @ref validationSchemas
- * @param {Array} fields - An array containing all the fileds to validate
- * provided especialy for custom error messages
- * @returns {Function} - A fuction validating the schema
  */
+
+// Initializing variables
+// Allowed http methods
+const _supportedMethods = ['get', 'post', 'patch', 'delete'];
+
+// Joi validation options
+const _validationOptions = {
+  abortEarly: false, // abort after the last validation error
+  allowUnknown: true, // allow unknown keys that will be ignored
+  stripUnknown: true // remove unknown keys from the validated data
+};
+
 export default (useJoiError, schema, fields) => {
-  const UseJoiError = _.isBoolean(useJoiError) && useJoiError;
+  const _useJoiError = _.isBoolean(useJoiError) && useJoiError;
 
   // validation middleware
   /**
@@ -39,35 +38,35 @@ export default (useJoiError, schema, fields) => {
    * @param {object} req - the request object
    * @param {object} res - the result object
    * @param {function} next - callBack function
-   * @returns {function} -
    */
+  // eslint-disable-next-line consistent-return
   return (req, res, next) => {
     const method = req.method.toLowerCase();
 
-    if (_.includes(supportedMethods, method) && _.has(Schemas, schema) && _.get(Schemas, schema)) {
+    if (_.includes(_supportedMethods, method) && _.has(Schemas, schema) && _.get(Schemas, schema)) {
       // get the schema for the route
-      const currentSchema = _.get(Schemas, schema);
+      const _schema = _.get(Schemas, schema);
 
       // Validation happens here
-      return Joi.validate(req.body, currentSchema, validationOptions, (err, data) => {
+      return Joi.validate(req.body, _schema, _validationOptions, (err, data) => {
         if (!err) {
           req.body = data;
           next();
         } else {
           // Building the error object
           let message = err.details[0].message.replace(/['"]/g, '');
-          // Building a custom error message
           fields.find((el) => {
             if (message.includes(`${el} with value`) || message.includes(`${el} must be`)) {
               message = errorMessages[el];
             }
             return true;
           });
-          if (UseJoiError) {
-            sendError(400, {}, res, message);
-          } else {
-            sendError(400, {}, res, errorMessages.defaultError);
-          }
+          // Default error
+          const defaultErr = 'Invalid request data. Try again';
+
+          _useJoiError
+            ? sendError(400, {}, res, message)
+            : sendError(400, {}, res, errorMessages[defaultErr]);
         }
       });
     }

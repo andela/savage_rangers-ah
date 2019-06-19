@@ -2,6 +2,11 @@ import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
+import mailer from '../../helpers/Mailer/index';
+import environment from '../../configs/environments';
+
+const env = environment.currentEnv;
+
 
 const { User } = models;
 
@@ -30,9 +35,18 @@ export default class Auth {
       email,
       password: hashedPassword
     });
+    await mailer('Please verify your email', 'Email verification', email, 'notifications', {
+      email,
+      buttonText: 'Verify',
+      userName: username,
+      message: 'Please click on the link to verify your email for authour\'s heaven,If you didn\'t request this delete this mail.',
+      link: `${env.baseUrl}/auth/verifyEmail`
+
+    });
     const tokenData = { username, email };
     const token = generateToken(tokenData, process.env.TOKEN_KEY);
-    return sendResult(res, 201, 'user created successfully', user, token);
+    const message = 'Please check your email for the verification lik.';
+    return sendResult(res, 201, `${message}`, user, token);
   }
 
   /**

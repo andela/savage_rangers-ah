@@ -81,7 +81,7 @@
         }
       }
     },
-    "/password-reset": {
+    "/reset": {
       "post": {
         "tags": ["Users"],
         "summary": "Reset the password of the user via email",
@@ -112,7 +112,7 @@
         }
       }
     },
-    "/password-reset/{token}": {
+    "/reset/{token}": {
       "get": {
         "tags": ["Users"],
         "summary": "check the link provided via email to a user for password reset",
@@ -140,7 +140,7 @@
         }
       }
     },
-    "/password-reset/update/{email}": {
+    "/reset/update/{email}": {
       "post": {
         "tags": ["Users"],
         "summary": "update the password of the user after verification of the reset password link",
@@ -179,40 +179,71 @@
           }
         }
       }
-    }
-  },
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
-  },
-  "definitions": {
-    "signup": {
-      "type": "object",
-      "properties": {
-        "username": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
+    },
+    "/auth/verifyEmail": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Verify user's email",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "description": "",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Your email is successfully verified"
+          },
+          "400": {
+            "description": "The link provided is  corrupt, please request a new one or try to click it again"
+          },
+          "404": {
+            "description": "User doesn't exist."
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
         }
       }
     },
-    "resetPassword": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
-        }
-      }
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
     },
-    "updatePassword": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
+    "definitions": {
+      "signup": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "resetPassword": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "updatePassword": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
         }
       }
     }

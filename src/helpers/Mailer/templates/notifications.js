@@ -2,6 +2,10 @@ import generateLink from '../../tokens/generate.link';
 
 export default (userData) => {
   const link = generateLink(userData.link, {
+    user: {
+      email: userData.email,
+      username: userData.userName
+    },
     email: userData.email,
   });
   const html = `<div style="background: #F5F4F4; padding: 3%; ">

@@ -1,5 +1,5 @@
-import sendError from '../../helpers/error.sender';
-import decodeJwt from '../../helpers/tokens/decode.token';
+import sendError from '../helpers/error.sender';
+import decodeJwt from '../helpers/tokens/decode.token';
 
 export default (req, res, next) => {
   // Initializing variables
