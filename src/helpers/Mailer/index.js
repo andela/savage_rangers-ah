@@ -1,8 +1,7 @@
 import mailer from '@sendgrid/mail';
 import templates from './templates';
-import environnements from '../../configs/environments';
+import env from '../../configs/environments';
 
-const env = environnements.currentEnv;
 mailer.setApiKey(env.mailerToken);
 
 export default async (messageTitle, emailSubject, reciever, operation, userData) => {

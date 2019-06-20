@@ -1,11 +1,10 @@
 import { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
 import mailer from '../../helpers/Mailer';
-import environment from '../../configs/environments';
+import env from '../../configs/environments';
 import status from '../../helpers/constants/status.codes';
 
 const { User } = models;
-const env = environment.currentEnv;
 
 /**
  * containing aal controllers of the signup process
