@@ -11,8 +11,7 @@ export default {
       unique: true
     },
     email: {
-      type: Sequelize.STRING,
-      unique: true
+      type: Sequelize.STRING
     },
     password: {
       type: Sequelize.STRING
