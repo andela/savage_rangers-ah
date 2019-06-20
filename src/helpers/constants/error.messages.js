@@ -5,5 +5,8 @@ export default {
   emptyBody: 'Server unable to process the recieved data',
   unkownEmail: "A user with the provided email doesn't exist",
   invalidLink: 'Invalid link provided',
-  incorectPassword: 'Incorect password provided'
+  incorectPassword: 'Incorect password provided',
+  authorisation: 'A token must be provided',
+  token: 'Invalid token provided',
+  ratingsNotFound: 'No ratings found for this article'
 };

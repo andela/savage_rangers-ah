@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const User = sequelize.define('User',
+  const User = sequelize.define('Users',
     {
       username: {
         type: DataTypes.STRING
@@ -59,8 +59,15 @@ export default (sequelize, DataTypes) => {
     const queryResult = User.findOne({
       where: { email }
     });
-
     return queryResult;
+  };
+  User.associate = (models) => {
+    User.hasMany(models.Article, {
+      foreignKey: 'userId'
+    });
+    User.hasMany(models.Rating, {
+      foreignKey: 'userId'
+    });
   };
   return User;
 };

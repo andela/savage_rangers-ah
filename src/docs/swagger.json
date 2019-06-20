@@ -244,37 +244,68 @@
       }
     },
     "/auth/signout": {
-      "get":{
-        "tags":["auth"],
-          "summary":"signs out the logged in user",
-          "description":"destroy the token",
-          "produces":["application/json"],
-          "parameters":[
-            {
-                "in":"header",
-                "name":"authorization",
-                "description":"token to be destroyed",
-                "required":true
-            }
-        ],
-        "responses":{
-          "200":{
-              "description":"You are signed out"
-          },
-          "401":{
-              "description":"You are unauthorized, Token is no longer valid"
-          },
-        "403":{
-          "description":"Forbiden access"
-      }
-      },
-      "security": [
+      "get": {
+        "tags": ["auth"],
+        "summary": "signs out the logged in user",
+        "description": "destroy the token",
+        "produces": ["application/json"],
+        "parameters": [
           {
-              "api_key":[]
+            "in": "header",
+            "name": "authorization",
+            "description": "token to be destroyed",
+            "required": true
           }
-      ]
-  }
+        ],
+        "responses": {
+          "200": {
+            "description": "You are signed out"
+          },
+          "401": {
+            "description": "You are unauthorized, Token is no longer valid"
+          },
+          "403": {
+            "description": "Forbiden access"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
       }
+    },
+    "/articles/{slug}/ratings": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all the ratings of an article",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "description": "login existing user",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Access denied"
+          },
+          "404": {
+            "description": "The article doesn't exist or the offset is too large"
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    }
   },
   "externalDocs": {
     "description": "Find out more about Swagger",
