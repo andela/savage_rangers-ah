@@ -62,7 +62,7 @@ module.exports = {
       }
     ],
     'no-self-assign': 'error',
-    'no-useless-catch': 'error',
+    // 'no-useless-catch': 'error',
     'wrap-iife': ['error', 'outside'],
     'no-use-before-define': ['error', { functions: true, classes: true }]
   }
