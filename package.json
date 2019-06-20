@@ -16,6 +16,7 @@
     "precommit": "lint-staged",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "seed": "node_modules/.bin/sequelize db:seed:all",
+    "seed:undo": "node_modules/.bin/sequelize db:seed:undo:all",
     "migrate:undo": "node_modules/.bin/sequelize db:migrate:undo:all"
   },
   "lint-staged": {
@@ -94,7 +95,6 @@
       "src/middlewares/passport.js",
       "src/index.js",
       "src/middlewares/errorHandler.js",
-      "src/api/models",
       "tests/*"
     ]
   },

@@ -6,12 +6,13 @@ import env from '../../configs/environments';
  *
  * @param {string} token - the token to decode
  * @returns {object} retObj - The object that contains
- * decoded playloads
+ * decoded payloads
  */
 const decodeJwt = (token) => {
   let retObj;
   jwt.verify(token, env.secret, (err, decodedObj) => {
     if (!err) retObj = decodedObj;
+    else throw new Error('Could not decode the token');
   });
   return retObj;
 };

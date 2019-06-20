@@ -23,5 +23,8 @@ export default {
   gender: 'The gender should only contain alphanumeric characters',
   phoneNumber: 'The phone number is required',
   bio: 'The bio is required',
-  rating: 'you can not go beyond 5 as a rating number, Thanks'
+  rating: 'you can not go beyond 5 as a rating number, Thanks',
+  authorisation: 'A token must be provided',
+  token: 'Invalid token provided',
+  ratingsNotFound: 'No ratings found for this article'
 };

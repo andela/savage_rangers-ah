@@ -60,6 +60,9 @@ export default (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       hooks: true
     });
+    User.hasMany(models.Rating, {
+      foreignKey: 'userId'
+    });
   };
 
   User.findByEmail = (email) => {

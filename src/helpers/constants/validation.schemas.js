@@ -7,12 +7,27 @@ import Joi from '@hapi/joi';
 import numbers from './numbers';
 
 const string = Joi.string();
-const minPasswordLength = 8, minProfileLength = 3;
-const number = Joi.number();
+const minPasswordLength = 8,
+  minProfileLength = 3;
 const email = string
   .email()
   .regex(/^[a-z._\-0-9]*[@][A-Za-z]*[.][a-z]{2,4}$/)
   .required();
+const number = Joi.number();
+
+const validRatings = {
+  ONE_STAR: 1,
+  TWO_STARS: 2,
+  THREE_STARS: 3,
+  FOUR_STARS: 4,
+  FIVE_STARS: 5
+};
+
+const SLUG_MIN_LENTH = 3;
+const SLUG_MAX_LENTH = 45;
+
+const DEFAULT_OFFSET = 0;
+const DEFAULT_LIMIT = 10;
 
 export default {
   resetPassword: Joi.object().keys({
@@ -25,6 +40,7 @@ export default {
       .required()
   }),
   email,
+
   profile: Joi.object().keys({
     country: string
       .trim()
@@ -56,11 +72,28 @@ export default {
       .required(),
     profileImage: Joi.string(),
     facebook: Joi.string(),
-    twitter: Joi.string(),
+    twitter: Joi.string()
+  }),
+  ratingRoute: Joi.object().keys({
+    offset: number.required().default(DEFAULT_OFFSET),
+    limit: number.required().default(DEFAULT_LIMIT),
+    slug: string
+      .min(SLUG_MIN_LENTH)
+      .max(SLUG_MAX_LENTH)
+      .required(),
+    rating: number
+      .valid([
+        validRatings.ONE_STAR,
+        validRatings.TWO_STARS,
+        validRatings.THREE_STARS,
+        validRatings.FOUR_STARS,
+        validRatings.FIVE_STARS
+      ])
+      .required()
   }),
   rateArticle: Joi.object().keys({
     rating: number
       .valid(numbers.ONE, numbers.TWO, numbers.THREE, numbers.FOUR, numbers.FIVE)
       .required()
-  }),
+  })
 };
