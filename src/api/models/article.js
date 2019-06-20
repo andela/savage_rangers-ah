@@ -1,59 +1,57 @@
-const Article = (sequelize, DataTypes) => {
-  const article = sequelize.define('Articles',
+import slug from 'slug';
+
+const THIRTY_SIX = 36;
+const SIX = 6;
+const ZERO = 0;
+
+export default (sequelize, DataTypes) => {
+  const Article = sequelize.define('Articles',
     {
       id: {
         allowNull: false,
-        unique: true,
+        autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        type: DataTypes.INTEGER
       },
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      description: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      slug: {
-        type: DataTypes.STRING,
+      title: { type: DataTypes.STRING, allowNull: false },
+      description: { type: DataTypes.TEXT, allowNull: false },
+      body: { type: DataTypes.TEXT, allowNull: false },
+      slug: { type: DataTypes.STRING, allowNull: false },
+      coverImage: { type: DataTypes.TEXT, allowNull: false },
+      author: {
         allowNull: false,
-        unique: true
+        type: DataTypes.INTEGER,
+        references: { model: 'users', key: 'id' }
       },
       category: {
-        type: DataTypes.STRING,
         allowNull: false,
-      },
-      body: {
-        type: DataTypes.TEXT,
-        allowNull: false
-      },
-      coverImage: {
-        type: DataTypes.TEXT,
-        allowNull: true
-      },
-      tagList: {
-        type: DataTypes.ARRAY(DataTypes.TEXT),
-        allowNull: false
-      },
-      userId: {
         type: DataTypes.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id'
-        },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-        allowNull: false
+        references: { model: 'categories', key: 'id' }
       }
     },
-    {});
-
+    {
+      tableName: 'articles',
+      paranoid: true,
+      hooks: {
+        beforeCreate(article) {
+          article.slug = slug(`${article.title}-${(Math.random() * THIRTY_SIX ** SIX || ZERO).toString(THIRTY_SIX)}`).toLowerCase();
+        }
+      }
+    });
   Article.associate = (models) => {
-    Article.belongsTo(models.User, { foreignKey: 'userId' });
+    Article.belongsTo(models.User, {
+      foreignKey: 'userId',
+      as: 'author',
+      onDelete: 'CASCADE',
+      hooks: true
+    });
+    Article.belongsTo(models.Category, {
+      foreignKey: 'categoryId',
+      as: 'category',
+      onDelete: 'CASCADE',
+      hooks: true
+    });
   };
-  return article;
-};
 
-export default Article;
+  return Article;
+};

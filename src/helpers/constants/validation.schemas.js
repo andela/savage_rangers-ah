@@ -16,10 +16,7 @@ export default {
     email
   }),
   updatePassword: Joi.object().keys({
-    password: string
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/)
-      .min(5)
-      .required()
+    password: string.regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/).required()
   }),
   email
 };

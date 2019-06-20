@@ -14,8 +14,8 @@ chai.use(chaiHttp);
 chai.should();
 
 const data = {
-  username: 'BurindiAlain',
-  email: 'alain@gmail.com',
+  username: 'BurindiAlainj',
+  email: 'alainj@gmail.com',
   password: 'password23423',
   confirmPassword: 'password23423'
 };

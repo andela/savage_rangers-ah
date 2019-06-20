@@ -53,13 +53,18 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING
       }
     },
-    {});
+    { tableName: 'users' });
+  User.associate = (models) => {
+    User.hasMany(models.Article, {
+      foreignKey: 'userId',
+      as: 'author',
+      onDelete: 'CASCADE',
+      hooks: true
+    });
+  };
 
   User.findByEmail = (email) => {
-    const queryResult = User.findOne({
-      where: { email }
-    });
-
+    const queryResult = User.findOne({ where: { email } });
     return queryResult;
   };
   return User;

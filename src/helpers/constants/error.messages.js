@@ -8,4 +8,11 @@ export default {
   incorectPassword: 'Incorect password provided',
   emailLinkInvalid: 'The link provided is  corrupt, please request a new one or try to click it again',
   noUser: "User doesn't exist."
+  authenticationMessage: 'You have to login to perform this action.',
+  serverError: 'Something went wrong',
+  articleCreate: 'Article created',
+  title: 'The title is required',
+  description: 'description is required.',
+  body: 'body is required',
+  category: 'category is required'
 };

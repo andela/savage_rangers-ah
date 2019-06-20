@@ -9,7 +9,7 @@ const fakeUser = {
   username: 'dgijh',
   email: 'murediana@gmail.com',
   password: 'diane3456',
-  confirmPassword: 'diane34'
+  confirmPassword: 'diane3456'
 };
 
 describe('Testing the signup validator', () => {

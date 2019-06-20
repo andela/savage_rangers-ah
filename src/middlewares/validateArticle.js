@@ -1,8 +1,6 @@
-import models from '../api/models';
-import signupValidator from '../helpers/validators/signupValidator';
+import articleValidator from '../helpers/validators/articleValidator';
 import statusCode from '../helpers/constants/status.codes';
 
-const { User } = models;
 /**
  * @class
  */
@@ -13,12 +11,9 @@ export default class {
    * @param  {function} next The next middleware function in the request pipeline
    * @returns {object} The response with status and data or error message
    */
-  static async validateSignup(req, res, next) {
-    const { email } = req.body;
+  static async validateArticle(req, res, next) {
     try {
-      await signupValidator(req.body);
-      const emailExists = await User.findByEmail(email);
-      if (emailExists) return res.status(statusCode.BAD_REQUEST).json({ message: ' The user already exists' });
+      await articleValidator(req.body);
       return next();
     } catch (error) {
       if (error.isJoi) {
