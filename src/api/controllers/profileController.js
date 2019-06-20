@@ -1,6 +1,7 @@
 import cloudinary from 'cloudinary';
 import models from '../models/index';
 import sendProfile from '../../helpers/results/send.profile';
+import status from '../../helpers/constants/status.codes';
 
 const { User } = models;
 
@@ -37,9 +38,9 @@ export default class ProfileController {
           id: req.user.id
         }
       });
-      sendProfile(res, 200, 'updated correctly', updatedProfile);
+      sendProfile(res, status.OK, 'updated correctly', updatedProfile);
     } catch (error) {
-      sendProfile(res, 500, error);
+      sendProfile(res, status.SERVER_ERROR, error);
     }
   }
 
@@ -59,9 +60,9 @@ export default class ProfileController {
           id: req.user.id
         }
       });
-      sendProfile(res, 200, undefined, userProfile.dataValues);
+      sendProfile(res, status.OK, undefined, userProfile.dataValues);
     } catch (error) {
-      return sendProfile(res, 500, error);
+      sendProfile(res, status.SERVER_ERROR, error);
     }
   }
 
@@ -82,10 +83,10 @@ export default class ProfileController {
           username
         }
       });
-      if (user) return sendProfile(res, 200, undefined, user);
-      sendProfile(res, 404, 'User doesn\'t exist');
+      if (user) return sendProfile(res, status.OK, undefined, user);
+      sendProfile(res, status.NOT_FOUND, 'User doesn\'t exist');
     } catch (error) {
-      sendProfile(res, 500, error);
+      sendProfile(res, status.SERVER_ERROR, error);
     }
   }
 }

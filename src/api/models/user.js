@@ -40,7 +40,7 @@ const user = (sequelize, DataTypes) => {
 
   User.findByEmail = (email) => {
     const queryResult = User.findOne({
-      where: { email },
+      where: { email }
     });
 
     return queryResult;

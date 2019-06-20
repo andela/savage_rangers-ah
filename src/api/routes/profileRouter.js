@@ -3,7 +3,7 @@ import profileController from '../controllers/profileController';
 import ValidateProfile from '../../middlewares/ValidateProfile';
 import upload from '../../middlewares/upload';
 
-const profileRouter = Router();
+const profileRouter = new Router();
 
 profileRouter.patch('/', upload.single('avatar'), ValidateProfile.validate,
   profileController.update);

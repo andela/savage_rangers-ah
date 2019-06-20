@@ -2,6 +2,7 @@ import { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
 import mailer from '../../helpers/Mailer';
 import environment from '../../configs/environments';
+import status from '../../helpers/constants/status.codes';
 
 const { User } = models;
 const env = environment.currentEnv;
@@ -37,10 +38,10 @@ export default class PasswordReset {
     });
 
     // Sending the result
-    result.status = 200;
+    result.status = status.OK;
     result.message = 'Password reset instructions have been sent '
       + "to your account's primary email address. Please check the spam if you don't see the email";
-    res.status(200).json(result);
+    res.status(status.OK).json(result);
   }
 
   /**
@@ -55,10 +56,10 @@ export default class PasswordReset {
     const result = {};
     const userEmail = req.params.email;
     const userPassword = req.body.password;
-    const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS) || 10);
+    const salt = genSaltSync(parseFloat(env.hashRounds));
     const hashedPassword = hashSync(userPassword, salt);
 
-    const user = await User.update(
+    await User.update(
       {
         password: hashedPassword
       },
@@ -70,10 +71,9 @@ export default class PasswordReset {
     );
 
     // Sending the result
-    result.status = 200;
+    result.status = status.OK;
     result.message = 'Password reset sucessfully';
-    result.user = user;
-    res.status(200).json(result);
+    res.status(status.OK).json(result);
   }
 
   /**
@@ -87,15 +87,14 @@ export default class PasswordReset {
   static async verifyRecoveryLink(req, res) {
     // Initialising variables
     const result = {};
-    const status = 200;
     const { userEmail } = req;
 
     // Sending the result
-    result.status = status;
+    result.status = status.OK;
     result.message = 'Please provide your new password';
     result.data = {
       email: userEmail
     };
-    res.status(status).json(result);
+    res.status(status.OK).json(result);
   }
 }

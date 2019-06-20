@@ -8,6 +8,7 @@ import Joi from '@hapi/joi';
 import Schemas from '../../helpers/constants/validation.schemas';
 import sendError from '../../helpers/error.sender';
 import errorMessages from '../../helpers/constants/error.messages';
+import status from '../../helpers/constants/status.codes';
 
 // Initializing variables
 // Allowed http methods
@@ -64,9 +65,9 @@ export default (useJoiError, schema, fields) => {
             return true;
           });
           if (UseJoiError) {
-            sendError(400, {}, res, message);
+            sendError(status.BAD_REQUEST, {}, res, message);
           } else {
-            sendError(400, {}, res, errorMessages.defaultError);
+            sendError(status.BAD_REQUEST, {}, res, errorMessages.defaultError);
           }
         }
       });

@@ -1,20 +1,21 @@
 import Joi from '@hapi/joi';
 
+const min = 3;
 const schema = {
   country: Joi.string()
     .trim()
-    .min(3)
+    .min(min)
     .error(() => 'The country is required should only contain alphanumeric characters')
     .required(),
   firstName: Joi.string()
     .trim()
-    .min(3)
+    .min(min)
     .alphanum()
     .error(() => 'The firstName should only contain alphanumeric characters')
     .required(),
   lastName: Joi.string()
     .trim()
-    .min(3)
+    .min(min)
     .alphanum()
     .error(() => 'The lastName should only contain alphanumeric characters')
     .required(),
@@ -24,7 +25,7 @@ const schema = {
     .required(),
   gender: Joi.string()
     .trim()
-    .min(3)
+    .min(min)
     .alphanum()
     .error(() => 'The gender should only contain alphanumeric characters')
     .required(),

@@ -1,4 +1,5 @@
 import profile from '../helpers/validators/profile';
+import status from '../helpers/constants/status.codes';
 
 /**
  *
@@ -23,9 +24,9 @@ export default class ProfileValidator {
       if (error.isJoi) {
         const [err] = error.details;
         const { message } = err;
-        return res.status(400).json({ status: 400, message });
+        return res.status(status.BAD_REQUEST).json({ status: 400, message });
       }
-      return res.status(400).json({ status: 400, error });
+      return res.status(status.BAD_REQUEST).json({ status: 400, error });
     }
   }
 }

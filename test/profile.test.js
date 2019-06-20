@@ -1,7 +1,7 @@
 import '@babel/polyfill';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-
+import status from '../src/helpers/constants/status.codes';
 import server from '../src/index';
 
 chai.use(chaiHttp);
@@ -77,7 +77,7 @@ describe('Profile', () => {
         phoneNumber
       })
       .end((err, res) => {
-        res.should.have.status(200);
+        res.should.have.status(status.OK);
         res.body.should.have.property('message', 'updated correctly');
         done();
       });
@@ -88,7 +88,7 @@ describe('Profile', () => {
       .get('/api/auth/profile')
       .set('Authorization', authToken)
       .end((err, res) => {
-        res.should.have.status(200);
+        res.should.have.status(status.OK);
         res.body.should.have.property('profile');
         const { profile } = res.body;
         profile.should.have.property('email', userData.email);
@@ -109,7 +109,7 @@ describe('Profile', () => {
       .get(`/api/auth/profile/${userData.username}`)
       .set('Authorization', authToken)
       .end((err, res) => {
-        res.should.have.status(200);
+        res.should.have.status(status.OK);
         res.body.should.have.property('profile');
         const { profile } = res.body;
         profile.should.have.property('email', userData.email);
@@ -131,7 +131,7 @@ describe('Validate data', () => {
     chai.request(server)
       .patch('/api/auth/profile')
       .end((err, res) => {
-        res.should.have.status(403);
+        res.should.have.status(status.ACCESS_DENIED);
         res.body.should.have.property('message', 'Token is required');
         done();
       });
@@ -142,7 +142,7 @@ describe('Validate data', () => {
       .patch('/api/auth/profile')
       .set('Authorization', 'wrongtoken')
       .end((err, res) => {
-        res.should.have.status(401);
+        res.should.have.status(status.UNAUTHORIZED);
         res.body.should.have.property('message', 'Authentication failed, please check your credentials');
         done();
       });
@@ -162,7 +162,7 @@ describe('Validate data', () => {
         phoneNumber
       })
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(status.BAD_REQUEST);
         res.body.should.have.property('message', errors.country);
         done();
       });
@@ -182,7 +182,7 @@ describe('Validate data', () => {
         phoneNumber
       })
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(status.BAD_REQUEST);
         res.body.should.have.property('message', errors.firstName);
         done();
       });
@@ -202,7 +202,7 @@ describe('Validate data', () => {
         phoneNumber
       })
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(status.BAD_REQUEST);
         res.body.should.have.property('message', errors.lastName);
         done();
       });
@@ -222,7 +222,7 @@ describe('Validate data', () => {
         phoneNumber
       })
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(status.BAD_REQUEST);
         res.body.should.have.property('message', errors.address);
         done();
       });
@@ -242,7 +242,7 @@ describe('Validate data', () => {
         phoneNumber
       })
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(status.BAD_REQUEST);
         res.body.should.have.property('message', errors.gender);
         done();
       });
@@ -262,7 +262,7 @@ describe('Validate data', () => {
         gender
       })
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(status.BAD_REQUEST);
         res.body.should.have.property('message', errors.phoneNumber);
         done();
       });
@@ -282,7 +282,7 @@ describe('Validate data', () => {
         phoneNumber
       })
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(status.BAD_REQUEST);
         res.body.should.have.property('message', errors.bio);
         done();
       });
@@ -293,7 +293,7 @@ describe('Validate data', () => {
       .get('/api/auth/profile/wrongname')
       .set('Authorization', authToken)
       .end((err, res) => {
-        res.should.have.status(404);
+        res.should.have.status(status.NOT_FOUND);
         res.body.should.have.property('message', errors.user);
         done();
       });

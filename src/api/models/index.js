@@ -1,4 +1,3 @@
-
 import Sequelize from 'sequelize';
 import environments from '../../configs/environments';
 
