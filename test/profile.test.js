@@ -17,6 +17,8 @@ const data = {
   address: 'gachinjiro/kigali',
   avatar: 'noimage.jpg',
   bio: 'I work at statefarm',
+  facebook: 'https://facebook.com/alainburindi',
+  twitter: 'https://twitter.com/alainburindi',
 };
 
 const errors = {
@@ -45,7 +47,7 @@ const {
 let authToken = '';
 
 describe('Profile', () => {
-  it('should create a new profile', (done) => {
+  it('should signup to get the token', (done) => {
     chai.request(server)
       .post('/api/users/signup')
       .send({
@@ -56,78 +58,6 @@ describe('Profile', () => {
       })
       .end((err, res) => {
         authToken = res.body.user.token;
-        chai.request(server)
-          .post('/api/auth/profile')
-          .set('Authorization', authToken)
-          .send({
-            country,
-            firstName,
-            lastName,
-            bio,
-            address,
-            gender,
-            avatar,
-            phoneNumber
-          })
-          .end((err, res) => {
-            res.should.have.status(201);
-            res.body.should.have.property('message', 'created successfully');
-            res.body.should.have.property('profile');
-            const { profile } = res.body;
-            profile.should.have.property('country', country);
-            profile.should.have.property('firstName', firstName);
-            profile.should.have.property('lastName', lastName);
-            profile.should.have.property('address', address);
-            profile.should.have.property('gender', gender);
-            profile.should.have.property('avatar', avatar);
-            profile.should.have.property('phoneNumber', phoneNumber);
-            done();
-          });
-      });
-  });
-
-  it('should send the user\'s profile', (done) => {
-    chai.request(server)
-      .get('/api/auth/profile')
-      .set('Authorization', authToken)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.have.property('user');
-        const { user } = res.body;
-        user.should.have.property('email', userData.email);
-        user.should.have.property('username', userData.username);
-        res.body.should.have.property('profile');
-        const { profile } = res.body;
-        profile.should.have.property('country', country);
-        profile.should.have.property('firstName', firstName);
-        profile.should.have.property('lastName', lastName);
-        profile.should.have.property('address', address);
-        profile.should.have.property('gender', gender);
-        profile.should.have.property('avatar', avatar);
-        profile.should.have.property('phoneNumber', phoneNumber);
-        done();
-      });
-  });
-
-  it('should send another user\'s profile', (done) => {
-    chai.request(server)
-      .get(`/api/auth/profile/${userData.username}`)
-      .set('Authorization', authToken)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.have.property('user');
-        const { user } = res.body;
-        user.should.have.property('email', userData.email);
-        user.should.have.property('username', userData.username);
-        res.body.should.have.property('profile');
-        const { profile } = res.body;
-        profile.should.have.property('country', country);
-        profile.should.have.property('firstName', firstName);
-        profile.should.have.property('lastName', lastName);
-        profile.should.have.property('address', address);
-        profile.should.have.property('gender', gender);
-        profile.should.have.property('avatar', avatar);
-        profile.should.have.property('phoneNumber', phoneNumber);
         done();
       });
   });
@@ -152,12 +82,54 @@ describe('Profile', () => {
         done();
       });
   });
+
+  it('should send the user\'s profile', (done) => {
+    chai.request(server)
+      .get('/api/auth/profile')
+      .set('Authorization', authToken)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('profile');
+        const { profile } = res.body;
+        profile.should.have.property('email', userData.email);
+        profile.should.have.property('username', userData.username);
+        profile.should.have.property('country', `${country} Democratic Republic of`);
+        profile.should.have.property('firstName', firstName);
+        profile.should.have.property('lastName', lastName);
+        profile.should.have.property('address', address);
+        profile.should.have.property('gender', gender);
+        profile.should.have.property('avatar', avatar);
+        profile.should.have.property('phoneNumber', phoneNumber);
+        done();
+      });
+  });
+
+  it('should send another user\'s profile', (done) => {
+    chai.request(server)
+      .get(`/api/auth/profile/${userData.username}`)
+      .set('Authorization', authToken)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.have.property('profile');
+        const { profile } = res.body;
+        profile.should.have.property('email', userData.email);
+        profile.should.have.property('username', userData.username);
+        profile.should.have.property('country', `${country} Democratic Republic of`);
+        profile.should.have.property('firstName', firstName);
+        profile.should.have.property('lastName', lastName);
+        profile.should.have.property('address', address);
+        profile.should.have.property('gender', gender);
+        profile.should.have.property('avatar', avatar);
+        profile.should.have.property('phoneNumber', phoneNumber);
+        done();
+      });
+  });
 });
 
 describe('Validate data', () => {
   it('should require a token', (done) => {
     chai.request(server)
-      .post('/api/auth/profile')
+      .patch('/api/auth/profile')
       .end((err, res) => {
         res.should.have.status(403);
         res.body.should.have.property('message', 'Token is required');
@@ -167,7 +139,7 @@ describe('Validate data', () => {
 
   it('should unauthenticate if the token is invalid', (done) => {
     chai.request(server)
-      .post('/api/auth/profile')
+      .patch('/api/auth/profile')
       .set('Authorization', 'wrongtoken')
       .end((err, res) => {
         res.should.have.status(401);
@@ -178,7 +150,7 @@ describe('Validate data', () => {
 
   it('should send country error', (done) => {
     chai.request(server)
-      .post('/api/auth/profile')
+      .patch('/api/auth/profile')
       .set('Authorization', authToken)
       .send({
         firstName,
@@ -198,7 +170,7 @@ describe('Validate data', () => {
 
   it('should send firstName error', (done) => {
     chai.request(server)
-      .post('/api/auth/profile')
+      .patch('/api/auth/profile')
       .set('Authorization', authToken)
       .send({
         country,
@@ -218,7 +190,7 @@ describe('Validate data', () => {
 
   it('should send lastName error', (done) => {
     chai.request(server)
-      .post('/api/auth/profile')
+      .patch('/api/auth/profile')
       .set('Authorization', authToken)
       .send({
         country,
@@ -238,7 +210,7 @@ describe('Validate data', () => {
 
   it('should send address error', (done) => {
     chai.request(server)
-      .post('/api/auth/profile')
+      .patch('/api/auth/profile')
       .set('Authorization', authToken)
       .send({
         country,
@@ -258,7 +230,7 @@ describe('Validate data', () => {
 
   it('should send gender error', (done) => {
     chai.request(server)
-      .post('/api/auth/profile')
+      .patch('/api/auth/profile')
       .set('Authorization', authToken)
       .send({
         country,
@@ -278,7 +250,7 @@ describe('Validate data', () => {
 
   it('should send phoneNumber error', (done) => {
     chai.request(server)
-      .post('/api/auth/profile')
+      .patch('/api/auth/profile')
       .set('Authorization', authToken)
       .send({
         country,
@@ -298,7 +270,7 @@ describe('Validate data', () => {
 
   it('should send bio error', (done) => {
     chai.request(server)
-      .post('/api/auth/profile')
+      .patch('/api/auth/profile')
       .set('Authorization', authToken)
       .send({
         country,

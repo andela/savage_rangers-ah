@@ -1,13 +1,9 @@
-import path from 'path';
 import cloudinary from 'cloudinary';
 import models from '../models/index';
 import sendProfile from '../../helpers/results/send.profile';
-import Resize from '../../helpers/images/resize';
 
-const { Profile } = models;
 const { User } = models;
 
-const c = cloudinary.v2;
 /**
  *
  *
@@ -24,58 +20,26 @@ export default class ProfileController {
      * @memberof ProfileController
      * @return {Object} The response Object
      */
-  static async create(req, res) {
-    const {
-      country, firstName, lastName,
-      address, gender, phoneNumber, bio
-    } = req.body;
-    const avatar = 'noimage.jpg';
-    if (req.file) {
-      try {
-        await c.uploader
-          .upload(req.file.buffer, (error, result) => { console.log({ img: result, error }); });
-      } catch (error) {
-        console.log(error);
-        return res.status(500).json(error);
-      }
-    }
-    try {
-      const createdProfile = await Profile.create({
-        country, firstName, lastName, bio, address, gender, avatar, phoneNumber, userId: req.user.id
-      });
-      return sendProfile(res, 201, 'created successfully', createdProfile);
-    } catch (error) {
-      return res.status(500).json(error);
-    }
-  }
-
-  /**
-     *
-     *
-     * @static
-     * @param {*} req The request Object
-     * @param {*} res The response Object
-     * @memberof ProfileController
-     * @return {Object} The response Object
-     */
   static async update(req, res) {
-    const {
-      country, firstName, lastName,
-      address, gender, avatar, phoneNumber, bio
-    } = req.body;
     try {
-      const updatedProfile = await Profile.update({
+      let avatar = 'noimage.jpg';
+      const {
+        country, firstName, lastName, address, gender, phoneNumber, bio
+      } = req.body;
+      if (req.file) {
+        const saved = await cloudinary.v2.uploader.upload(req.file.path);
+        avatar = saved.secure_url;
+      }
+      const updatedProfile = await User.update({
         country, firstName, lastName, bio, address, gender, avatar, phoneNumber
       }, {
         where: {
-          userId: req.user.id
+          id: req.user.id
         }
       });
-      if (updatedProfile) {
-        return sendProfile(res, 200, 'updated correctly', updatedProfile);
-      }
+      sendProfile(res, 200, 'updated correctly', updatedProfile);
     } catch (error) {
-      return res.status(500).json(error);
+      sendProfile(res, 500, error);
     }
   }
 
@@ -90,15 +54,14 @@ export default class ProfileController {
      */
   static async getUserProfile(req, res) {
     try {
-      const userProfile = await Profile.findOne({
+      const userProfile = await User.findOne({
         where: {
-          userId: req.user.id
+          id: req.user.id
         }
       });
-      const { username, email } = req.user;
-      return sendProfile(res, 200, undefined, userProfile, { username, email });
+      sendProfile(res, 200, undefined, userProfile.dataValues);
     } catch (error) {
-      return res.status(500).json({ message: error });
+      return sendProfile(res, 500, error);
     }
   }
 
@@ -119,19 +82,10 @@ export default class ProfileController {
           username
         }
       });
-      if (user) {
-        const { id, email } = user.dataValues;
-        const profile = await Profile.findOne({
-          where: {
-            userId: id
-          }
-        });
-        sendProfile(res, 200, undefined, profile, { username, email });
-      } else {
-        return res.status(404).json({ message: 'User doesn\'t exist' });
-      }
+      if (user) return sendProfile(res, 200, undefined, user);
+      sendProfile(res, 404, 'User doesn\'t exist');
     } catch (error) {
-      return res.status(500).json({ message: error });
+      sendProfile(res, 500, error);
     }
   }
 }

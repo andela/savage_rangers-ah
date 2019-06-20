@@ -4,7 +4,6 @@ const schema = {
   country: Joi.string()
     .trim()
     .min(3)
-    .alphanum()
     .error(() => 'The country is required should only contain alphanumeric characters')
     .required(),
   firstName: Joi.string()
@@ -37,7 +36,9 @@ const schema = {
     .trim()
     .error(() => 'The bio is required')
     .required(),
-  avatar: Joi.string()
+  avatar: Joi.string(),
+  facebook: Joi.string(),
+  twitter: Joi.string(),
 };
 
 export default profile => Joi.validate(profile, schema);

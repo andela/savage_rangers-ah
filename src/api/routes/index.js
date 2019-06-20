@@ -7,9 +7,7 @@ import authenticate from '../../middlewares/authenticate';
 
 const router = express();
 
-router.use('/auth', authRouter);
 router.use('/password-reset', resetRouter);
-
 router.use('/users', authRouter);
 router.use('/auth/profile', authenticate, profileRouter);
 

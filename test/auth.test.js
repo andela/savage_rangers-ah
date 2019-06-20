@@ -175,7 +175,7 @@ describe('Password reset', () => {
     it('it should login with the new password to confirm that it was changed', (done) => {
       chai
         .request(server)
-        .post('/api/auth/login')
+        .post('/api/users/login')
         .send({
           email: data.email,
           password: 'passWORD123'

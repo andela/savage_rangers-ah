@@ -1,6 +1,5 @@
-const sendProfile = (res, status, message, profile, user) => res.status(status).json({
+const sendProfile = (res, status, message, profile) => res.status(status).json({
   message,
-  user,
   profile
 });
 
