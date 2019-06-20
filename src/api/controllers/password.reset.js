@@ -59,16 +59,14 @@ export default class PasswordReset {
     const salt = genSaltSync(parseFloat(env.hashRounds));
     const hashedPassword = hashSync(userPassword, salt);
 
-    await User.update(
-      {
-        password: hashedPassword
-      },
-      {
-        where: {
-          email: userEmail
-        }
+    await User.update({
+      password: hashedPassword
+    },
+    {
+      where: {
+        email: userEmail
       }
-    );
+    });
 
     // Sending the result
     result.status = status.OK;

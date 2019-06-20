@@ -6,6 +6,7 @@ import isTokenValid from '../src/helpers/tokens/validate.token';
 import generateToken from '../src/helpers/tokens/generate.token';
 import generateLink from '../src/helpers/tokens/generate.link';
 import status from '../src/helpers/constants/status.codes';
+import errors from '../src/helpers/constants/error.messages';
 
 import server from '../src/index';
 import mailer from '../src/helpers/Mailer';
@@ -77,7 +78,9 @@ describe('Login', () => {
       })
       .end((err, res) => {
         res.should.have.status(status.UNAUTHORIZED);
-        res.body.should.have.property('message', 'password is incorrect');
+        res.body.should.have
+          .property('errors')
+          .which.has.property('password', errors.incorectPassword);
         done();
       });
   });
@@ -92,7 +95,7 @@ describe('Login', () => {
       })
       .end((err, res) => {
         res.should.have.status(status.NOT_FOUND);
-        res.body.should.have.property('message', "user doesn't exist");
+        res.body.should.have.property('errors').which.has.property('email', errors.unkownEmail);
         done();
       });
   });

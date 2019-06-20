@@ -56,18 +56,23 @@ export default (useJoiError, schema, fields) => {
           next();
         } else {
           // Building the error object
-          let message = err.details[0].message.replace(/['"]/g, '');
+          const joiError = {};
+          joiError.message = err.details[0].message.replace(/['"]/g, '');
           // Building a custom error message
           fields.find((el) => {
-            if (message.includes(`${el} with value`) || message.includes(`${el} must be`)) {
-              message = errorMessages[el];
+            if (
+              joiError.message.includes(`${el} with value`)
+              || joiError.message.includes(`${el} must be`)
+            ) {
+              joiError.message = errorMessages[el];
+              joiError.field = el;
             }
             return true;
           });
           if (UseJoiError) {
-            sendError(status.BAD_REQUEST, {}, res, message);
+            sendError(status.BAD_REQUEST, res, joiError.field, joiError.message);
           } else {
-            sendError(status.BAD_REQUEST, {}, res, errorMessages.defaultError);
+            sendError(status.BAD_REQUEST, res, 'body', errorMessages.defaultError);
           }
         }
       });
