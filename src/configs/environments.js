@@ -8,6 +8,7 @@ const jwtSecret = process.env.TOKEN_KEY;
 const mailerEmail = process.env.MAILER_EMAIL;
 const mailerToken = process.env.MAILER_API_KEY;
 const baseUrl = process.env.API_BASE_URL;
+const hashRounds = process.env.BCRYPT_HASH_ROUNDS;
 
 const environnements = [
   {
@@ -18,6 +19,7 @@ const environnements = [
     mailerEmail,
     mailerToken,
     baseUrl,
+    hashRounds
   },
   {
     name: 'development',
@@ -27,6 +29,7 @@ const environnements = [
     mailerEmail,
     mailerToken,
     baseUrl,
+    hashRounds
   },
   {
     name: 'production',
@@ -36,6 +39,7 @@ const environnements = [
     mailerEmail,
     mailerToken,
     baseUrl,
+    hashRounds
   },
   {
     name: 'stagging',
@@ -45,9 +49,9 @@ const environnements = [
     mailerEmail,
     mailerToken,
     baseUrl,
+    hashRounds
   }
 ];
-
 
 const currentEnv = environnements.find(el => el.name === env.toLocaleLowerCase());
 export default { currentEnv, env };

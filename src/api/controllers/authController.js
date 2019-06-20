@@ -3,9 +3,13 @@ import models from '../models/index';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
 import blackList from '../../helpers/Blacklist.redis';
+import status from '../../helpers/constants/status.codes';
+import environments from '../../configs/environments';
+import sendError from '../../helpers/error.sender';
+import errors from '../../helpers/constants/error.messages';
 
 const { User } = models;
-
+const env = environments.currentEnv;
 /**
  * containing all user's model controllers (signup, login)
  *
@@ -24,7 +28,7 @@ export default class Auth {
    */
   static async signup(req, res) {
     const { username, email, password } = req.body;
-    const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS));
+    const salt = genSaltSync(parseFloat(env.hashRounds));
     const hashedPassword = hashSync(password, salt);
     const user = await User.create({
       username,
@@ -32,8 +36,8 @@ export default class Auth {
       password: hashedPassword
     });
     const tokenData = { username, email };
-    const token = generateToken(tokenData, process.env.TOKEN_KEY);
-    return sendResult(res, 201, 'user created successfully', user, token);
+    const token = generateToken(tokenData, env.secret);
+    return sendResult(res, status.CREATED, 'user created successfully', user, token);
   }
 
   /**
@@ -47,21 +51,17 @@ export default class Auth {
    */
   static async login(req, res) {
     const { email, password } = req.body;
-
-    const user = await User.findByEmail(email);
-    if (user) {
-      const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password);
-      if (isPasswordValid) {
-        const tokenData = { id: user.dataValues.id, username: user.dataValues.username, email };
-        const token = generateToken(tokenData, process.env.TOKEN_KEY);
-        return sendResult(res, 200, 'user logged in successfully', user, token);
+    User.findByEmail(email).then((user) => {
+      if (user) {
+        const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password);
+        if (isPasswordValid) {
+          const tokenData = { username: user.dataValues.username, email };
+          const token = generateToken(tokenData, env.secret);
+          return sendResult(res, status.OK, 'user logged in successfully', user, token);
+        }
+        return sendError(status.UNAUTHORIZED, res, 'password', errors.incorectPassword);
       }
-      return res.status(401).json({
-        message: 'password is incorrect'
-      });
-    }
-    res.status(404).json({
-      message: 'user doesn\'t exist'
+      return sendError(status.NOT_FOUND, res, 'email', errors.unkownEmail);
     });
   }
 
@@ -80,8 +80,8 @@ export default class Auth {
     const blackToken = await blackList(getTokenFromHeaders);
 
     if (blackToken) {
-      return res.status(200).json({
-        status: 200,
+      return res.status(status.OK).json({
+        status: status.OK,
         message: 'You are signed out'
       });
     }

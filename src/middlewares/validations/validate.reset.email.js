@@ -1,5 +1,7 @@
 import models from '../../api/models';
 import sendError from '../../helpers/error.sender';
+import status from '../../helpers/constants/status.codes';
+import errors from '../../helpers/constants/error.messages';
 /**
  * A function to verify if the provided email exists in the database
  * @param {Object} req - The request object
@@ -14,15 +16,10 @@ export default async (req, res, next) => {
   let tempUser;
 
   try {
-    tempUser = await models.User.findOne({
-      where: {
-        email: userEmail
-      }
-    });
+    tempUser = await models.User.findByEmail(userEmail);
     req.user = tempUser.dataValues;
     next();
   } catch (error) {
-    const message = "A user with the provided email doesn't exist";
-    sendError(404, {}, res, message);
+    sendError(status.NOT_FOUND, res, 'email', errors.unkownEmail);
   }
 };

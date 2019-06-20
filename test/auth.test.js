@@ -5,9 +5,11 @@ import models from '../src/api/models/index';
 import isTokenValid from '../src/helpers/tokens/validate.token';
 import generateToken from '../src/helpers/tokens/generate.token';
 import generateLink from '../src/helpers/tokens/generate.link';
+import status from '../src/helpers/constants/status.codes';
+import errors from '../src/helpers/constants/error.messages';
 
 import server from '../src/index';
-import Mailer from '../src/helpers/Mailer';
+import mailer from '../src/helpers/Mailer';
 
 chai.use(chaiHttp);
 chai.should();
@@ -28,7 +30,7 @@ describe('Signup', () => {
   it('should register and give the token', (done) => {
     chai
       .request(server)
-      .post('/api/auth/signup')
+      .post('/api/users/signup')
       .send({
         username: data.username,
         email: data.email,
@@ -36,7 +38,7 @@ describe('Signup', () => {
         confirmPassword: data.password
       })
       .end((err, res) => {
-        res.should.have.status(201);
+        res.should.have.status(status.CREATED);
         res.body.should.have.property('user');
         res.body.user.should.have.property('email');
         res.body.user.should.have.property('token');
@@ -53,13 +55,13 @@ describe('Login', () => {
   it('should login and give a valid token', (done) => {
     chai
       .request(server)
-      .post('/api/auth/login')
+      .post('/api/users/login')
       .send({
         email: data.email,
         password: data.password
       })
       .end((err, res) => {
-        res.should.have.status(200);
+        res.should.have.status(status.OK);
         res.body.should.have.property('user');
         res.body.user.should.have.property('email');
         res.body.user.should.have.property('token');
@@ -73,14 +75,16 @@ describe('Login', () => {
   it('should not login with a wrong password', (done) => {
     chai
       .request(server)
-      .post('/api/auth/login')
+      .post('/api/users/login')
       .send({
         email: data.email,
         password: 'passwor5535'
       })
       .end((err, res) => {
-        res.should.have.status(401);
-        res.body.should.have.property('message', 'password is incorrect');
+        res.should.have.status(status.UNAUTHORIZED);
+        res.body.should.have
+          .property('errors')
+          .which.has.property('password', errors.incorectPassword);
         done();
       });
   });
@@ -88,14 +92,14 @@ describe('Login', () => {
   it('should not login an unexisting user', (done) => {
     chai
       .request(server)
-      .post('/api/auth/login')
+      .post('/api/users/login')
       .send({
         email: 'alain666326@gmail.com',
         password: 'password'
       })
       .end((err, res) => {
-        res.should.have.status(404);
-        res.body.should.have.property('message', "user doesn't exist");
+        res.should.have.status(status.NOT_FOUND);
+        res.body.should.have.property('errors').which.has.property('email', errors.unkownEmail);
         done();
       });
   });
@@ -103,10 +107,10 @@ describe('Login', () => {
   it('should logout a user', (done) => {
     chai
       .request(server)
-      .get('/api/auth/signout')
+      .get('/api/users/signout')
       .set('authorization', userToken)
       .end((err, res) => {
-        res.body.should.have.status(200);
+        res.body.should.have.status(status.OK);
         res.body.should.have.property('message', 'You are signed out');
         done();
       });
@@ -133,7 +137,7 @@ describe('Password reset', () => {
         .post('/api/password-reset')
         .send({ email: data.email })
         .end((err, res) => {
-          res.should.have.status(200);
+          res.should.have.status(status.OK);
           done();
         });
     });
@@ -143,7 +147,7 @@ describe('Password reset', () => {
         .post('/api/password-reset')
         .send({ email: 'email.email' })
         .end((err, res) => {
-          res.should.have.status(400);
+          res.should.have.status(status.BAD_REQUEST);
           done();
         });
     });
@@ -153,7 +157,7 @@ describe('Password reset', () => {
         .post('/api/password-reset')
         .send({ email: 'email@email.com' })
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(status.NOT_FOUND);
           done();
         });
     });
@@ -165,7 +169,7 @@ describe('Password reset', () => {
         .request(server)
         .get(`/api/password-reset/${token}`)
         .end((err, res) => {
-          res.should.have.status(200);
+          res.should.have.status(status.OK);
           userEmail = res.body.data.email;
           done();
         });
@@ -175,7 +179,7 @@ describe('Password reset', () => {
         .request(server)
         .get('/api/password-reset/sdfgfhsdgfe')
         .end((err, res) => {
-          res.should.have.status(400);
+          res.should.have.status(status.BAD_REQUEST);
           done();
         });
     });
@@ -187,20 +191,20 @@ describe('Password reset', () => {
         .post(`/api/password-reset/update/${userEmail}`)
         .send({ password: 'passWORD123' })
         .end((err, res) => {
-          res.should.have.status(200);
+          res.should.have.status(status.OK);
           done();
         });
     });
     it('it should login with the new password to confirm that it was changed', (done) => {
       chai
         .request(server)
-        .post('/api/auth/login')
+        .post('/api/users/login')
         .send({
           email: data.email,
           password: 'passWORD123'
         })
         .end((err, res) => {
-          res.should.have.status(200);
+          res.should.have.status(status.OK);
           done();
         });
     });
@@ -210,7 +214,7 @@ describe('Password reset', () => {
         .post('/api/password-reset/update/email@gmail.com')
         .send({ password: 'passWORD123' })
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(status.NOT_FOUND);
           done();
         });
     });
@@ -220,7 +224,7 @@ describe('Password reset', () => {
         .post('/api/password-reset/update/email@gmai')
         .send({ password: 'passWORD123' })
         .end((err, res) => {
-          res.should.have.status(400);
+          res.should.have.status(status.BAD_REQUEST);
           done();
         });
     });
@@ -228,13 +232,13 @@ describe('Password reset', () => {
 });
 
 describe('Routes', () => {
-  it('should not use an empty body object', (done) => {
+  it('it should not use an empty body object', (done) => {
     chai
       .request(server)
       .post('/api/password-reset/')
       .send({})
       .end((err, res) => {
-        res.should.have.status(400);
+        res.should.have.status(status.BAD_REQUEST);
         done();
       });
   });
@@ -242,12 +246,12 @@ describe('Routes', () => {
 
 describe('Mailer', async () => {
   it('should execute without params', async () => {
-    const test = await Mailer();
+    const test = await mailer();
     test.should.be.a('Error');
   });
 
   it('should execute with one param', async () => {
-    await Mailer('title', 'subject', 'reciever@example.com', 'notifications', {});
+    await mailer('title', 'subject', 'reciever@example.com', 'notifications', {});
   });
 });
 

@@ -1,5 +1,7 @@
 import _ from 'lodash';
 import sendError from '../../helpers/error.sender';
+import status from '../../helpers/constants/status.codes';
+import errors from '../../helpers/constants/error.messages';
 
 /**
  * A function to verify if the provided body is empty
@@ -10,7 +12,6 @@ import sendError from '../../helpers/error.sender';
  * or the next callback
  */
 export default (req, res, next) => {
-  const error = 'Server unable to process the recieved data';
-  if (_.isEmpty(req.body)) sendError(400, {}, res, error);
+  if (_.isEmpty(req.body)) sendError(status.BAD_REQUEST, res, 'body', errors.emptyBody);
   else next();
 };

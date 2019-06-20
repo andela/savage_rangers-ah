@@ -1,5 +1,7 @@
 import sendError from '../../helpers/error.sender';
 import decodeJwt from '../../helpers/tokens/decode.token';
+import status from '../../helpers/constants/status.codes';
+import errors from '../../helpers/constants/error.messages';
 
 /**
  * A function to verify if the provided link is still valid then decode it
@@ -17,7 +19,6 @@ export default (req, res, next) => {
     req.userEmail = decoded.email;
     next();
   } catch (error) {
-    const err = 'Invalid link provided';
-    sendError(400, {}, res, err);
+    sendError(status.BAD_REQUEST, res, 'link', errors.invalidLink);
   }
 };

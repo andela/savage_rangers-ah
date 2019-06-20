@@ -8,6 +8,7 @@ import Joi from '@hapi/joi';
 import Schemas from '../../helpers/constants/validation.schemas';
 import sendError from '../../helpers/error.sender';
 import errorMessages from '../../helpers/constants/error.messages';
+import status from '../../helpers/constants/status.codes';
 
 // Initializing variables
 // Allowed http methods
@@ -55,18 +56,23 @@ export default (useJoiError, schema, fields) => {
           next();
         } else {
           // Building the error object
-          let message = err.details[0].message.replace(/['"]/g, '');
+          const joiError = {};
+          joiError.message = err.details[0].message.replace(/['"]/g, '');
           // Building a custom error message
           fields.find((el) => {
-            if (message.includes(`${el} with value`) || message.includes(`${el} must be`)) {
-              message = errorMessages[el];
+            if (
+              joiError.message.includes(`${el} with value`)
+              || joiError.message.includes(`${el} must be`)
+            ) {
+              joiError.message = errorMessages[el];
+              joiError.field = el;
             }
             return true;
           });
           if (UseJoiError) {
-            sendError(400, {}, res, message);
+            sendError(status.BAD_REQUEST, res, joiError.field, joiError.message);
           } else {
-            sendError(400, {}, res, errorMessages.defaultError);
+            sendError(status.BAD_REQUEST, res, 'body', errorMessages.defaultError);
           }
         }
       });
