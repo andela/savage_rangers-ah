@@ -1,6 +1,5 @@
-import dotenv from 'dotenv';
+import 'dotenv/config';
 
-dotenv.config();
 
 const port = process.env.PORT;
 const env = process.env.NODE_ENV;
@@ -10,7 +9,7 @@ const mailerToken = process.env.MAILER_API_KEY;
 const baseUrl = process.env.API_BASE_URL;
 const hashRounds = process.env.BCRYPT_HASH_ROUNDS;
 
-const environnements = [
+const environments = [
   {
     name: 'test',
     port,
@@ -53,5 +52,5 @@ const environnements = [
   }
 ];
 
-const currentEnv = environnements.find(el => el.name === env.toLocaleLowerCase());
+const currentEnv = environments.find(el => el.name === env.toLocaleLowerCase());
 export default { currentEnv, env };

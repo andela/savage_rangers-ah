@@ -14,7 +14,7 @@ import logger from 'morgan';
 
 export default (app) => {
   app
-    // Parse req object and make data available on req.body
+  // Parse req object and make data available on req.body
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))
     .use(cors()) // Allow cross origin requests

@@ -4,11 +4,11 @@ import docsRouter from './api/routes/docs';
 import homeRouter from './api/routes/home';
 import register from './middlewares/register.app';
 import { sequelize } from './api/models/index';
-import environnements from './configs/environments';
+import environments from './configs/environments';
 
 
 const app = express();
-const env = environnements.currentEnv;
+const env = environments.currentEnv;
 
 // Register middleware
 register(app);

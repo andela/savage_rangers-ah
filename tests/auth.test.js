@@ -15,9 +15,10 @@ chai.use(chaiHttp);
 chai.should();
 
 const data = {
-  username: 'Burindi Alain',
-  email: 'premices.tuvere@gmail.com',
-  password: 'password'
+  username: 'BurindiAlain',
+  email: 'alain@gmail.com',
+  password: 'password23423',
+  confirmPassword: 'password23423'
 };
 
 // The email of the user from the reset password endpoint
