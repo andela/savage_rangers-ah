@@ -1,15 +1,15 @@
 import Sequelize from 'sequelize';
-import environments from '../../configs/environments';
-
-const env = environments.currentEnv;
+import env from '../../configs/environments';
 
 const sequelize = new Sequelize(env.dbUrl, {
-  logging: false
+  logging: false,
+  dialect: 'postgres'
 });
 
 const models = {
   User: sequelize.import('./user'),
-  Token: sequelize.import('./token')
+  Token: sequelize.import('./token'),
+  SequelizeMeta: sequelize.import('./sequelizemeta')
 };
 
 export { sequelize };

@@ -1,7 +1,6 @@
 import chai from 'chai';
 import '@babel/polyfill';
 import chaiHttp from 'chai-http';
-import models from '../src/api/models/index';
 import isTokenValid from '../src/helpers/tokens/validate.token';
 import generateToken from '../src/helpers/tokens/generate.token';
 import generateLink from '../src/helpers/tokens/generate.link';
@@ -237,14 +236,5 @@ describe('Mailer', async () => {
 
   it('should execute with one param', async () => {
     await mailer('title', 'subject', 'reciever@example.com', 'notifications', {});
-  });
-});
-
-describe('Model', () => {
-  it('should return an object', (done) => {
-    models.should.be.an('Object');
-    models.User.truncate({ cascade: true });
-    models.Token.truncate({ cascade: true });
-    done();
   });
 });
