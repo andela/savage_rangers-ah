@@ -4,7 +4,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/c05960d83e2ec9822111/maintainability)](https://codeclimate.com/github/andela/savage_rangers-ah/maintainability)
 =======
 
-
 # Authors Haven - A Social platform for the creative at heart.
 
 ## Vision
@@ -412,3 +411,26 @@ No additional parameters required
 ### Get Tags
 
 `GET /api/tags`
+
+## Getting started
+
+### 1. Installation steps
+
+- Clone the repo using:
+
+`git clone https://github.com/andela/savage_rangers-ah.git`
+
+- Install dependencies by runing
+
+`npm install`
+
+- Create a `.env` file at the root of the project and fill out the variables you can find in `.env.example` file
+
+- Run `npm run setup:dev` to create the tables in the database
+
+- You can now run `npm start` to start the server
+
+### 2. Steps for running tests
+
+- Run tests
+  `npm test` or `npm ts`

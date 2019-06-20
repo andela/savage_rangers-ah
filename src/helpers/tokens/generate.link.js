@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken';
-import environment from '../../configs/environments';
-
-const env = environment.currentEnv;
+import env from '../../configs/environments';
 
 /**
  * A fucntion to generate links based on jwt tokens
@@ -13,7 +11,7 @@ const env = environment.currentEnv;
  */
 export default (link, payLoad) => {
   const options = {
-    expiresIn: '1d',
+    expiresIn: '1d'
   };
   const token = jwt.sign(payLoad, env.secret, options);
   const Link = `${link}/${token}`;
