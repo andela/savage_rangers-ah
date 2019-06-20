@@ -16,6 +16,7 @@ coverage
 
 # Migrations
 src/api/migrations
+src/api/models/test-articl.js
 
 # Seeders
 src/api/seeders
