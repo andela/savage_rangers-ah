@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken';
-import environment from '../../configs/environments';
-
-const env = environment.currentEnv;
+import env from '../../configs/environments';
 
 /**
  * A fucntion to generate links based on jwt tokens

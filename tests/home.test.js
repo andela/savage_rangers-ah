@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import status from '../src/helpers/constants/status.codes';
 import server from '../src/index';
+import status from '../src/helpers/constants/status.codes';
 
 chai.use(chaiHttp);
 chai.should();

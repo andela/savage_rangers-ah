@@ -3,12 +3,11 @@ import models from '../models';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
 import status from '../../helpers/constants/status.codes';
-import environments from '../../configs/environments';
+import env from '../../configs/environments';
 import sendError from '../../helpers/error.sender';
 import errors from '../../helpers/constants/error.messages';
 
 const { User } = models;
-const env = environments.currentEnv;
 /**
  * containing all user's model controllers (signup, login)
  *
@@ -34,7 +33,7 @@ export default class Auth {
       email,
       password: hashedPassword
     });
-    const tokenData = { username, email };
+    const tokenData = { id: user.dataValues.id, username, email };
     const token = generateToken(tokenData, env.secret);
     return sendResult(res, status.CREATED, 'user created successfully', user, token);
   }
@@ -54,7 +53,7 @@ export default class Auth {
       if (user) {
         const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password);
         if (isPasswordValid) {
-          const tokenData = { username: user.dataValues.username, email };
+          const tokenData = { id: user.dataValues.id, username: user.dataValues.username, email };
           const token = generateToken(tokenData, env.secret);
           return sendResult(res, status.OK, 'user logged in successfully', user, token);
         }

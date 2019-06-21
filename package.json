@@ -5,11 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node src/index.js",
-    "test": "NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov ./node_modules/.bin/mocha  ./tests/* --require @babel/register --timeout 4000 --exit",
+    "test": "npm run setup && NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov ./node_modules/.bin/mocha  ./tests/* --require @babel/register --timeout 4000 --exit",
     "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "eslint": "eslint . --cache --fix",
-    "precommit": "lint-staged"
+    "setup": "NODE_ENV=test npm run migrate:undo  && NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed",
+    "precommit": "lint-staged",
+    "migrate": "node_modules/.bin/sequelize db:migrate",
+    "seed": "node_modules/.bin/sequelize db:seed:all",
+    "migrate:undo": "node_modules/.bin/sequelize db:migrate:undo:all"
   },
   "lint-staged": {
     "*.js": [
@@ -47,21 +51,22 @@
     "expect": "^24.8.0",
     "express": "^4.16.4",
     "express-session": "^1.16.2",
-    "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.11",
-    "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth": "^2.0.0",
     "passport-pinterest": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "pg": "^7.11.0",
-    "sequelize": "^5.8.7",
     "sinon": "^7.3.2",
     "sinon-chai": "^3.3.0",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
+    "morgan": "^1.9.1",
+    "pg": "^7.11.0",
+    "sequelize": "^5.8.7",
+    "sequelize-cli": "^5.5.0",
     "swagger-node-express": "^2.1.3",
-    "swagger-ui-express": "^4.0.6",
-    "joi": "^14.3.1"
+    "swagger-ui-express": "^4.0.6"
   },
   "nyc": {
     "per-file": true,
@@ -71,7 +76,8 @@
     "functions": 100,
     "statements": 80,
     "exclude": [
-      "src/configs/environments.js"
+      "src/configs/environments.js",
+      "src/index.js"
     ]
   },
   "author": "Andela Simulations Programme",
