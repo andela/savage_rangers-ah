@@ -33,24 +33,9 @@ export default class Auth {
       email,
       password: hashedPassword
     });
-<<<<<<< HEAD
-    await mailer('Please verify your email', 'Email verification', email, 'notifications', {
-      email,
-      buttonText: 'Verify',
-      userName: username,
-      message: 'Please click on the link to verify your email for authour\'s heaven,If you didn\'t request this delete this mail.',
-      link: `${env.baseUrl}/auth/verifyEmail`
-
-    });
-    const tokenData = { username, email };
-    const token = generateToken(tokenData, process.env.TOKEN_KEY);
-    const message = 'Please check your email for the verification lik.';
-    return sendResult(res, 201, `${message}`, user, token);
-=======
     const tokenData = { id: user.dataValues.id, username, email };
     const token = generateToken(tokenData, env.secret);
     return sendResult(res, status.CREATED, 'user created successfully', user, token);
->>>>>>> ch-migrations-setup-#166841614
   }
 
   /**

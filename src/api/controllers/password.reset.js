@@ -7,7 +7,7 @@ import status from '../../helpers/constants/status.codes';
 const { User } = models;
 
 /**
- * containing all user's model controllers (signup, login)
+ * containing aal controllers of the signup process
  *
  * @export
  * @class Auth
@@ -24,9 +24,7 @@ export default class PasswordReset {
   static async sendRecoveryEmail(req, res) {
     // Initialising variables
     const result = {};
-    const status = 200;
-    const userEmail = req.body.email;
-    const { username } = req.user;
+    const { username, email } = req.user;
 
     await mailer(`Password recovery for ${email}`, 'Password recovery', email, 'notifications', {
       email,
@@ -46,7 +44,7 @@ export default class PasswordReset {
   }
 
   /**
-   * A controller update the users email
+   * A controller update the users password
    *
    * @param {Object} req - the request object
    * @param {Object} res - the result object
@@ -55,7 +53,6 @@ export default class PasswordReset {
   static async updatePassword(req, res) {
     // Initialising variables
     const result = {};
-    const status = 200;
     const userEmail = req.params.email;
     const userPassword = req.body.password;
     const salt = genSaltSync(parseFloat(env.hashRounds));

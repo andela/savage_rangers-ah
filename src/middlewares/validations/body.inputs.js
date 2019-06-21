@@ -1,29 +1,38 @@
-/* eslint-disable no-unused-expressions */
 /**
  * Schemas description file
  * @name validationMiddleware
  */
-/* eslint-disable no-underscore-dangle */
+
 import _ from 'lodash';
 import Joi from '@hapi/joi';
-import Schemas from '../../helpers/validation.schemas';
+import Schemas from '../../helpers/constants/validation.schemas';
 import sendError from '../../helpers/error.sender';
 import errorMessages from '../../helpers/constants/error.messages';
 import status from '../../helpers/constants/status.codes';
 
 // Initializing variables
 // Allowed http methods
-const _supportedMethods = ['get', 'post', 'patch', 'delete'];
+const supportedMethods = ['get', 'post', 'patch', 'delete'];
 
 // Joi validation options
-const _validationOptions = {
+const validationOptions = {
   abortEarly: false, // abort after the last validation error
   allowUnknown: true, // allow unknown keys that will be ignored
   stripUnknown: true // remove unknown keys from the validated data
 };
 
+/**
+ * A function to save an account when requested by the controller
+ * @param {boolean} [useJoiError=false] - indicates that Joi
+ * validation errors should be used
+ * @param {object} schema - The validation schema comming from
+ * the helper @ref validationSchemas
+ * @param {Array} fields - An array containing all the fileds to validate
+ * provided especialy for custom error messages
+ * @returns {Function} - A fuction validating the schema
+ */
 export default (useJoiError, schema, fields) => {
-  const _useJoiError = _.isBoolean(useJoiError) && useJoiError;
+  const UseJoiError = _.isBoolean(useJoiError) && useJoiError;
 
   // validation middleware
   /**
@@ -31,17 +40,17 @@ export default (useJoiError, schema, fields) => {
    * @param {object} req - the request object
    * @param {object} res - the result object
    * @param {function} next - callBack function
+   * @returns {function} -
    */
-  // eslint-disable-next-line consistent-return
   return (req, res, next) => {
     const method = req.method.toLowerCase();
 
-    if (_.includes(_supportedMethods, method) && _.has(Schemas, schema) && _.get(Schemas, schema)) {
+    if (_.includes(supportedMethods, method) && _.has(Schemas, schema) && _.get(Schemas, schema)) {
       // get the schema for the route
-      const _schema = _.get(Schemas, schema);
+      const currentSchema = _.get(Schemas, schema);
 
       // Validation happens here
-      return Joi.validate(req.body, _schema, _validationOptions, (err, data) => {
+      return Joi.validate(req.body, currentSchema, validationOptions, (err, data) => {
         if (!err) {
           req.body = data;
           next();

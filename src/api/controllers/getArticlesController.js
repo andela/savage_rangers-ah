@@ -1,9 +1,10 @@
 import model from '../models/index';
+import status from '../../helpers/constants/status.codes';
 /**
  * @class
  */
 export default class Articles {
-/**
+  /**
  * register a new user
  *
  * @static
@@ -15,13 +16,15 @@ export default class Articles {
   static async getArticles(req, res) {
     const { Article } = model;
     const articles = await Article.findAll();
-    if (articles.length > 0) {
-      res.status(200).json({
+    const ZERO = 0;
+
+    if (articles.length > ZERO) {
+      res.status(status.OK).json({
         status: 200,
         articles,
       });
     } else {
-      res.status(404).json({
+      res.status(status.NOT_FOUND).json({
         status: 404,
         message: 'There are no articles at the moment, Please try again later'
       });
@@ -43,14 +46,16 @@ export default class Articles {
     const article = await Article.findAll({
       where: { slug }
     });
+
+    const ZERO = 0;
     const articleObject = article[0];
-    if (article.length > 0) {
-      res.status(200).json({
+    if (article.length > ZERO) {
+      res.status(status.OK).json({
         status: 200,
         article: articleObject,
       });
     } else {
-      res.status(404).json({
+      res.status(status.NOT_FOUND).json({
         status: 404,
         message: 'Not found'
       });
