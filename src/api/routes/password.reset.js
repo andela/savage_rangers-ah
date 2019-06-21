@@ -6,23 +6,19 @@ import validateResetEmail from '../../middlewares/validations/validate.reset.ema
 import validateResetLink from '../../middlewares/validations/validate.reset.link';
 import validateUpdatePassword from '../../middlewares/validations/validate.update.password';
 
-const router = Router();
+const router = new Router();
 
-router.post(
-  '/',
+router.post('/',
   verifyBody,
   validateInputs(true, 'resetPassword', ['email']),
   validateResetEmail,
-  resetController.sendRecoveryEmail
-);
+  resetController.sendRecoveryEmail);
 
-router.post(
-  '/update/:email',
+router.post('/update/:email',
   verifyBody,
   validateInputs(true, 'updatePassword', ['password']),
   validateUpdatePassword,
-  resetController.updatePassword
-);
+  resetController.updatePassword);
 
 router.get('/:token', validateResetLink, resetController.verifyRecoveryLink);
 

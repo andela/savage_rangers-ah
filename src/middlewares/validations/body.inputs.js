@@ -8,15 +8,8 @@ import _ from 'lodash';
 import Joi from '@hapi/joi';
 import Schemas from '../../helpers/validation.schemas';
 import sendError from '../../helpers/error.sender';
-import errorMessages from '../../helpers/error.messages';
-
-/**
- * A function to save an account when requested by the controller
- * @param {boolean} [useJoiError=false] - indicates that Joi
- * validation errors should be used
- * @param {object} schema - The validation schema comming from
- * the helper @ref validationSchemas
- */
+import errorMessages from '../../helpers/constants/error.messages';
+import status from '../../helpers/constants/status.codes';
 
 // Initializing variables
 // Allowed http methods
@@ -54,19 +47,24 @@ export default (useJoiError, schema, fields) => {
           next();
         } else {
           // Building the error object
-          let message = err.details[0].message.replace(/['"]/g, '');
+          const joiError = {};
+          joiError.message = err.details[0].message.replace(/['"]/g, '');
+          // Building a custom error message
           fields.find((el) => {
-            if (message.includes(`${el} with value`) || message.includes(`${el} must be`)) {
-              message = errorMessages[el];
+            if (
+              joiError.message.includes(`${el} with value`)
+              || joiError.message.includes(`${el} must be`)
+            ) {
+              joiError.message = errorMessages[el];
+              joiError.field = el;
             }
             return true;
           });
-          // Default error
-          const defaultErr = 'Invalid request data. Try again';
-
-          _useJoiError
-            ? sendError(400, {}, res, message)
-            : sendError(400, {}, res, errorMessages[defaultErr]);
+          if (UseJoiError) {
+            sendError(status.BAD_REQUEST, res, joiError.field, joiError.message);
+          } else {
+            sendError(status.BAD_REQUEST, res, 'body', errorMessages.defaultError);
+          }
         }
       });
     }

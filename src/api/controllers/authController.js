@@ -2,14 +2,12 @@ import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
-import mailer from '../../helpers/Mailer/index';
-import environment from '../../configs/environments';
-
-const env = environment.currentEnv;
-
+import status from '../../helpers/constants/status.codes';
+import env from '../../configs/environments';
+import sendError from '../../helpers/error.sender';
+import errors from '../../helpers/constants/error.messages';
 
 const { User } = models;
-
 /**
  * containing all user's model controllers (signup, login)
  *
@@ -28,13 +26,14 @@ export default class Auth {
    */
   static async signup(req, res) {
     const { username, email, password } = req.body;
-    const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS) || 10);
+    const salt = genSaltSync(parseFloat(env.hashRounds));
     const hashedPassword = hashSync(password, salt);
     const user = await User.create({
       username,
       email,
       password: hashedPassword
     });
+<<<<<<< HEAD
     await mailer('Please verify your email', 'Email verification', email, 'notifications', {
       email,
       buttonText: 'Verify',
@@ -47,6 +46,11 @@ export default class Auth {
     const token = generateToken(tokenData, process.env.TOKEN_KEY);
     const message = 'Please check your email for the verification lik.';
     return sendResult(res, 201, `${message}`, user, token);
+=======
+    const tokenData = { id: user.dataValues.id, username, email };
+    const token = generateToken(tokenData, env.secret);
+    return sendResult(res, status.CREATED, 'user created successfully', user, token);
+>>>>>>> ch-migrations-setup-#166841614
   }
 
   /**
@@ -64,17 +68,13 @@ export default class Auth {
       if (user) {
         const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password);
         if (isPasswordValid) {
-          const tokenData = { username: user.dataValues.username, email };
-          const token = generateToken(tokenData, process.env.TOKEN_KEY);
-          return sendResult(res, 200, 'user logged in successfully', user, token);
+          const tokenData = { id: user.dataValues.id, username: user.dataValues.username, email };
+          const token = generateToken(tokenData, env.secret);
+          return sendResult(res, status.OK, 'user logged in successfully', user, token);
         }
-        return res.status(401).json({
-          message: 'password is incorrect'
-        });
+        return sendError(status.UNAUTHORIZED, res, 'password', errors.incorectPassword);
       }
-      return res.status(404).json({
-        message: "user doesn't exist"
-      });
+      return sendError(status.NOT_FOUND, res, 'email', errors.unkownEmail);
     });
   }
 }

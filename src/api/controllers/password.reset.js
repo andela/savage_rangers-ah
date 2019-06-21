@@ -1,10 +1,10 @@
 import { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
 import mailer from '../../helpers/Mailer';
-import environnement from '../../configs/environments';
+import env from '../../configs/environments';
+import status from '../../helpers/constants/status.codes';
 
 const { User } = models;
-const env = environnement.currentEnv;
 
 /**
  * containing all user's model controllers (signup, login)
@@ -28,27 +28,21 @@ export default class PasswordReset {
     const userEmail = req.body.email;
     const { username } = req.user;
 
-    await mailer(
-      `Password recovery for ${userEmail}`,
-      'Password recovery',
-      userEmail,
-      'notifications',
-      {
-        email: userEmail,
-        link: `${env.baseUrl}/api/auth/reset`,
-        userName: username,
-        buttonText: 'RESET',
-        message:
-          "You are recieving this email beacause you've requested the recovery "
-          + 'of your Authors Heaven password. Kindly click the button bellow.'
-      }
-    );
+    await mailer(`Password recovery for ${email}`, 'Password recovery', email, 'notifications', {
+      email,
+      link: `${env.baseUrl}/api/password-reset`,
+      userName: username,
+      buttonText: 'RESET',
+      message:
+        "You are receiving this email because you've requested the recovery "
+        + 'of your Authors Heaven password. Kindly click the button below.'
+    });
 
     // Sending the result
-    result.status = status;
+    result.status = status.OK;
     result.message = 'Password reset instructions have been sent '
-      + "to your account's primary email address. If you don't find it, check your spams";
-    res.status(status).json(result);
+      + "to your account's primary email address. Please check the spam if you don't see the email";
+    res.status(status.OK).json(result);
   }
 
   /**
@@ -64,25 +58,22 @@ export default class PasswordReset {
     const status = 200;
     const userEmail = req.params.email;
     const userPassword = req.body.password;
-    const salt = genSaltSync(parseFloat(process.env.BCRYPT_HASH_ROUNDS) || 10);
+    const salt = genSaltSync(parseFloat(env.hashRounds));
     const hashedPassword = hashSync(userPassword, salt);
 
-    const user = await User.update(
-      {
-        password: hashedPassword
-      },
-      {
-        where: {
-          email: userEmail
-        }
+    await User.update({
+      password: hashedPassword
+    },
+    {
+      where: {
+        email: userEmail
       }
-    );
+    });
 
     // Sending the result
-    result.status = status;
+    result.status = status.OK;
     result.message = 'Password reset sucessfully';
-    result.user = user;
-    res.status(status).json(result);
+    res.status(status.OK).json(result);
   }
 
   /**
@@ -96,15 +87,14 @@ export default class PasswordReset {
   static async verifyRecoveryLink(req, res) {
     // Initialising variables
     const result = {};
-    const status = 200;
     const { userEmail } = req;
 
     // Sending the result
-    result.status = status;
+    result.status = status.OK;
     result.message = 'Please provide your new password';
     result.data = {
       email: userEmail
     };
-    res.status(status).json(result);
+    res.status(status.OK).json(result);
   }
 }

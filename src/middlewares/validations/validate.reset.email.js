@@ -1,21 +1,25 @@
 import models from '../../api/models';
 import sendError from '../../helpers/error.sender';
-
+import status from '../../helpers/constants/status.codes';
+import errors from '../../helpers/constants/error.messages';
+/**
+ * A function to verify if the provided email exists in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The result object
+ * @param {Array} next - The next callback
+ * @returns {Function} - A fuction rendering an arror message
+ * or the next callback
+ */
 export default async (req, res, next) => {
   // Initializing variables
   const userEmail = req.body.email;
   let tempUser;
 
   try {
-    tempUser = await models.User.findAll({
-      where: {
-        email: userEmail,
-      },
-    });
-    req.user = tempUser[0].dataValues;
+    tempUser = await models.User.findByEmail(userEmail);
+    req.user = tempUser.dataValues;
     next();
-  } catch (TypeError) {
-    const mess = 'A user with the provided email doesn\'t exit';
-    sendError(404, {}, res, mess);
+  } catch (error) {
+    sendError(status.NOT_FOUND, res, 'email', errors.unkownEmail);
   }
 };

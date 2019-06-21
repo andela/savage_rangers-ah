@@ -1,0 +1,18 @@
+# nyc test coverage
+.nyc_output
+
+# Npm package lock file
+package-lock.json
+
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directory
+node_modules
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Migrations
+src/api/migrations
