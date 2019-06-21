@@ -77,7 +77,8 @@
     "statements": 80,
     "exclude": [
       "src/configs/environments.js",
-      "src/index.js"
+      "src/index.js",
+      "src/configs/passport.js"
     ]
   },
   "author": "Andela Simulations Programme",

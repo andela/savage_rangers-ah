@@ -1,48 +1,38 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const User = sequelize.define('User',
     {
       username: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       email: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       password: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       country: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       firstName: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       lastName: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       bio: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       address: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       gender: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       profileImage: {
         type: DataTypes.STRING
       },
       phoneNumber: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       provider: {
         type: DataTypes.STRING,
@@ -57,12 +47,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false
       },
       facebook: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       },
       twitter: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING
       }
     },
     {});

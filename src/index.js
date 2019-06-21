@@ -15,6 +15,6 @@ app.use('/docs', docsRouter);
 
 app.use('/', homeRouter);
 
-app.listen(env.port);
+app.listen(env.appPort);
 
 export default app;
