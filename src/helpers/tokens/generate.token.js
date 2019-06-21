@@ -5,16 +5,12 @@ const { Token } = models;
 
 const createToken = (user, secret) => {
   try {
-    const token = jwt.sign(
-      { user },
-      secret,
-      {
-        expiresIn: '24h'
-      }
-    );
+    const token = jwt.sign({ user }, secret, {
+      expiresIn: '24h'
+    });
 
     Token.create({
-      data: token,
+      data: token
     });
 
     return token;
