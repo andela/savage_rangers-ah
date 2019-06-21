@@ -1,6 +1,5 @@
 import models from '../models/index';
 import status from '../../helpers/constants/status.codes';
-import errorSender from '../../helpers/error.sender';
 import sendError from '../../helpers/error.sender';
 /**
  *
