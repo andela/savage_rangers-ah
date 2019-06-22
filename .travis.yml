@@ -6,7 +6,10 @@ cache:
     - 'node_modules'
 script:
   - npm test
-
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+services:
+  - postgresql
 deploy:
   provider: heroku
   api_key:

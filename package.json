@@ -10,12 +10,11 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "eslint": "eslint . --cache --fix",
     "setup:test": "NODE_ENV=test npm run migrate:undo  && NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed",
-    "setup:dev": "NODE_ENV=development npm run db:init && NODE_ENV=development npm run migrate:undo && NODE_ENV=development npm run migrate && NODE_ENV=development npm run seed",
+    "setup:dev": "NODE_ENV=development npm run migrate:undo && NODE_ENV=development npm run migrate && NODE_ENV=development npm run seed",
     "precommit": "lint-staged",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "seed": "node_modules/.bin/sequelize db:seed:all",
-    "migrate:undo": "node_modules/.bin/sequelize db:migrate:undo:all",
-    "db:init": "./node_modules/.bin/babel-node src/helpers/sequelize.initializer.js"
+    "migrate:undo": "node_modules/.bin/sequelize db:migrate:undo:all"
   },
   "lint-staged": {
     "*.js": [
@@ -25,7 +24,6 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "chai-http": "^4.3.0",
     "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
@@ -73,7 +71,8 @@
     "statements": 80,
     "exclude": [
       "src/configs/environments.js",
-      "src/configs/redisConfigs.js"
+      "src/configs/redisConfigs.js",
+      "src/index.js"
     ]
   },
   "author": "Andela Simulations Programme",
