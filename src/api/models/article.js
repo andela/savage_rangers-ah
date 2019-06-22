@@ -29,7 +29,22 @@ export default (sequelize, DataTypes) => {
         references: { model: 'Users', key: 'id' }
       },
       category: {
-        allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      body: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
+      coverImage: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      tagList: {
+        type: DataTypes.ARRAY(DataTypes.TEXT),
+        allowNull: false
+      },
+      author: {
         type: DataTypes.INTEGER,
         references: { model: 'Categories', key: 'id' }
       }
