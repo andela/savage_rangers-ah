@@ -1,7 +1,6 @@
 import chai from 'chai';
 import '@babel/polyfill';
 import chaiHttp from 'chai-http';
-import models from '../src/api/models/index';
 import isTokenValid from '../src/helpers/tokens/validate.token';
 import generateToken from '../src/helpers/tokens/generate.token';
 import generateLink from '../src/helpers/tokens/generate.link';
@@ -15,9 +14,10 @@ chai.use(chaiHttp);
 chai.should();
 
 const data = {
-  username: 'Burindi Alain',
-  email: 'premices.tuvere@gmail.com',
-  password: 'password'
+  username: 'BurindiAlain',
+  email: 'alain@gmail.com',
+  password: 'password23423',
+  confirmPassword: 'password23423'
 };
 
 // The email of the user from the reset password endpoint
@@ -252,14 +252,5 @@ describe('Mailer', async () => {
 
   it('should execute with one param', async () => {
     await mailer('title', 'subject', 'reciever@example.com', 'notifications', {});
-  });
-});
-
-describe('Model', () => {
-  it('should return an object', (done) => {
-    models.should.be.an('Object');
-    models.User.truncate({ cascade: true });
-    models.Token.truncate({ cascade: true });
-    done();
   });
 });

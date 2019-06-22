@@ -11,7 +11,7 @@ describe('testing the signout controller', () => {
     chai
       .request(app)
       .get('/api/users/signout')
-      .set('Authorization', '')
+      .set('Authorization', 'asdfafcad')
       .end((err, res) => {
         expect(res.body).to.have.status(statuses.UNAUTHORIZED);
         expect(res.body)
