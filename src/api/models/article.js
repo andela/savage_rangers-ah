@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 const Article = (sequelize, DataTypes) => {
   const article = sequelize.define('article', {
     id: {
@@ -18,6 +19,7 @@ const Article = (sequelize, DataTypes) => {
     slug: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
     body: {
       type: DataTypes.TEXT,

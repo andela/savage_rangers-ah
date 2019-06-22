@@ -10,7 +10,7 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "eslint": "eslint . --cache --fix",
     "setup:test": "NODE_ENV=test npm run migrate:undo  && NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed",
-    "setup:dev": "NODE_ENV=development npm run migrate:undo  && NODE_ENV=development npm run migrate && NODE_ENV=development npm run seed",
+    "setup:dev": "NODE_ENV=development npm run migrate:undo && NODE_ENV=development npm run migrate && NODE_ENV=development npm run seed",
     "precommit": "lint-staged",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "seed": "node_modules/.bin/sequelize db:seed:all",

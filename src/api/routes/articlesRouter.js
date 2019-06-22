@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import Articles from '../controllers/getArticlesController';
+import Articles from '../controllers/articlesController';
 
-const route = Router();
+const route = new Router();
 
 route.get('/', Articles.getArticles);
 route.get('/:slug', Articles.getArticle);

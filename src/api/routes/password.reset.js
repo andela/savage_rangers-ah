@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import resetController from '../controllers/password.reset';
 import validateInputs from '../../middlewares/validations/body.inputs';
-import verifyBody from '../../middlewares/body.verifier';
+import verifyBody from '../../middlewares/validations/body.verifier';
 import validateResetEmail from '../../middlewares/validations/validate.reset.email';
 import validateResetLink from '../../middlewares/validations/validate.reset.link';
 import validateUpdatePassword from '../../middlewares/validations/validate.update.password';
