@@ -32,7 +32,7 @@ export default class PasswordReset {
       userName: username,
       buttonText: 'RESET',
       message:
-        "You are receiving this email beacause you've requested the recovery "
+        "You are receiving this email because you've requested the recovery "
         + 'of your Authors Heaven password. Kindly click the button below.'
     });
 

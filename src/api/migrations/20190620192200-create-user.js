@@ -10,7 +10,8 @@ export default {
       type: Sequelize.STRING
     },
     email: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      unique: true
     },
     password: {
       type: Sequelize.STRING
@@ -66,5 +67,6 @@ export default {
       type: Sequelize.DATE
     }
   }),
+  // eslint-disable-next-line no-unused-vars
   down: (queryInterface, Sequelize) => queryInterface.dropTable('Users')
 };

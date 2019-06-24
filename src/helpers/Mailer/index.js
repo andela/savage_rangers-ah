@@ -4,7 +4,7 @@ import env from '../../configs/environments';
 
 mailer.setApiKey(env.mailerToken);
 
-export default async (messageTitle, emailSubject, reciever, operation, userData) => {
+export default (messageTitle, emailSubject, reciever, operation, userData) => {
   try {
     const messageBody = templates[operation](userData);
     const message = {
@@ -30,7 +30,7 @@ export default async (messageTitle, emailSubject, reciever, operation, userData)
              </div>
              </div>`
     };
-    return await mailer.send(message);
+    return mailer.send(message);
   } catch (error) {
     return error;
   }
