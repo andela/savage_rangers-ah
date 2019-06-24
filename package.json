@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node src/index.js",
-    "test": "npm run setup && NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov ./node_modules/.bin/mocha  ./tests/* --require @babel/register --timeout 4000 --exit",
+    "test": "npm run setup:test && NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov ./node_modules/.bin/mocha  ./tests/* --require @babel/register --timeout 4000 --exit",
     "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "eslint": "eslint . --cache --fix",
-    "setup": "NODE_ENV=test npm run migrate:undo  && NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed",
+    "setup:test": "NODE_ENV=test npm run migrate:undo  && NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed",
+    "setup:dev": "NODE_ENV=development npm run migrate:undo && NODE_ENV=development npm run migrate && NODE_ENV=development npm run seed",
     "precommit": "lint-staged",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "seed": "node_modules/.bin/sequelize db:seed:all",
@@ -78,7 +79,8 @@
     "exclude": [
       "src/configs/environments.js",
       "src/index.js",
-      "src/configs/passport.js"
+      "src/configs/passport.js",
+      "src/index.js"
     ]
   },
   "author": "Andela Simulations Programme",

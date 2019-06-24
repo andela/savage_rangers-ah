@@ -7,8 +7,8 @@
 export default (req, res, next) => {
   req.user = {
     id: req.body.id,
-    username: 'Rahu-G',
-    displayName: undefined,
+    username: 'RahuG',
+    displayName: 'Ramoxe',
     name: {
       familyName: 'Ramadhan',
       givenName: 'Rahul',

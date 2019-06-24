@@ -16,3 +16,6 @@ coverage
 
 # Migrations
 src/api/migrations
+
+# Seeders
+src/api/seeders

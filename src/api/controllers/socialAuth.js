@@ -59,23 +59,28 @@ class socialLogin {
       }
     });
     if (!existingUser) {
-      existingUser = User.create({
+      existingUser = await User.create({
         username: req.user.displayName,
         email: req.user.emails[0].value,
         profileImage: req.user.photos[0].value,
         provider: req.user.provider,
         uniqueId: req.user.id
       });
-      const token = generateToken({ username: req.user.displayName, id: req.user.id },
-        process.env.TOKEN_KEY);
-      return res.status(status.CREATED).json({ user: { ...existingUser.get(), token } });
+      const { username, email } = existingUser.dataValues;
+      const token = generateToken({
+        username: req.user.displayName,
+        id: existingUser.dataValues.id
+      },
+      process.env.TOKEN_KEY);
+      return res.status(status.CREATED).json({ user: { username, email, token } });
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    return res.status(status.CREATED).json({ user: { ...existingUser.get(), token } });
+    const { username, email } = existingUser.dataValues;
+    return res.status(status.CREATED).json({ user: { username, email, token } });
   }
 
   /**
@@ -95,22 +100,27 @@ class socialLogin {
       }
     });
     if (!existingUser) {
-      existingUser = User.create({
+      existingUser = await User.create({
         username: req.user.username,
         profileImage: req.user.photos[0].value,
         provider: req.user.provider,
         uniqueId: req.user.id
       });
-      const token = generateToken({ username: req.user.displayName, id: req.user.id },
-        process.env.TOKEN_KEY);
-      return res.status(status.CREATED).json({ user: { ...existingUser.get(), token } });
+      const { username, email } = existingUser.dataValues;
+      const token = generateToken({
+        username: req.user.displayName,
+        id: existingUser.dataValues.id
+      },
+      process.env.TOKEN_KEY);
+      return res.status(status.CREATED).json({ user: { username, email, token } });
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    return res.status(status.CREATED).json({ user: { ...existingUser.get(), token } });
+    const { username, email } = existingUser.dataValues;
+    return res.status(status.CREATED).json({ user: { username, email, token } });
   }
 }
 
