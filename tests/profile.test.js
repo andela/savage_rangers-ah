@@ -15,7 +15,7 @@ const data = {
   gender: 'man',
   phoneNumber: '+243974690917',
   address: 'gachinjiro/kigali',
-  avatar: 'noimage.jpg',
+  profileImage: 'noimage.jpg',
   bio: 'I work at statefarm',
   facebook: 'https://facebook.com/alainburindi',
   twitter: 'https://twitter.com/alainburindi',
@@ -35,13 +35,12 @@ const errors = {
 const userData = {
   username: 'myname',
   email: 'myname@mail.com',
-  password: 'data.password111',
-  confirmPassword: 'data.password111',
+  password: 'password111',
 };
 
 const {
   country, firstName, lastName,
-  address, gender, avatar, phoneNumber, bio
+  address, gender, profileImage, phoneNumber, bio
 } = data;
 
 let authToken = '';
@@ -54,7 +53,6 @@ describe('Profile', () => {
         username: userData.username,
         email: userData.email,
         password: userData.password,
-        confirmPassword: userData.confirmPassword,
       })
       .end((err, res) => {
         authToken = res.body.user.token;
@@ -66,16 +64,16 @@ describe('Profile', () => {
     chai.request(server)
       .patch('/api/auth/profile')
       .set('Authorization', authToken)
-      .send({
+      .field({
         country: `${country} Democratic Republic of`,
         firstName,
         lastName,
         bio,
         address,
         gender,
-        avatar,
         phoneNumber
       })
+      .attach('profileImage', './tests/images/test.jpg', 'test.jpg')
       .end((err, res) => {
         res.should.have.status(status.OK);
         res.body.should.have.property('message', 'updated correctly');
@@ -98,7 +96,7 @@ describe('Profile', () => {
         profile.should.have.property('lastName', lastName);
         profile.should.have.property('address', address);
         profile.should.have.property('gender', gender);
-        profile.should.have.property('avatar', avatar);
+        profile.should.have.property('profileImage');
         profile.should.have.property('phoneNumber', phoneNumber);
         done();
       });
@@ -119,7 +117,7 @@ describe('Profile', () => {
         profile.should.have.property('lastName', lastName);
         profile.should.have.property('address', address);
         profile.should.have.property('gender', gender);
-        profile.should.have.property('avatar', avatar);
+        profile.should.have.property('profileImage');
         profile.should.have.property('phoneNumber', phoneNumber);
         done();
       });
@@ -158,7 +156,7 @@ describe('Validate data', () => {
         address,
         bio,
         gender,
-        avatar,
+        profileImage,
         phoneNumber
       })
       .end((err, res) => {
@@ -178,7 +176,7 @@ describe('Validate data', () => {
         bio,
         address,
         gender,
-        avatar,
+        profileImage,
         phoneNumber
       })
       .end((err, res) => {
@@ -198,7 +196,7 @@ describe('Validate data', () => {
         bio,
         address,
         gender,
-        avatar,
+        profileImage,
         phoneNumber
       })
       .end((err, res) => {
@@ -218,7 +216,7 @@ describe('Validate data', () => {
         lastName,
         bio,
         gender,
-        avatar,
+        profileImage,
         phoneNumber
       })
       .end((err, res) => {
@@ -238,7 +236,7 @@ describe('Validate data', () => {
         lastName,
         bio,
         address,
-        avatar,
+        profileImage,
         phoneNumber
       })
       .end((err, res) => {
@@ -258,7 +256,7 @@ describe('Validate data', () => {
         lastName,
         bio,
         address,
-        avatar,
+        profileImage,
         gender
       })
       .end((err, res) => {
@@ -277,7 +275,7 @@ describe('Validate data', () => {
         firstName,
         lastName,
         address,
-        avatar,
+        profileImage,
         gender,
         phoneNumber
       })

@@ -5,7 +5,7 @@ import upload from '../../middlewares/upload';
 
 const profileRouter = new Router();
 
-profileRouter.patch('/', upload.single('avatar'), ValidateProfile.validate,
+profileRouter.patch('/', upload.single('profileImage'), ValidateProfile.validate,
   profileController.update);
 
 profileRouter.get('/', profileController.getUserProfile);

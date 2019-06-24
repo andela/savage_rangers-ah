@@ -23,16 +23,16 @@ export default class ProfileController {
      */
   static async update(req, res) {
     try {
-      let avatar = 'noimage.jpg';
+      let profileImage = 'noimage.jpg';
       const {
         country, firstName, lastName, address, gender, phoneNumber, bio
       } = req.body;
       if (req.file) {
         const saved = await cloudinary.v2.uploader.upload(req.file.path);
-        avatar = saved.secure_url;
+        profileImage = saved.secure_url;
       }
       const updatedProfile = await User.update({
-        country, firstName, lastName, bio, address, gender, avatar, phoneNumber
+        country, firstName, lastName, bio, address, gender, profileImage, phoneNumber
       }, {
         where: {
           id: req.user.id
@@ -84,7 +84,7 @@ export default class ProfileController {
         }
       });
       if (user) return sendProfile(res, status.OK, undefined, user);
-      sendProfile(res, status.NOT_FOUND, 'User doesn\'t exist');
+      return sendProfile(res, status.NOT_FOUND, 'User doesn\'t exist');
     } catch (error) {
       sendProfile(res, status.SERVER_ERROR, error);
     }

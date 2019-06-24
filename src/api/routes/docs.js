@@ -4,7 +4,6 @@ import swaggerDocument from '../../docs/swagger.json';
 
 const v2Docs = express();
 
-
 // Swagger documentation
 v2Docs.use('/', swaggerUI.serve);
 v2Docs.get('/', swaggerUI.setup(swaggerDocument));

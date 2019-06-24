@@ -1,11 +1,11 @@
 import chai from 'chai';
 import '@babel/polyfill';
 import chaiHttp from 'chai-http';
-import models from '../src/api/models/index';
 import isTokenValid from '../src/helpers/tokens/validate.token';
 import generateToken from '../src/helpers/tokens/generate.token';
 import generateLink from '../src/helpers/tokens/generate.link';
 import status from '../src/helpers/constants/status.codes';
+import errors from '../src/helpers/constants/error.messages';
 
 import server from '../src/index';
 import mailer from '../src/helpers/Mailer';
@@ -14,10 +14,9 @@ chai.use(chaiHttp);
 chai.should();
 
 const data = {
-  username: 'alain',
+  username: 'BurindiAlain',
   email: 'alain@gmail.com',
-  password: 'diane3456',
-  confirmPassword: 'diane3456'
+  password: 'password23423',
 };
 
 // The email of the user from the reset password endpoint
@@ -32,7 +31,6 @@ describe('Signup', () => {
         username: data.username,
         email: data.email,
         password: data.password,
-        confirmPassword: data.password
       })
       .end((err, res) => {
         res.should.have.status(status.CREATED);
@@ -78,7 +76,9 @@ describe('Login', () => {
       })
       .end((err, res) => {
         res.should.have.status(status.UNAUTHORIZED);
-        res.body.should.have.property('message', 'password is incorrect');
+        res.body.should.have
+          .property('errors')
+          .which.has.property('password', errors.incorectPassword);
         done();
       });
   });
@@ -93,7 +93,7 @@ describe('Login', () => {
       })
       .end((err, res) => {
         res.should.have.status(status.NOT_FOUND);
-        res.body.should.have.property('message', "user doesn't exist");
+        res.body.should.have.property('errors').which.has.property('email', errors.unkownEmail);
         done();
       });
   });
@@ -234,14 +234,5 @@ describe('Mailer', async () => {
 
   it('should execute with one param', async () => {
     await mailer('title', 'subject', 'reciever@example.com', 'notifications', {});
-  });
-});
-
-describe('Model', () => {
-  it('should return an object', (done) => {
-    models.should.be.an('Object');
-    models.User.truncate({ cascade: true });
-    models.Token.truncate({ cascade: true });
-    done();
   });
 });

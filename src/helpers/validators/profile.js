@@ -37,7 +37,7 @@ const schema = {
     .trim()
     .error(() => 'The bio is required')
     .required(),
-  avatar: Joi.string(),
+  profileImage: Joi.string(),
   facebook: Joi.string(),
   twitter: Joi.string(),
 };

@@ -1,16 +1,16 @@
 import Sequelize from 'sequelize';
-import environments from '../../configs/environments';
-
-const env = environments.currentEnv;
+import env from '../../configs/environments';
 
 const sequelize = new Sequelize(env.dbUrl, {
-  logging: false
+  logging: false,
+  dialect: 'postgres'
 });
 
 const models = {
   User: sequelize.import('./user'),
   Token: sequelize.import('./token'),
   Profile: sequelize.import('./profile'),
+  SequelizeMeta: sequelize.import('./sequelizemeta')
 };
 Object.keys(models).forEach((key) => {
   if ('associate' in models[key]) {

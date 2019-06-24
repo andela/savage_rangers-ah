@@ -13,3 +13,9 @@ node_modules
 
 # Coverage directory used by tools like istanbul
 coverage
+
+# Migrations
+src/api/migrations
+
+# Seeders
+src/api/seeders
