@@ -57,8 +57,10 @@
     "pg": "^7.11.0",
     "sequelize": "^5.8.7",
     "sequelize-cli": "^5.5.0",
+    "slug": "^1.1.0",
     "swagger-node-express": "^2.1.3",
-    "swagger-ui-express": "^4.0.6"
+    "swagger-ui-express": "^4.0.6",
+    "uniqid": "^5.0.3"
   },
   "nyc": {
     "per-file": true,
@@ -68,6 +70,8 @@
     "functions": 100,
     "statements": 80,
     "exclude": [
+      "src/configs/environments.js",
+      "src/api/models",
       "src/index.js"
     ]
   },
