@@ -35,22 +35,9 @@ export default class ArtcileController {
         });
         return res.json(like);
       }
-      sendError(status.BAD_REQUEST, res, reaction, `You are not allowed to ${reaction} twice`);
+      return sendError(status.BAD_REQUEST, res, reaction, `You are not allowed to ${reaction} twice`);
     } catch (error) {
-      return res.json('error');
+      return res.json(error);
     }
-  }
-
-  /**
-     *dislike an article
-     *
-     *@static
-     * @param {Object} req the request
-     * @param {Object} res the response
-     * @memberof LikeController
-     * @returns {Object} response
-     */
-  static async dislike(req, res) {
-    res.json('work in progress');
   }
 }

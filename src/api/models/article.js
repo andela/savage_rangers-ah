@@ -1,11 +1,6 @@
-const article = (sequelize, DataTypes) => {
-  const Article = sequelize.define('Articles', {
-    content: {
-      type: DataTypes.STRING,
-    }
-  });
-
+export default (sequelize, DataTypes) => {
+  const Article = sequelize.define('Article', {
+    content: DataTypes.STRING
+  }, {});
   return Article;
 };
-
-export default article;
