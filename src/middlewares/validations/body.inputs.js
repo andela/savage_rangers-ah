@@ -47,7 +47,9 @@ export default (useJoiError, schema, fields) => {
 
     if (_.includes(supportedMethods, method) && _.has(Schemas, schema) && _.get(Schemas, schema)) {
       // get the schema for the route
+
       const currentSchema = _.get(Schemas, schema);
+
 
       // Validation happens here
       return Joi.validate(req.body, currentSchema, validationOptions, (err, data) => {
@@ -58,11 +60,11 @@ export default (useJoiError, schema, fields) => {
           // Building the error object
           const joiError = {};
           joiError.message = err.details[0].message.replace(/['"]/g, '');
+
           // Building a custom error message
-          fields.find((el) => {
+          fields.map((el) => {
             if (
-              joiError.message.includes(`${el} with value`)
-              || joiError.message.includes(`${el} must be`)
+              joiError.message.includes(`${el}`)
             ) {
               joiError.message = errorMessages[el];
               joiError.field = el;

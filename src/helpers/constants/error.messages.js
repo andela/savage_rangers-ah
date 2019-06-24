@@ -15,5 +15,12 @@ export default {
   title: 'The title is required',
   description: 'description is required.',
   body: 'body is required',
-  category: 'category is required'
+  category: 'category is required',
+  country: 'The country is required should only contain alphanumeric characters',
+  firstName: 'The firstName should only contain alphanumeric characters',
+  lastName: 'The lastName should only contain alphanumeric characters',
+  address: 'The address is required',
+  gender: 'The gender should only contain alphanumeric characters',
+  phoneNumber: 'The phone number is required',
+  bio: 'The bio is required',
 };

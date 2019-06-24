@@ -14,15 +14,24 @@
   },
   "host": "savage-rangers-ah-staging.herokuapp.com",
   "basePath": "/api",
-  "schemes": ["https", "http"],
+  "schemes": [
+    "https",
+    "http"
+  ],
   "paths": {
     "/users/signup": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Sign up new user",
         "description": "",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -49,11 +58,17 @@
     },
     "/users/login": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "login existing user",
         "description": "",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -83,10 +98,18 @@
     },
     "/users/facebook": {
       "get": {
-        "tags": ["Users"],
-        "summary": ["Register/login facebook users"],
-        "description": ["Register/login a facebook user and fetch the user profile"],
-        "produces": ["application/json"],
+        "tags": [
+          "Users"
+        ],
+        "summary": [
+          "Register/login facebook users"
+        ],
+        "description": [
+          "Register/login a facebook user and fetch the user profile"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "User successfully authenticated"
@@ -102,10 +125,18 @@
     },
     "/users/google": {
       "get": {
-        "tags": ["Users"],
-        "summary": ["Register/login google users "],
-        "description": ["Register/login a google user and fetch the user profile"],
-        "produces": ["application/json"],
+        "tags": [
+          "Users"
+        ],
+        "summary": [
+          "Register/login google users "
+        ],
+        "description": [
+          "Register/login a google user and fetch the user profile"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "User successfully authenticated"
@@ -121,10 +152,18 @@
     },
     "/users/twiter": {
       "get": {
-        "tags": ["Users"],
-        "summary": ["Register/login twitter users"],
-        "description": ["Register/login a twitter user and fetch the user profile"],
-        "produces": ["application/json"],
+        "tags": [
+          "Users"
+        ],
+        "summary": [
+          "Register/login twitter users"
+        ],
+        "description": [
+          "Register/login a twitter user and fetch the user profile"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
             "description": "User successfully authenticated"
@@ -140,11 +179,17 @@
     },
     "/password-reset": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Reset the password of the user via email",
         "description": "",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
@@ -171,11 +216,17 @@
     },
     "/password-reset/{token}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "check the link provided via email to a user for password reset",
         "description": "",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -199,11 +250,17 @@
     },
     "/password-reset/update/{email}": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "update the password of the user after verification of the reset password link",
         "description": "",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -239,10 +296,14 @@
     },
     "/users/signout": {
       "get": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "summary": "signs out the logged in user",
         "description": "drop the token",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -271,11 +332,17 @@
     },
     "/articles": {
       "post": {
-        "tags": ["Articles"],
+        "tags": [
+          "Articles"
+        ],
         "summary": "Create article",
         "description": "create new article",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "header",
@@ -296,109 +363,174 @@
             "required": true
           }
         ],
-        "response": {
-          "201": {
-            "description": "Article created succesfully"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "403": {
-            "description": "Forbiden access"
-          },
-          "401": {
-            "description": "Forbiden access"
+        "get": {
+          "tags": [
+            "Profils"
+          ],
+          "summary": "get the current user's profile",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "headers",
+              "name": "Authorization",
+              "description": "adding the token",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Profile exists"
+            },
+            "401": {
+              "description": "Authentication failed"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Profils"
+          ],
+          "summary": "update the user's profile",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "headers",
+              "name": "Authorization",
+              "description": "adding the token",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "users information",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/profile"
+              }
+            }
+          ],
+          "response": {
+            "201": {
+              "description": "Article created succesfully"
+            },
+            "404": {
+              "description": "Not found"
+            },
+            "403": {
+              "description": "Forbiden access"
+            },
+            "401": {
+              "description": "Forbiden access"
+            }
           }
         }
-      }
-    },
-    "/articles/{slug}": {
-      "patch": {
-        "tags": ["Articles"],
-        "summary": "Update the article based on its current s-l-u-g",
-        "description": "update article by slug",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "authorization",
-            "description": "user token to verify",
-            "required": true
-          },
-          {
-            "in": "path",
-            "name": "slug",
-            "description": "slug to be used in updating the article",
-            "required": true
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "update all of the body or any property among them",
-            "required": true
+      },
+      "/articles/{slug}": {
+        "patch": {
+          "tags": [
+            "Articles"
+          ],
+          "summary": "Update the article based on its current s-l-u-g",
+          "description": "update article by slug",
+          "produces": [
+            "application/json"
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "header",
+              "name": "authorization",
+              "description": "user token to verify",
+              "required": true
+            },
+            {
+              "in": "path",
+              "name": "slug",
+              "description": "slug to be used in updating the article",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "update all of the body or any property among them",
+              "required": true
+            }
+          ],
+          "response": {
+            "200": {
+              "description": "Your Article is up-to-date now, Thanks"
+            },
+            "404": {
+              "description": "Article with this { slug } is not found, Thanks"
+            },
+            "403": {
+              "description": "Forbiden access"
+            },
+            "401": {
+              "description": "Please you must be the owner of this Article in order to modify it, Thanks"
+            }
           }
-        ],
-        "response": {
+        },
+        "responses": {
           "200": {
-            "description": "Your Article is up-to-date now, Thanks"
+            "description": "Profile updated correctly"
           },
-          "404": {
-            "description": "Article with this { slug } is not found, Thanks"
+          "400": {
+            "description": "Invlid input(s)"
           },
-          "403": {
-            "description": "Forbiden access"
-          },
-          "401": {
-            "description": "Please you must be the owner of this Article in order to modify it, Thanks"
+          "default": {
+            "description": "Something went wrong"
           }
         }
       }
-    }
-  },
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
-  },
-  "definitions": {
-    "signup": {
-      "type": "object",
-      "properties": {
-        "username": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      }
     },
-    "/users/verifyEmail": {
+    "/profiles/:username": {
       "get": {
-        "tags": ["Users"],
-        "summary": "Verify user's email",
+        "tags": [
+          "Profils"
+        ],
+        "summary": "get another user's profile",
         "description": "",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "in": "path",
-            "name": "token",
-            "description": "",
+            "in": "headers",
+            "name": "Authorization",
+            "description": "adding the token",
             "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "Your email is successfully verified"
+            "description": "Profile exists"
           },
-          "400": {
-            "description": "The link provided is  corrupt, please request a new one or try to click it again"
+          "401": {
+            "description": "Authentication failed"
           },
           "404": {
-            "description": "User doesn't exist."
+            "description": "User not found"
           },
           "default": {
             "description": "Something went wrong"
@@ -425,38 +557,130 @@
           }
         }
       },
-      "resetPassword": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
+      "/users/verifyEmail": {
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "summary": "Verify user's email",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Your email is successfully verified"
+            },
+            "400": {
+              "description": "The link provided is  corrupt, please request a new one or try to click it again"
+            },
+            "404": {
+              "description": "User doesn't exist."
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
           }
         }
       },
-      "updatePassword": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
+      "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
+      },
+      "definitions": {
+        "signup": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
+        "resetPassword": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "updatePassword": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "article": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            },
+            "tagList": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            }
           }
         }
       },
-      "article": {
+      "profile": {
         "type": "object",
         "properties": {
-          "title": {
+          "country": {
             "type": "string"
           },
-          "description": {
+          "firstName": {
             "type": "string"
           },
-          "body": {
+          "lastName": {
             "type": "string"
           },
-          "tagList": {
+          "address": {
             "type": "string"
           },
-          "category": {
+          "gender": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "bio": {
+            "type": "string"
+          },
+          "profileImage": {
+            "type": "file"
+          },
+          "facebook": {
+            "type": "string"
+          },
+          "twitter": {
             "type": "string"
           }
         }

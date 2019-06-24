@@ -56,8 +56,7 @@ export default (sequelize, DataTypes) => {
     { tableName: 'Users' });
   User.associate = (models) => {
     User.hasMany(models.Article, {
-      foreignKey: 'userId',
-      as: 'author',
+      foreignKey: 'author',
       onDelete: 'CASCADE',
       hooks: true
     });
