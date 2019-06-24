@@ -86,7 +86,8 @@
       "src/api/models",
       "src/configs/redisConfigs.js",
       "src/configs/passport.js",
-      "src/index.js"
+      "src/index.js",
+      "src/api/models"
     ]
   },
   "author": "Andela Simulations Programme",

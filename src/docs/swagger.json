@@ -244,69 +244,96 @@
       }
     },
     "/users/signout": {
-      "get":{
-        "tags":["auth"],
-          "summary":"signs out the logged in user",
-          "description":"drop the token",
-          "produces":["application/json"],
-          "parameters":[
-            {
-                "in":"header",
-                "name":"authorization",
-                "description":"token to be dropped",
-                "required":true
-            }
-        ],
-        "responses":{
-          "200":{
-              "description":"You are signed out"
-          },
-          "401":{
-              "description":"You are unauthorized, Token is no longer valid"
-          },
-        "403":{
-          "description":"Forbiden access"
-      }
-      },
-      "security": [
+      "get": {
+        "tags": ["auth"],
+        "summary": "signs out the logged in user",
+        "description": "drop the token",
+        "produces": ["application/json"],
+        "parameters": [
           {
-              "api_key":[]
+            "in": "header",
+            "name": "authorization",
+            "description": "token to be dropped",
+            "required": true
           }
-      ]
-  }
-      },
-      "/articles/{slug}": {
-        "patch": {
-          "tags": ["Articles"],
+        ],
+        "responses": {
+          "200": {
+            "description": "You are signed out"
+          },
+          "401": {
+            "description": "You are unauthorized, Token is no longer valid"
+          },
+          "403": {
+            "description": "Forbiden access"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/articles/:slug": {
+      "delete": {
+        "tags": ["Authors"],
+        "summary": "allow Authors to delete their own article",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "description": "Delete article",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "article deleted successfully"
+          },
+          "401": {
+            "description": "Please you must be the owner of this Article in order to modify it, Thanks"
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    },
+    "/articles/{slug}": {
+      "patch": {
+        "tags": ["Articles"],
         "summary": "Update the article based on its current s-l-u-g",
         "description": "update article by slug",
         "produces": ["application/json"],
         "consumes": ["application/json"],
-        "parameters":[
+        "parameters": [
           {
-            "in":"header",
-            "name":"authorization",
-            "description":"user token to verify",
-            "required":true
+            "in": "header",
+            "name": "authorization",
+            "description": "user token to verify",
+            "required": true
           },
           {
-            "in":"path",
-            "name":"slug",
-            "description":"slug to be used in updating the article",
-            "required":true
+            "in": "path",
+            "name": "slug",
+            "description": "slug to be used in updating the article",
+            "required": true
           },
           {
-            "in":"body",
-            "name":"body",
-            "description":"update all of the body or any property among them",
-            "required":true
+            "in": "body",
+            "name": "body",
+            "description": "update all of the body or any property among them",
+            "required": true
           }
         ],
         "response": {
           "200": {
             "description": "Your Article is up-to-date now, Thanks"
           },
-          "404":{
+          "404": {
             "description": "Article with this { slug } is not found, Thanks"
           },
           "403": {
@@ -316,8 +343,8 @@
             "description": "Please you must be the owner of this Article in order to modify it, Thanks"
           }
         }
-        }
       }
+    }
   },
   "externalDocs": {
     "description": "Find out more about Swagger",
@@ -405,26 +432,25 @@
         }
       },
       "article": {
-        "type":"object",
+        "type": "object",
         "properties": {
           "title": {
-            "type":"string"
+            "type": "string"
           },
           "description": {
-            "type":"string"
+            "type": "string"
           },
           "body": {
             "type": "string"
           },
           "tagList": {
-            "type":"string"
+            "type": "string"
           },
           "category": {
             "type": "string"
           }
         }
       }
-
     }
   }
 }

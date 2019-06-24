@@ -8,9 +8,7 @@ const sequelize = new Sequelize(env.dbUrl, {
 
 const models = {
   User: sequelize.import('./user'),
-  Token: sequelize.import('./token'),
-  Article: sequelize.import('./article'),
-  SequelizeMeta: sequelize.import('./sequelizemeta')
+  Article: sequelize.import('./article')
 };
 
 export { sequelize };

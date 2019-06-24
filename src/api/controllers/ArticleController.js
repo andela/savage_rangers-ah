@@ -20,21 +20,10 @@ export default class deleteArticle {
    */
   static async delete(req, res) {
     const { slug } = req.params;
-    const checkArticle = await Article.findOne({
-      where: {
-        slug
-      }
-    });
-    if (!checkArticle) {
-      return res.status(status.NOT_FOUND).json({
-        status: status.NOT_FOUND,
-        message: 'the article is not found'
-      });
-    }
     await Article.destroy({ where: { slug } });
     res.status(status.OK).json({
       status: res.statusCode,
-      message: 'article deleted successful'
+      message: 'article deleted successfully'
     });
   }
 }

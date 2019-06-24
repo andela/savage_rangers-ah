@@ -16,4 +16,9 @@ articleRouter.patch('/:slug',
   checkArticleOwner.checkOwner,
   articleController.updateArticle);
 
+articleRouter.delete('/:slug',
+  checkValidToken,
+  checkArticleOwner.checkOwner,
+  articleController.delete);
+
 export default articleRouter;

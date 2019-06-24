@@ -420,6 +420,10 @@ No additional parameters required
 
 `git clone https://github.com/andela/savage_rangers-ah.git`
 
+- Clone the repo using:
+
+`git clone https://github.com/andela/savage_rangers-ah.git`
+
 - Install dependencies by runing
 
 `npm install`

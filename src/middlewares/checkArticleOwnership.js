@@ -12,7 +12,7 @@ class CheckUserOwnership {
   /**
    * this is a middleware which checks if the user is registered in to our database.
    *
-   * @author Frank Mutabazi
+   * @author Frank Mutabazi, Prémices
    * @static
    * @param {object} req the request
    * @param {object} res the response to be sent
@@ -21,7 +21,9 @@ class CheckUserOwnership {
    * @returns {Object} res
    */
   static async checkOwner(req, res, next) {
-    const { user: { id } } = req.user;
+    const {
+      user: { id }
+    } = req.user;
     const { slug } = req.params;
 
     const response = await Article.findOne({
@@ -35,7 +37,9 @@ class CheckUserOwnership {
       req.Existing = response.dataValues;
       next();
     } else {
-      res.status(statusCode.ACCESS_DENIED).json({ message: 'Please you must be the owner of this Article in order to modify it, Thanks' });
+      res.status(statusCode.ACCESS_DENIED).json({
+        message: 'Please you must be the owner of this Article in order to modify it, Thanks'
+      });
     }
   }
 }
