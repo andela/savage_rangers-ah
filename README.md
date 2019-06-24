@@ -416,11 +416,11 @@ No additional parameters required
 
 ### 1. Installation steps
 
-- Clone the repo using
+- Clone the repo using:
 
-`https://github.com/andela/savage_rangers-ah.git`
+`git clone https://github.com/andela/savage_rangers-ah.git`
 
-- Install dependecies by runing
+- Install dependencies by runing
 
 `npm install`
 

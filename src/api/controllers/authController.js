@@ -75,8 +75,8 @@ export default class Auth {
    * @returns {object} - the response body
    */
   static async signout(req, res) {
-    const getTokenFromHeaders = req.headers.authorization;
-    const blackToken = await blackList(getTokenFromHeaders);
+    const token = req.headers.authorization;
+    const blackToken = await blackList(token);
 
     if (blackToken) {
       return res.status(status.OK).json({
