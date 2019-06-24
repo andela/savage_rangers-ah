@@ -6,6 +6,7 @@ import validateToken from '../../middlewares/checkValidToken';
 import socialAuthController from '../controllers/socialAuth';
 import passport from '../../configs/passport';
 import social from '../../middlewares/social/social';
+import EmailVerifier from '../controllers/verifyEmail';
 
 const authRouter = new Router();
 
@@ -31,5 +32,6 @@ authRouter.get('/twitter', passport.authenticate('twitter', { scope: ['email', '
 authRouter.get('/twitter/callback',
   passport.authenticate('twitter'),
   socialAuthController.twitterAuth);
+authRouter.get('/verifyEmail/:token', EmailVerifier.verifyEmail);
 
 export default authRouter;
