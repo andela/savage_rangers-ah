@@ -8,6 +8,8 @@ const { Article, Category } = models;
 const { CREATED } = statusCodes;
 
 /**
+ *
+ *
  * this is the article controller
  *
  * @export
@@ -53,6 +55,24 @@ export default class ArticleController {
         article: article.get()
       });
     }
+  }
+
+  /**
+   *
+   *
+   * @static
+   * @param {Object} req - request object
+   * @param {Object} res - respond object
+   * @returns {Object} response body
+   * @memberof ArticleController
+   */
+  static async delete(req, res) {
+    const { slug } = req.params;
+    await Article.destroy({ where: { slug } });
+    res.status(statusCodes.OK).json({
+      statusCodes: res.statusCodes,
+      message: 'article deleted successfully'
+    });
   }
 
   /**

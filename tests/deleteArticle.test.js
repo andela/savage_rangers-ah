@@ -1,58 +1,39 @@
 import chai from 'chai';
-import '@babel/polyfill';
 import chaiHttp from 'chai-http';
-import dotenv from 'dotenv';
 import status from '../src/helpers/constants/status.codes';
 import server from '../src/index';
-import generateToken from '../src/helpers/tokens/generate.token';
-import models from '../src/api/models';
-
-const { Article } = models;
-const { User } = models;
+import error from '../src/helpers/constants/error.messages';
 
 chai.use(chaiHttp);
 chai.should();
-dotenv.config();
 
-// eslint-disable-next-line no-unused-vars
-let newArticle;
-let Atoken;
-let newUser;
+let userToken;
 describe('deleteArticle', () => {
-  before(async () => {
-    const user = {
-      firstName: 'Rama',
-      lastName: 'Dhan',
-      username: 'Ramaa',
-      email: 'rama@gmail.com',
-      password: 'Rama01@#sgh!',
-      confirmPassword: 'Rama01@#sgh!'
-    };
-
-    newUser = await User.create(user);
-
-    Atoken = generateToken((user.email, user.id), process.env.TOKEN_KEY);
-
-    const article = {
-      title: 'This is Andela',
-      description: 'A technology company specializing in training software engineers ',
-      body:
-        'Thursday 26 may lastyear launched its Kigali office. Its new offices are housed within the University of Rwanda',
-      userId: newUser.id,
-      slug: 'This-is-Andela',
-      tagList: ['Tech', 'Kigali'],
-      category: 'tecknology'
-    };
-    newArticle = await Article.create(article);
-  });
-
-  it('should delete article', (done) => {
+  it('should fail to verify the token', (done) => {
+    const token = '';
     chai
       .request(server)
-      .delete('/api/articles/This-is-Andela')
-      .set('Authorization', `Bearer ${Atoken}`)
+      .delete('/api/articles/How-to-create-sequalize-seedss')
+      .set('Authorization', `${token}`)
+      .end((err, res) => {
+        res.should.have.status(status.UNAUTHORIZED);
+        res.body.should.have.status(status.UNAUTHORIZED);
+        res.body.should.have.property('message').eql('Forbiden access');
+        done();
+      });
+  });
+
+  it('should login the user to get the token', (done) => {
+    chai
+      .request(server)
+      .post('/api/users/login')
+      .send({
+        email: 'alain1@gmail.com',
+        password: 'password23423'
+      })
       .end((err, res) => {
         res.should.have.status(status.OK);
+        userToken = res.body.user.token;
         done();
       });
   });
@@ -61,9 +42,21 @@ describe('deleteArticle', () => {
     chai
       .request(server)
       .delete('/api/articles/This-is-it')
-      .set('Authorization', `Bearer ${Atoken}`)
+      .set('Authorization', `${userToken}`)
       .end((err, res) => {
-        res.should.have.status(status.NOT_FOUND);
+        res.should.have.status(status.ACCESS_DENIED);
+        res.body.should.have.property('message').eql(error.notOwner);
+        done();
+      });
+  });
+
+  it('should delete article', (done) => {
+    chai
+      .request(server)
+      .delete('/api/articles/How-to-create-sequalize-seedss')
+      .set('Authorization', `${userToken}`)
+      .end((err, res) => {
+        res.should.have.status(status.OK);
         done();
       });
   });

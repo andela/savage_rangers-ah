@@ -32,4 +32,10 @@ articleRouter.post('/',
   checkValidToken,
   uploadImage.single('coverImage'),
   errorHandler(articleController.create));
+
+articleRouter.delete('/:slug',
+  checkValidToken,
+  checkArticleOwner.checkOwner,
+  articleController.delete);
+
 export default articleRouter;
