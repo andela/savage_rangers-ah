@@ -1,5 +1,5 @@
 import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
-import models from '../models/index';
+import models from '../models';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
 import blackList from '../../helpers/Blacklist.redis';
@@ -76,13 +76,16 @@ export default class Auth {
    */
   static async signout(req, res) {
     const token = req.headers.authorization;
-    const blackToken = await blackList(token);
-
-    if (blackToken) {
-      return res.status(status.OK).json({
-        status: status.OK,
-        message: 'You are signed out'
-      });
+    try {
+      const blackToken = blackList(token);
+      if (blackToken) {
+        return res.status(status.OK).json({
+          status: status.OK,
+          message: 'You are signed out'
+        });
+      }
+    } catch (err) {
+      return sendError(status.SERVER_ERROR, res, 'logout', 'Please try again, Thanks');
     }
   }
 }

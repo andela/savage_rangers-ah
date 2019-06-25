@@ -51,6 +51,15 @@
     "dotenv": "^8.0.0",
     "expect": "^24.8.0",
     "express": "^4.16.4",
+    "express-session": "^1.16.2",
+    "passport": "^0.4.0",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth": "^2.0.0",
+    "passport-pinterest": "^1.0.0",
+    "passport-twitter": "^1.0.4",
+    "sinon": "^7.3.2",
+    "sinon-chai": "^3.3.0",
+    "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
     "morgan": "^1.9.1",
@@ -72,6 +81,7 @@
     "exclude": [
       "src/configs/environments.js",
       "src/configs/redisConfigs.js",
+      "src/configs/passport.js",
       "src/index.js"
     ]
   },
