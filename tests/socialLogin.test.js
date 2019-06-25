@@ -1,16 +1,12 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../src/index';
-import db from '../src/api/models/index';
 import status from '../src/helpers/constants/status.codes';
 
-const { User, Token } = db;
 chai.use(chaiHttp);
 
 describe('Signup || Login', () => {
   it('should login with facebook ', (done) => {
-    User.truncate({ cascade: true });
-    Token.truncate({ cascade: true });
     chai
       .request(server)
       .post('/api/users/mockFacebook')

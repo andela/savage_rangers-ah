@@ -8,7 +8,6 @@ const sequelize = new Sequelize(env.dbUrl, {
 
 const models = {
   User: sequelize.import('./user'),
-  Token: sequelize.import('./token')
 };
 
 export { sequelize };

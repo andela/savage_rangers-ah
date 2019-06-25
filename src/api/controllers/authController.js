@@ -2,6 +2,7 @@ import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
+import blackList from '../../helpers/Blacklist.redis';
 import status from '../../helpers/constants/status.codes';
 import env from '../../configs/environments';
 import sendError from '../../helpers/error.sender';
@@ -61,5 +62,30 @@ export default class Auth {
       }
       return sendError(status.NOT_FOUND, res, 'email', errors.unkownEmail);
     });
+  }
+
+  /**
+   * Signout a user from the system
+   *
+   * @author: Frank Mutabazi
+   * @static
+   * @param {object} req - the request object
+   * @param {object} res - the result object
+   * @memberof signout
+   * @returns {object} - the response body
+   */
+  static async signout(req, res) {
+    const token = req.headers.authorization;
+    try {
+      const blackToken = blackList(token);
+      if (blackToken) {
+        return res.status(status.OK).json({
+          status: status.OK,
+          message: 'You are signed out'
+        });
+      }
+    } catch (err) {
+      return sendError(status.SERVER_ERROR, res, 'logout', 'Please try again, Thanks');
+    }
   }
 }
