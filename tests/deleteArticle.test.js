@@ -2,7 +2,6 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import status from '../src/helpers/constants/status.codes';
 import server from '../src/index';
-import error from '../src/helpers/constants/error.messages';
 
 chai.use(chaiHttp);
 chai.should();
@@ -44,8 +43,10 @@ describe('deleteArticle', () => {
       .delete('/api/articles/This-is-it')
       .set('Authorization', `${userToken}`)
       .end((err, res) => {
-        res.should.have.status(status.ACCESS_DENIED);
-        res.body.should.have.property('message').eql(error.notOwner);
+        res.should.have.status(status.NOT_FOUND);
+        res.body.should.have
+          .property('errors')
+          .eql({ slug: 'Article with slug This-is-it is not found, Thanks' });
         done();
       });
   });

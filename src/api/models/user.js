@@ -79,7 +79,10 @@ export default (sequelize, DataTypes) => {
     });
     User.hasMany(models.Highlight, {
       foreignKey: 'userId',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+      hooks: true
     });
     User.hasMany(models.Following, {
       foreignKey: 'follower'

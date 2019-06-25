@@ -956,9 +956,6 @@
             "body": {
               "type": "string"
             },
-            "tagList": {
-              "type": "string"
-            },
             "category": {
               "type": "string"
             }

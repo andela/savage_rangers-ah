@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import checkArticle from '../../middlewares/getOneArticle';
+import articleController from '../controllers/articleController';
+import articleTagController from '../controllers/articleTagController';
+import checkArticleOwner from '../../middlewares/checkArticleOwnership';
 import checkValidToken from '../../middlewares/checkValidToken';
 import bodyVerifier from '../../middlewares/validations/body.verifier';
 import ratingsController from '../controllers/articleRatingController';
-import articleController from '../controllers/articleController';
 import validateInputs from '../../middlewares/validations/body.inputs';
-import checkArticleOwner from '../../middlewares/checkArticleOwnership';
 import checkExistingRates from '../../middlewares/checkExistingRating';
 import uploadImage from '../../middlewares/upload';
 import errorHandler from '../../middlewares/errorHandler';
@@ -16,6 +17,9 @@ import validateGetCommentRoute from '../../middlewares/validations/get.comments.
 import getComment from '../../middlewares/get.comment.record';
 import validateCommentUpdateDelete from '../../middlewares/validations/comment.update.delete';
 import checkCommentOwner from '../../middlewares/check.comment.ownership';
+import checkIncomingTags from '../../middlewares/check.incoming.tags';
+import createAndGetNewTags from '../../middlewares/get.new.tags';
+import validateTagsTableQueryRoute from '../../middlewares/validations/query.tags.table.route';
 
 const articleRouter = new Router();
 
@@ -30,18 +34,25 @@ const highlightFields = ['firstIndex', 'lastIndex', 'comment', 'text'];
 
 articleRouter.get('/', articleController.getArticles);
 articleRouter.get('/:slug', articleController.getArticle);
+
 articleRouter.patch('/:slug',
   uploadImage.single('coverImage'),
   checkValidToken,
   bodyVerifier,
   checkArticle.getArticle,
-  validateInputs('updateArticle', ['title', 'description', 'body', 'category', 'tagList']),
+  validateInputs('updateArticle', ['title', 'description', 'body', 'category', 'tags']),
+  checkArticle.getArticle,
   checkArticleOwner.checkOwner,
+  checkIncomingTags,
+  createAndGetNewTags,
   articleController.updateArticle);
 
 articleRouter.post('/',
   checkValidToken,
   uploadImage.single('coverImage'),
+  bodyVerifier,
+  checkIncomingTags,
+  createAndGetNewTags,
   errorHandler(articleController.create));
 
 articleRouter.get('/:slug/ratings/statistics',
@@ -55,8 +66,10 @@ articleRouter.get('/:slug/:rating/users',
 
 articleRouter.delete('/:slug',
   checkValidToken,
+  checkArticle.getArticle,
   checkArticleOwner.checkOwner,
   articleController.delete);
+
 articleRouter.post('/:slug/highlight',
   checkValidToken,
   checkArticle.getArticle,
@@ -74,6 +87,16 @@ articleRouter.post('/:slug/report',
   checkArticleOwner.checkOwner,
   articleController.reportAnArticle);
 articleRouter.get('/category/:categoryId', articleController.getArticlesByCategory);
+
+articleRouter.get('/:slug/tags',
+  checkValidToken,
+  checkArticle.getArticle,
+  articleTagController.getArticleTags);
+
+articleRouter.get('/tags/query',
+  checkValidToken,
+  validateTagsTableQueryRoute,
+  articleTagController.getTagsByQuery);
 
 articleRouter.post('/:slug/share/facebook',
   checkValidToken,

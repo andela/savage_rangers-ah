@@ -8,7 +8,6 @@ export default {
         body:
             "Suppose we want to insert some data into a few tables by default. If we follow up on previous example we can consider creating a demo user for User table.To manage all data migrations you can use seeders. Seed files are some change in data that can be used to populate database table with sample data or test data.Let's create a seed file which will add a demo user to our User table.",
         coverImage: 'default.jpeg',
-        tagList: ['postgres', 'express', 'sequelize'],
         category: 1,
         author: 1,
         createdAt: new Date(),
@@ -32,8 +31,7 @@ export default {
         body:
             'A Version 1 UUID is a universally unique identifier that is generated using a timestamp and the MAC address of the computer on which it was generated.',
         coverImage: 'default.jpeg',
-        tagList: ['UUID', 'express', 'sequelize'],
-        category: 2,
+        category: 1,
         author: 1,
         createdAt: new Date(),
         updatedAt: new Date()
