@@ -32,5 +32,9 @@ export default {
   noArticles: 'Article not found!',
   noMoreArticle: 'There no more articles at the moment.',
   reason: 'a reason can not be a string, Please provide a number starting from 1, Thanks',
-  textMatch: 'The text does not match the indexes'
+  textMatch: 'The text does not match the indexes',
+  authorization: 'Please log in to perform this task',
+  followError: "You can't follow yourself",
+  followingError: 'You are currently following no one',
+  followerError: 'You have no followers'
 };

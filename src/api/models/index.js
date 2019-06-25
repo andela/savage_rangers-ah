@@ -13,7 +13,8 @@ const models = {
   Rating: sequelize.import('./rating'),
   Report: sequelize.import('./report'),
   Reason: sequelize.import('./reasons'),
-  Highlight: sequelize.import('./highlight')
+  Highlight: sequelize.import('./highlight'),
+  Following: sequelize.import('./following')
 };
 
 Object.keys(models).forEach((key) => {

@@ -284,8 +284,8 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        username: 'BurindiAlain40',
-        email: 'alain40@gmail.com',
+        username: 'daniel',
+        email: 'danny@gmail.com',
         password: hashedPassword,
         createdAt: new Date(),
         updatedAt: new Date()
