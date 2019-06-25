@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import getAuthorsController from '../controllers/getAuthorsController';
+import authorsController from '../controllers/authorsController';
 import checkValidToken from '../../middlewares/checkValidToken';
 
 const authorsRouter = new Router();
 
-authorsRouter.get('/', checkValidToken, getAuthorsController.getAuthor);
+authorsRouter.get('/', checkValidToken, authorsController.getAuthors);
 
 export default authorsRouter;

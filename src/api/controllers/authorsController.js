@@ -5,14 +5,14 @@ import generatePaginationDetails from '../../helpers/generate.pagination.details
 const { Article } = models;
 const { User } = models;
 /**
- *
+ * contain a methode to fetck all authors in the system
  *
  * @export
- * @class getAuthors
+ * @class authorsController
  */
-export default class getAuthors {
+export default class authorsController {
   /**
-   *
+   * fetck all authors in the system
    *
    * @static
    * @param {array} req - request array
@@ -20,7 +20,7 @@ export default class getAuthors {
    * @returns {array} response body
    * @memberof getAuthors
    */
-  static async getAuthor(req, res) {
+  static async getAuthors(req, res) {
     const { offset, limit } = req.query;
     const paginatedUser = await User.findAndCountAll({
       attributes: ['id', 'username', 'email'],
