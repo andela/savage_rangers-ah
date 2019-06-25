@@ -79,10 +79,12 @@
     "functions": 100,
     "statements": 80,
     "exclude": [
+      "src/index.js",
       "src/configs/environments.js",
       "src/configs/redisConfigs.js",
-      "src/configs/passport.js",
-      "src/index.js"
+      "src/api/models",
+      "src/index.js",
+      "src/configs/passport.js"
     ]
   },
   "author": "Andela Simulations Programme",

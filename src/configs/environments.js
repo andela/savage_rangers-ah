@@ -15,6 +15,7 @@ const testDatabase = process.env.TEST_DATABASE;
 const host = process.env.HOST;
 const dialect = 'postgres';
 const port = process.env.DB_PORT;
+const userToken = process.env.TEST_USER_TOKEN;
 
 const environments = [
   {
@@ -31,7 +32,8 @@ const environments = [
     database: testDatabase,
     host,
     dialect,
-    port
+    port,
+    userToken
   },
   {
     name: 'development',

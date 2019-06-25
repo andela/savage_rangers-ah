@@ -244,37 +244,69 @@
       }
     },
     "/auth/signout": {
-      "get":{
-        "tags":["auth"],
-          "summary":"signs out the logged in user",
-          "description":"destroy the token",
-          "produces":["application/json"],
-          "parameters":[
-            {
-                "in":"header",
-                "name":"authorization",
-                "description":"token to be destroyed",
-                "required":true
-            }
-        ],
-        "responses":{
-          "200":{
-              "description":"You are signed out"
-          },
-          "401":{
-              "description":"You are unauthorized, Token is no longer valid"
-          },
-        "403":{
-          "description":"Forbiden access"
-      }
-      },
-      "security": [
+      "get": {
+        "tags": ["auth"],
+        "summary": "signs out the logged in user",
+        "description": "destroy the token",
+        "produces": ["application/json"],
+        "parameters": [
           {
-              "api_key":[]
+            "in": "header",
+            "name": "authorization",
+            "description": "token to be destroyed",
+            "required": true
           }
-      ]
-  }
+        ],
+        "responses": {
+          "200": {
+            "description": "You are signed out"
+          },
+          "401": {
+            "description": "You are unauthorized, Token is no longer valid"
+          },
+          "403": {
+            "description": "Forbiden access"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
       }
+    },
+    "/articles/{slug}/tags": {
+      "get": {
+        "tags": ["articles"],
+        "summary": "signs out the logged in user",
+        "description": "destroy the token",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "token to be destroyed",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tag added succesfuly"
+          },
+          "401": {
+            "description": "You are unauthorized, Token is no longer valid"
+          },
+          "403": {
+            "description": "Forbiden access"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    }
   },
   "externalDocs": {
     "description": "Find out more about Swagger",

@@ -5,5 +5,7 @@ export default {
   emptyBody: 'Server unable to process the recieved data',
   unkownEmail: "A user with the provided email doesn't exist",
   invalidLink: 'Invalid link provided',
-  incorectPassword: 'Incorect password provided'
+  incorectPassword: 'Incorect password provided',
+  tag: 'Invalid article tag provided',
+  existingTag: 'Tag already exist'
 };

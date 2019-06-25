@@ -12,6 +12,7 @@ const decodeJwt = (token) => {
   let retObj;
   jwt.verify(token, env.secret, (err, decodedObj) => {
     if (!err) retObj = decodedObj;
+    else throw new Error('could not decode the token');
   });
   return retObj;
 };
