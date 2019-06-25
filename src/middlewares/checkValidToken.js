@@ -1,11 +1,11 @@
-import 'dotenv/config';
 import jwt from 'jsonwebtoken';
+import 'dotenv/config';
+import isTokenDropped from '../helpers/tokens/getRedisToken';
 import statuses from '../helpers/constants/status.codes';
 import env from '../configs/environments';
 
 /**
  * A middleware to verify if the token is either valid or invalid
- * remember this middleware still needs to check if the token has been dropped or not (REDIS)
  *
  * @author Frank Mutabazi
  * @param {Object} req - The request object
@@ -19,6 +19,11 @@ const validToken = async (req, res, next) => {
   try {
     const payloadData = await jwt.verify(token, env.secret);
     req.user = payloadData;
+
+    const tokenStatus = await isTokenDropped(token);
+    if (tokenStatus === 'dropped') {
+      return res.send({ status: statuses.UNAUTHORIZED, error: 'Token is no longer valid' });
+    }
     next();
   } catch (err) {
     res.status(statuses.UNAUTHORIZED).json({

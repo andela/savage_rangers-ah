@@ -5,12 +5,7 @@ const salt = genSaltSync(parseFloat(env.hashRounds));
 const hashedPassword = hashSync('password23423', salt);
 
 module.exports = {
-  up: (queryInterface, Sequelize) =>
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-    */
-    queryInterface.bulkInsert('Users',
+  up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Users',
       [
         {
           username: 'Burindy',
@@ -22,10 +17,5 @@ module.exports = {
       ],
       {}),
 
-  down: (queryInterface, Sequelize) =>
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-    */
-    queryInterface.bulkDelete('Users', null, {})
+  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Users', null, {})
 };

@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 const Article = (sequelize, DataTypes) => {
   const article = sequelize.define('Articles',
     {

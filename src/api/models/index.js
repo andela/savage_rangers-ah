@@ -9,7 +9,6 @@ const sequelize = new Sequelize(env.dbUrl, {
 const models = {
   User: sequelize.import('./user'),
   Article: sequelize.import('./article'),
-  SequelizeMeta: sequelize.import('./sequelizemeta')
 };
 
 export { sequelize };
