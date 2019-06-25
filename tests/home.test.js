@@ -1,6 +1,5 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-
 import server from '../src/index';
 import status from '../src/helpers/constants/status.codes';
 

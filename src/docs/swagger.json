@@ -81,6 +81,69 @@
         }
       }
     },
+    "/users/facebook": {
+      "get": {
+        "tags": ["Users"],
+        "summary": ["Register/login facebook users"],
+        "description": [
+          "Register/login a facebook user and fetch the user profile"
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "User successfully authenticated"
+          },
+          "201": {
+            "description": "Account Successfully created"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/users/google": {
+      "get": {
+        "tags": ["Users"],
+        "summary": ["Register/login google users "],
+        "description": [
+          "Register/login a google user and fetch the user profile"
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "User successfully authenticated"
+          },
+          "201": {
+            "description": "Account Successfully created"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/users/twiter": {
+      "get": {
+        "tags": ["Users"],
+        "summary": ["Register/login twitter users"],
+        "description": [
+          "Register/login a twitter user and fetch the user profile"
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "User successfully authenticated"
+          },
+          "201": {
+            "description": "Account Successfully created"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/password-reset": {
       "post": {
         "tags": ["Users"],
@@ -179,7 +242,39 @@
           }
         }
       }
-    }
+    },
+    "/users/signout": {
+      "get":{
+        "tags":["auth"],
+          "summary":"signs out the logged in user",
+          "description":"destroy the token",
+          "produces":["application/json"],
+          "parameters":[
+            {
+                "in":"header",
+                "name":"authorization",
+                "description":"token to be destroyed",
+                "required":true
+            }
+        ],
+        "responses":{
+          "200":{
+              "description":"You are signed out"
+          },
+          "401":{
+              "description":"You are unauthorized, Token is no longer valid"
+          },
+        "403":{
+          "description":"Forbiden access"
+      }
+      },
+      "security": [
+          {
+              "api_key":[]
+          }
+      ]
+  }
+      }
   },
   "externalDocs": {
     "description": "Find out more about Swagger",

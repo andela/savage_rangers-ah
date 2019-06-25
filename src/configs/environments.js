@@ -1,5 +1,6 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const appPort = process.env.PORT;
 const env = process.env.NODE_ENV;
 const jwtSecret = process.env.TOKEN_KEY;
@@ -70,6 +71,7 @@ const environments = [
     secret: jwtSecret,
     mailerEmail,
     mailerToken,
+
     baseUrl,
     hashRounds,
     username,
@@ -82,4 +84,5 @@ const environments = [
 ];
 
 const currentEnv = environments.find(el => el.name === env.toLocaleLowerCase());
+
 module.exports = currentEnv;
