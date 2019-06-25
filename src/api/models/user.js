@@ -69,5 +69,10 @@ export default (sequelize, DataTypes) => {
     const queryResult = User.findOne({ where: { email } });
     return queryResult;
   };
+  User.associate = (models) => {
+    User.hasMany(models.Article, {
+      foreignKey: 'author'
+    });
+  };
   return User;
 };
