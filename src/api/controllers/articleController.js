@@ -1,17 +1,17 @@
+import cloudinary from 'cloudinary';
 import model from '../models';
 import slugHelper from '../../helpers/slug.maker';
 import statuses from '../../helpers/constants/status.codes';
 
 const { Article } = model;
 
-
 /**
- * this is the controller to update the article
+ * this is the article controller
  *
  * @export
- * @class UpdateArticle
+ * @class ArticleController
  */
-class UpdateArticle {
+class ArticleController {
   /**
    * allow an author to update his/her article
    *
@@ -19,17 +19,22 @@ class UpdateArticle {
    * @static
    * @param {object} req the request
    * @param {object} res the response to be sent
-   * @memberof UpdateArticle
+   * @memberof ArticleController
    * @returns {Object} res
    */
-  static async articleUpdate(req, res) {
+  static async updateArticle(req, res) {
     const { slug } = req.params;
     const {
       title, description, body, tagList, category
     } = req.body;
 
-    const slugCreation = slugHelper(title || req.Existing.title);
+    let { coverImage } = req.Existing;
 
+    const slugCreation = slugHelper(title || req.Existing.title);
+    if (req.file) {
+      const image = await cloudinary.v2.uploader.upload(req.file.path);
+      coverImage = image.secure_url;
+    }
     const updateContent = {
       slug: slugCreation,
       title: title || req.Existing.title,
@@ -43,18 +48,20 @@ class UpdateArticle {
       title: updateContent.title,
       description: updateContent.description,
       body: updateContent.body,
+      coverImage,
       tagList: updateContent.tagList,
-      category: updateContent.category,
-    }, {
+      category: updateContent.category
+    },
+    {
       where: {
-        slug,
+        slug
       }
     });
     return res.status(statuses.OK).json({
       status: statuses.OK,
-      message: 'Your Article is up-to-date now, Thanks',
+      message: 'Your Article is up-to-date now, Thanks'
     });
   }
 }
 
-export default UpdateArticle;
+export default ArticleController;

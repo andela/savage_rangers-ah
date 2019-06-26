@@ -29,6 +29,14 @@ const Article = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false
       },
+      coverImage: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      readTime: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       tagList: {
         type: DataTypes.ARRAY(DataTypes.TEXT),
         allowNull: false
@@ -48,7 +56,6 @@ const Article = (sequelize, DataTypes) => {
 
   Article.associate = (models) => {
     Article.belongsTo(models.User, { foreignKey: 'userId' });
-    Article.hasOne(models.Rating, { foreignKey: 'articleSlug' });
   };
   return article;
 };

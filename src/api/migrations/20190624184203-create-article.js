@@ -28,6 +28,14 @@ export default {
       type: Sequelize.TEXT,
       allowNull: false
     },
+    coverImage: {
+      type: Sequelize.TEXT,
+      allowNull: true
+    },
+    readTime: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
     tagList: {
       type: Sequelize.ARRAY(Sequelize.TEXT),
       allowNull: false

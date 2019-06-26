@@ -116,6 +116,18 @@ describe('Login', () => {
       });
   });
 
+  it('should check for a token and alert that it is no longer valid', (done) => {
+    chai
+      .request(server)
+      .get('/api/users/signout')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        res.body.should.have.status(status.UNAUTHORIZED);
+        res.body.should.have.property('error').eql('Token is no longer valid');
+        done();
+      });
+  });
+
   it('Should catch an error if the secret is not provided', () => {
     generateToken('user');
   });
