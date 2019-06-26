@@ -59,7 +59,6 @@
     "passport-twitter": "^1.0.4",
     "sinon": "^7.3.2",
     "sinon-chai": "^3.3.0",
-    "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
     "morgan": "^1.9.1",
