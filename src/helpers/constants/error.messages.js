@@ -58,5 +58,6 @@ export default {
   noSlug: 'There is no article with the slug provided',
   noAccess: 'you must be a Moderator or an Admin to perform this operation',
   noHighlight: 'No highlited text for this article',
-  coverImage: 'coverImage is required and must be a string'
+  coverImage: 'coverImage is required and must be a string',
+  noResult: 'No result found for your request',
 };
