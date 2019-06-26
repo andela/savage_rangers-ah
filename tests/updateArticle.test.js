@@ -9,7 +9,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 let token = '';
 
-describe('testing the update article route controller', () => {
+describe('testing the middlewares before reaching the update article controller', () => {
   it('should signup a user to be checking against', (done) => {
     chai
       .request(app)
@@ -77,7 +77,7 @@ describe('testing the update article route controller', () => {
   });
 });
 
-describe('testing for the middlewares', () => {
+describe('testing for the article update controller', () => {
   it('should login a user and get a token to use against', (done) => {
     chai
       .request(app)
@@ -91,7 +91,7 @@ describe('testing for the middlewares', () => {
         done();
       });
   });
-  it('should update the article', (done) => {
+  it('should update the article with new content', (done) => {
     const slug = 'How-to-create-sequalize-seeds';
     chai
       .request(app)
@@ -99,6 +99,22 @@ describe('testing for the middlewares', () => {
       .set('Authorization', token)
       .send({
         tagList: ['sequelize', 'postgres', 'controllers']
+      })
+      .end((err, res) => {
+        expect(res.status).eql(statuses.OK);
+        expect(res.body).to.have.property('message').eql('Your Article is up-to-date now, Thanks');
+        done();
+      });
+  });
+
+  it('should update the article with existing content', (done) => {
+    const slug = 'What-is-a-Version-1-UUID';
+    chai
+      .request(app)
+      .put(`/api/articles/${slug}`)
+      .set('Authorization', token)
+      .send({
+        tagList: '',
       })
       .end((err, res) => {
         expect(res.status).eql(statuses.OK);

@@ -18,8 +18,8 @@ export default {
       },
       {
         id: '263920cd-c7ad-45b0-a5d9-d12f7fe237c3',
-        title: 'What is a Version 1 UUID?',
-        slug: 'What-is-a-Version-1-UUID?',
+        title: 'What is a Version 1 UUID',
+        slug: 'What-is-a-Version-1-UUID',
         description: 'Velit non sit culpa pariatur proident',
         body:'A Version 1 UUID is a universall',
         category: 'Tech',
