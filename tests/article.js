@@ -44,9 +44,10 @@ describe('create article', () => {
   before((done) => {
     chai
       .request(server)
-      .post('/api/users/signup ')
+      .post('/api/users/signup')
       .send(user)
       .end((err, res) => {
+        console.log('res.data ===>', res.body.user.token);
         res.should.have.status(statusCode.CREATED);
         res.body.should.be.an('Object');
         userToken = res.body.user.token;

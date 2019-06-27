@@ -21,7 +21,7 @@ export default (sequelize, DataTypes) => {
       author: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        references: { model: 'users', key: 'id' }
+        references: { model: 'Users', key: 'id' }
       },
       category: {
         allowNull: false,

@@ -6,11 +6,8 @@ import logger from 'morgan';
 import apiRouter from './api/routes/index';
 import docsRouter from './api/routes/docs';
 import homeRouter from './api/routes/home';
-import register from './middlewares/register.app';
 import env from './configs/environments';
 
-const app = express();
-import env from './configs/environments';
 import passportConfig from './middlewares/passport';
 import './helpers/cloudnary';
 

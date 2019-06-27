@@ -6,8 +6,9 @@ export default {
   unkownEmail: "A user with the provided email doesn't exist",
   invalidLink: 'Invalid link provided',
   incorectPassword: 'Incorect password provided',
-  emailLinkInvalid: 'The link provided is  corrupt, please request a new one or try to click it again',
-  noUser: "User doesn't exist."
+  emailLinkInvalid:
+    'The link provided is  corrupt, please request a new one or try to click it again',
+  noUser: "User doesn't exist.",
   authenticationMessage: 'You have to login to perform this action.',
   serverError: 'Something went wrong',
   articleCreate: 'Article created',

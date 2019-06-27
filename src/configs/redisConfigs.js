@@ -6,7 +6,7 @@ dotenv.config();
 
 const consoleLog = pino();
 const clientConnection = redis.createClient({
-  url: process.env.REDIS_URL,
+  url: process.env.REDIS_URL
 });
 
 clientConnection.on('connect', (err) => {

@@ -39,9 +39,9 @@ export default class Auth {
       email,
       buttonText: 'Verify',
       userName: username,
-      message: "Please click on the link to verify your email for authors haven.If you didn't request this, simply ignore this e-mail.",
+      message:
+        "Please click on the link to verify your email for authors haven.If you didn't request this, simply ignore this e-mail.",
       link: `${env.baseUrl}/users/verifyEmail`
-
     });
     const tokenData = { id: user.dataValues.id, username, email };
     const token = generateToken(tokenData, env.secret);

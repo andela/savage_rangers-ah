@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const User = sequelize.define('User',
+  const User = sequelize.define('Users',
     {
       username: {
         type: DataTypes.STRING
@@ -53,7 +53,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING
       }
     },
-    { tableName: 'users' });
+    { tableName: 'Users' });
   User.associate = (models) => {
     User.hasMany(models.Article, {
       foreignKey: 'userId',
