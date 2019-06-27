@@ -18,6 +18,10 @@ export default (sequelize, DataTypes) => {
       body: { type: DataTypes.TEXT, allowNull: false },
       slug: { type: DataTypes.STRING, allowNull: false },
       coverImage: { type: DataTypes.TEXT, allowNull: false },
+      readTime: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+      },
       author: {
         allowNull: false,
         type: DataTypes.INTEGER,
