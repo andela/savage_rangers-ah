@@ -62,6 +62,5 @@ export default (sequelize, DataTypes) => {
 
     return queryResult;
   };
-
   return User;
 };

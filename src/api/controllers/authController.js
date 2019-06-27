@@ -1,11 +1,13 @@
 import bcrypt, { hashSync, genSaltSync } from 'bcrypt';
-import models from '../models/index';
+import models from '../models';
 import generateToken from '../../helpers/tokens/generate.token';
 import sendResult from '../../helpers/results/send.auth';
+import blackList from '../../helpers/Blacklist.redis';
 import status from '../../helpers/constants/status.codes';
 import env from '../../configs/environments';
 import sendError from '../../helpers/error.sender';
 import errors from '../../helpers/constants/error.messages';
+import mailer from '../../helpers/Mailer/index';
 
 const { User } = models;
 /**
@@ -32,6 +34,14 @@ export default class Auth {
       username,
       email,
       password: hashedPassword
+    });
+    await mailer('Please verify your email', 'Email verification', email, 'notifications', {
+      email,
+      buttonText: 'Verify',
+      userName: username,
+      message: "Please click on the link to verify your email for authors haven.If you didn't request this, simply ignore this e-mail.",
+      link: `${env.baseUrl}/users/verifyEmail`
+
     });
     const tokenData = { id: user.dataValues.id, username, email };
     const token = generateToken(tokenData, env.secret);
@@ -61,5 +71,30 @@ export default class Auth {
       }
       return sendError(status.NOT_FOUND, res, 'email', errors.unkownEmail);
     });
+  }
+
+  /**
+   * Signout a user from the system
+   *
+   * @author: Frank Mutabazi
+   * @static
+   * @param {object} req - the request object
+   * @param {object} res - the result object
+   * @memberof signout
+   * @returns {object} - the response body
+   */
+  static async signout(req, res) {
+    const token = req.headers.authorization;
+    try {
+      const blackToken = blackList(token);
+      if (blackToken) {
+        return res.status(status.OK).json({
+          status: status.OK,
+          message: 'You are signed out'
+        });
+      }
+    } catch (err) {
+      return sendError(status.SERVER_ERROR, res, 'logout', 'Please try again, Thanks');
+    }
   }
 }

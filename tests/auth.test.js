@@ -23,6 +23,9 @@ const data = {
 // The email of the user from the reset password endpoint
 let userEmail;
 
+// the token to use in logging out
+let userToken = '';
+
 describe('Signup', () => {
   it('should register and give the token', (done) => {
     chai
@@ -39,8 +42,9 @@ describe('Signup', () => {
         res.body.should.have.property('user');
         res.body.user.should.have.property('email');
         res.body.user.should.have.property('token');
-        res.body.user.should.have.property('username');
-        const valid = isTokenValid(res.body.user.token, data);
+        res.body.user.should.have.property('username', data.username);
+        userToken = res.body.user.token;
+        const valid = isTokenValid(userToken, data);
         valid.should.be.a('boolean').equal(true);
         done();
       });
@@ -96,6 +100,18 @@ describe('Login', () => {
       .end((err, res) => {
         res.should.have.status(status.NOT_FOUND);
         res.body.should.have.property('errors').which.has.property('email', errors.unkownEmail);
+        done();
+      });
+  });
+
+  it('should logout a user', (done) => {
+    chai
+      .request(server)
+      .get('/api/users/signout')
+      .set('authorization', userToken)
+      .end((err, res) => {
+        res.body.should.have.status(status.OK);
+        res.body.should.have.property('message', 'You are signed out');
         done();
       });
   });
