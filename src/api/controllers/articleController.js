@@ -31,6 +31,7 @@ class ArticleController {
     let { coverImage } = req.Existing;
 
     const slugCreation = slugHelper(title || req.Existing.title);
+
     if (req.file) {
       const image = await cloudinary.v2.uploader.upload(req.file.path);
       coverImage = image.secure_url;
@@ -41,7 +42,7 @@ class ArticleController {
       description: description || req.Existing.description,
       body: body || req.Existing.body,
       tagList: tagList || req.Existing.tagList,
-      category: category || req.Existing.category
+      category: category || req.Existing.category,
     };
     await Article.update({
       slug: updateContent.slug,
@@ -50,7 +51,7 @@ class ArticleController {
       body: updateContent.body,
       coverImage,
       tagList: updateContent.tagList,
-      category: updateContent.category
+      category: updateContent.category,
     },
     {
       where: {

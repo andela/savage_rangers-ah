@@ -3,7 +3,7 @@ import statusCode from '../helpers/constants/status.codes';
 
 const { Article } = models;
 /**
- * containing all user's model controllers (signup, login)
+ * check if the user is the owner of a certain article based on the slug
  *
  * @export
  * @class CheckUserOwnership

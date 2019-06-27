@@ -1,4 +1,3 @@
-/* eslint-disable prefer-destructuring */
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/index';
@@ -7,7 +6,7 @@ import statuses from '../src/helpers/constants/status.codes';
 
 const { expect } = chai;
 chai.use(chaiHttp);
-let token = '';
+let UserToken = '';
 
 describe('testing the middlewares before reaching the update article controller', () => {
   it('should signup a user to be checking against', (done) => {
@@ -20,7 +19,7 @@ describe('testing the middlewares before reaching the update article controller'
         password: 'MUfra123qwe'
       })
       .end((err, res) => {
-        token = res.body.user.token;
+        UserToken = res.body.user.token;
         done();
       });
   });
@@ -33,7 +32,7 @@ describe('testing the middlewares before reaching the update article controller'
         password: 'MUfra123qwe'
       })
       .end((err, res) => {
-        token = res.body.user.token;
+        UserToken = res.body.user.token;
         done();
       });
   });
@@ -42,7 +41,7 @@ describe('testing the middlewares before reaching the update article controller'
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
-      .set('Authorization', token)
+      .set('Authorization', UserToken)
       .send({
         tagList: ['Yoga', 'Health']
       })
@@ -60,7 +59,7 @@ describe('testing the middlewares before reaching the update article controller'
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
-      .set('Authorization', token)
+      .set('Authorization', UserToken)
       .send({
         tagList: ['sequelize', 'postgres', 'controllers']
       })
@@ -93,7 +92,7 @@ describe('testing testing testing and testing for the article update controller'
         password: 'password23423'
       })
       .end((err, res) => {
-        token = res.body.user.token;
+        UserToken = res.body.user.token;
         done();
       });
   });
@@ -102,7 +101,7 @@ describe('testing testing testing and testing for the article update controller'
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
-      .set('Authorization', token)
+      .set('Authorization', UserToken)
       .field({
         tagList: ['sequelize', 'postgres', 'controllers']
       })
@@ -121,7 +120,7 @@ describe('testing testing testing and testing for the article update controller'
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
-      .set('Authorization', token)
+      .set('Authorization', UserToken)
       .send({
         tagList: ''
       })

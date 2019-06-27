@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-import slugHelper from '../../helpers/slug.maker';
-
 export default {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Articles',
     [
@@ -12,7 +9,6 @@ export default {
         body: 'Suppose we want to insert some data.',
         coverImage: 'default.jpeg',
         category: 'Tech',
-        readTime: 15,
         userId: 1,
         tagList: ['postgres', 'express', 'sequelize'],
         createdAt: new Date(),
@@ -26,7 +22,6 @@ export default {
         body:'A Version 1 UUID is a universall',
         coverImage: 'default.jpeg',
         category: 'Tech',
-        readTime: 25,
         userId: 1,
         tagList: ['UUID', 'express', 'sequelize'],
         createdAt: new Date(),

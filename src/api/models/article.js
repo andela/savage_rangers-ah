@@ -33,10 +33,6 @@ const Article = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true
       },
-      readTime: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
       tagList: {
         type: DataTypes.ARRAY(DataTypes.TEXT),
         allowNull: false

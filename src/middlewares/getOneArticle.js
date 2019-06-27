@@ -3,14 +3,14 @@ import statusCode from '../helpers/constants/status.codes';
 
 const { Article } = models;
 /**
- * containing all user's model controllers (signup, login)
+ * get a single article middleware
  *
  * @export
  * @class getOneArticle
  */
 class getOneArticle {
   /**
-   * this is a middleware which checks if the user is registered in to our database.
+   * this is a middleware which checks if the article slug is registered in to our database.
    *
    * @author Frank Mutabazi
    * @static
