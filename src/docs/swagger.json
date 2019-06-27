@@ -406,7 +406,8 @@
             }
           }
         }
-      },
+      }
+    },
       "/articles/{slug}": {
         "patch": {
           "tags": ["Articles"],
@@ -448,13 +449,69 @@
               "description": "Please you must be the owner of this Article in order to modify it, Thanks"
             }
           }
-        },
+        }
+    },
+    "/articles/": {
+      "get": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Get a list of all articles",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Profile updated correctly"
+            "description": "Return a list of articles"
           },
-          "400": {
-            "description": "Invlid input(s)"
+          "404": {
+            "description": "There are no articles at the moment, Please try again later"
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
+        }
+      }
+    },
+    "articles/{slug}": {
+      "get": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "Get a single articles",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "description": "",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a single articles"
+          },
+          "404": {
+            "description": "Not found"
           },
           "default": {
             "description": "Something went wrong"

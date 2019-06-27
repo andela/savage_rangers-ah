@@ -21,6 +21,8 @@ articleRouter.post('/:slug/rating',
   checkExistingRates.ExistingRating,
   ratingsController.rateArticle);
 
+articleRouter.get('/', articleController.getArticles);
+articleRouter.get('/:slug', articleController.getArticle);
 articleRouter.patch('/:slug',
   uploadImage.single('coverImage'),
   checkValidToken,

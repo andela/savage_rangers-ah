@@ -28,6 +28,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "chai-like": "^1.1.1",
     "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -50,6 +51,7 @@
     "babel-plugin-istanbul": "^5.1.2",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
+    "chai-things": "^0.2.0",
     "cloudinary": "^1.14.0",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",

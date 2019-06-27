@@ -21,6 +21,7 @@ export default (sequelize, DataTypes) => {
   Category.associate = (models) => {
     Category.hasMany(models.Article, {
       foreignKey: 'category',
+      as: 'Category',
       onDelete: 'CASCADE',
       hooks: true
     });
