@@ -1,8 +1,8 @@
 import slug from 'slug';
 
-const THIRTY_SIX = 36;
-const SIX = 6;
-const ZERO = 0;
+const slugRandomNumberOne = 36;
+const slugRandomNumberTwo = 6;
+const SlugDefaultNumber = 0;
 
 export default (sequelize, DataTypes) => {
   const Article = sequelize.define('Articles',
@@ -18,6 +18,11 @@ export default (sequelize, DataTypes) => {
       body: { type: DataTypes.TEXT, allowNull: false },
       slug: { type: DataTypes.STRING, allowNull: false },
       coverImage: { type: DataTypes.TEXT, allowNull: false },
+      tagList: {
+        type: DataTypes.ARRAY(DataTypes.TEXT),
+        allowNull: true
+      },
+
       author: {
         allowNull: false,
         type: DataTypes.INTEGER,
@@ -26,15 +31,18 @@ export default (sequelize, DataTypes) => {
       category: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        references: { model: 'categories', key: 'id' }
+        references: { model: 'Categories', key: 'id' }
       }
     },
     {
-      tableName: 'articles',
+      tableName: 'Articles',
+      timestamps: true,
       paranoid: true,
       hooks: {
         beforeCreate(article) {
-          article.slug = slug(`${article.title}-${(Math.random() * THIRTY_SIX ** SIX || ZERO).toString(THIRTY_SIX)}`).toLowerCase();
+          article.slug = slug(`${article.title}-${(
+            Math.random() * slugRandomNumberOne ** slugRandomNumberTwo || SlugDefaultNumber
+          ).toString(slugRandomNumberOne)}`).toLowerCase();
         }
       }
     });
