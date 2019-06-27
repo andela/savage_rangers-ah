@@ -30,31 +30,30 @@ export default class ArticleController {
    * @returns {Object} res
    */
   static async create(req, res) {
-    const { id: author } = req.user;
-    const valid = await articleValidator(req.body);
-    const { category: name } = req.body;
-    let image = '';
+    const { id: author } = req.user.user;
 
+    const articleValidInput = await articleValidator(req.body);
+    const { category: id } = req.body;
+    let coverImage;
     if (req.file) {
-      const saved = await cloudinary.v2.uploader.upload(req.file.path);
-      image = saved.secure_url;
+      const savedFile = await cloudinary.v2.uploader.upload(req.file.path);
+      coverImage = savedFile.secure_url;
     }
-    await Category.findOrCreate({ where: { name } }).spread(async (cat) => {
-      const { id: category } = cat.get();
-      const article = await Article.create({
-        ...valid,
-        slug: '',
-        author,
-        category,
-        image
-      });
-      if (article) {
-        return res.status(CREATED).json({
-          message: errorMessage.articleCreate,
-          article: article.get()
-        });
-      }
+    const getCategory = await Category.findOne({ where: { id } });
+    const { id: category } = getCategory.dataValues;
+    const article = await Article.create({
+      ...articleValidInput,
+      slug: '',
+      author,
+      category,
+      coverImage
     });
+    if (article) {
+      return res.status(CREATED).json({
+        message: errorMessage.articleCreate,
+        article: article.get()
+      });
+    }
   }
 
   /**
@@ -89,13 +88,13 @@ export default class ArticleController {
       tagList: tagList || req.Existing.tagList,
       category: category || req.Existing.category
     };
+
     await Article.update({
       slug: updateContent.slug,
       title: updateContent.title,
       description: updateContent.description,
       body: updateContent.body,
       coverImage,
-      tagList: updateContent.tagList,
       category: updateContent.category
     },
     {

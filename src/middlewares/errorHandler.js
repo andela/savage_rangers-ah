@@ -1,17 +1,15 @@
 import statusCodes from '../helpers/constants/status.codes';
-import errorMessages from '../helpers/constants/error.messages';
+import errorSender from '../helpers/error.sender';
 
 const { BAD_REQUEST, SERVER_ERROR } = statusCodes;
-const { serverError } = errorMessages;
 
 export default callback => async (req, res, next) => {
   try {
     await callback(req, res, next);
   } catch (error) {
-    console.log(error);
-    const { parent, details } = error;
-    if (parent) return res.status(SERVER_ERROR).json({ message: parent.detail });
-    if (details) return res.status(BAD_REQUEST).json({ message: details[0].message });
-    return res.status(SERVER_ERROR).json({ message: serverError });
+    const { parent, isJoi = false, details } = error;
+    if (parent) return errorSender(SERVER_ERROR, res, 'internal server error', parent.detail);
+    if (isJoi) return errorSender(BAD_REQUEST, res, 'internal server error', details[0].message);
+    return res.status(SERVER_ERROR).json(error);
   }
 };

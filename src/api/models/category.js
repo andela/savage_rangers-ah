@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const Category = sequelize.define('Category',
+  const Category = sequelize.define('Categories',
     {
       id: {
         allowNull: false,
@@ -10,7 +10,7 @@ export default (sequelize, DataTypes) => {
       name: { type: DataTypes.STRING, allowNull: false }
     },
     {
-      tableName: 'categories',
+      tableName: 'Categories',
       hooks: {
         beforeCreate(category) {
           category.name = category.name.toUpperCase();
@@ -19,7 +19,7 @@ export default (sequelize, DataTypes) => {
     });
 
   Category.associate = (models) => {
-    Category.hasMany(models.Article, {
+    Category.hasMany(models.Articles, {
       foreignKey: 'categoryId',
       as: 'category',
       onDelete: 'CASCADE',

@@ -28,7 +28,8 @@ const validToken = async (req, res, next) => {
   } catch (err) {
     res.status(statuses.UNAUTHORIZED).json({
       status: statuses.UNAUTHORIZED,
-      message: 'Forbiden access'
+      message: 'Forbiden access',
+      error: `${err}`
     });
   }
 };

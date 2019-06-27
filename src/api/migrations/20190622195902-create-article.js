@@ -1,5 +1,5 @@
 export default {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('articles', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Articles', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -10,7 +10,12 @@ export default {
     description: { type: Sequelize.TEXT, allowNull: false },
     body: { type: Sequelize.TEXT, allowNull: false },
     slug: { type: Sequelize.STRING, allowNull: false },
-    image: { type: Sequelize.TEXT, allowNull: false },
+    coverImage: { type: Sequelize.TEXT, allowNull: false },
+    tagList: {
+      type: Sequelize.ARRAY(Sequelize.TEXT),
+      allowNull: true
+    },
+
     author: {
       allowNull: false,
       type: Sequelize.INTEGER,
@@ -19,7 +24,7 @@ export default {
     category: {
       allowNull: false,
       type: Sequelize.INTEGER,
-      references: { model: 'categories', key: 'id' }
+      references: { model: 'Categories', key: 'id' }
     },
     createdAt: {
       allowNull: false,
@@ -28,7 +33,11 @@ export default {
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE
+    },
+    deletedAt: {
+      allowNull: true,
+      type: Sequelize.DATE
     }
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('articles')
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Articles')
 };
