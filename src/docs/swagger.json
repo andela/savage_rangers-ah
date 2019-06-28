@@ -243,17 +243,17 @@
         }
       }
     },
-    "/auth/signout": {
+    "/users/signout": {
       "get":{
         "tags":["auth"],
           "summary":"signs out the logged in user",
-          "description":"destroy the token",
+          "description":"drop the token",
           "produces":["application/json"],
           "parameters":[
             {
                 "in":"header",
                 "name":"authorization",
-                "description":"token to be destroyed",
+                "description":"token to be dropped",
                 "required":true
             }
         ],
@@ -274,6 +274,49 @@
           }
       ]
   }
+      },
+      "/articles/{slug}": {
+        "patch": {
+          "tags": ["Articles"],
+        "summary": "Update the article based on its current s-l-u-g",
+        "description": "update article by slug",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters":[
+          {
+            "in":"header",
+            "name":"authorization",
+            "description":"user token to verify",
+            "required":true
+          },
+          {
+            "in":"path",
+            "name":"slug",
+            "description":"slug to be used in updating the article",
+            "required":true
+          },
+          {
+            "in":"body",
+            "name":"body",
+            "description":"update all of the body or any property among them",
+            "required":true
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "Your Article is up-to-date now, Thanks"
+          },
+          "404":{
+            "description": "Article with this { slug } is not found, Thanks"
+          },
+          "403": {
+            "description": "Forbiden access"
+          },
+          "401": {
+            "description": "Please you must be the owner of this Article in order to modify it, Thanks"
+          }
+        }
+        }
       }
   },
   "externalDocs": {
@@ -360,7 +403,28 @@
             "type": "string"
           }
         }
+      },
+      "article": {
+        "type":"object",
+        "properties": {
+          "title": {
+            "type":"string"
+          },
+          "description": {
+            "type":"string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "tagList": {
+            "type":"string"
+          },
+          "category": {
+            "type": "string"
+          }
+        }
       }
+
     }
   }
 }
