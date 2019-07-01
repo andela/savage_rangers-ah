@@ -5,6 +5,8 @@ import articleRouter from './articleRouter';
 import profileRouter from './profileRouter';
 import authorsRouter from './authorsRoutes';
 import adminRouter from './adminRouter';
+import bookmarkRouter from './bookmarkRouter';
+
 
 const router = express();
 router.use('/password-reset', resetRouter);
@@ -14,5 +16,6 @@ router.use('/authors', authorsRouter);
 router.use('/profiles', profileRouter);
 
 router.use('/admin', adminRouter);
+router.use('/bookmarks', bookmarkRouter);
 
 export default router;

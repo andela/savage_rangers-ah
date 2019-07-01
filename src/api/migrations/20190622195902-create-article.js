@@ -9,7 +9,7 @@ export default {
     title: { type: Sequelize.STRING, allowNull: false },
     description: { type: Sequelize.TEXT, allowNull: false },
     body: { type: Sequelize.TEXT, allowNull: false },
-    slug: { type: Sequelize.STRING, allowNull: false },
+    slug: { type: Sequelize.STRING, allowNull: false, unique: true },
     coverImage: { type: Sequelize.TEXT, allowNull: false },
     tagList: {
       type: Sequelize.ARRAY(Sequelize.TEXT),

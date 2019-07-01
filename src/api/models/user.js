@@ -2,7 +2,8 @@ export default (sequelize, DataTypes) => {
   const User = sequelize.define('Users',
     {
       username: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        unique: true
       },
       email: {
         type: DataTypes.STRING
@@ -65,11 +66,15 @@ export default (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.hasMany(models.Article, {
       foreignKey: 'author',
+      sourceKey: 'id',
       onDelete: 'CASCADE',
       hooks: true
     });
     User.hasMany(models.Rating, {
-      foreignKey: 'userId'
+      foreignKey: 'userId' 
+    });
+    User.hasMany(models.Bookmark, {
+      foreignKey: 'username',
     });
     User.hasMany(models.Highlight, {
       foreignKey: 'userId',
@@ -91,5 +96,6 @@ export default (sequelize, DataTypes) => {
 
     return queryResult;
   };
+  
   return User;
 };
