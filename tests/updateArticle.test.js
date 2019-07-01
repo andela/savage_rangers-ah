@@ -60,7 +60,7 @@ describe('testing the middlewares before reaching the update article controller'
       .patch(`/api/articles/${slug}`)
       .set('authorization', UserToken)
       .send({
-        body: ['how did the classical Latin become']
+        body: 'how did the classical Latin become'
       })
       .end((err, res) => {
         expect(res.status).eql(status.ACCESS_DENIED);

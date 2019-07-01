@@ -10,7 +10,9 @@ const models = {
   User: sequelize.import('./user'),
   Article: sequelize.import('./article'),
   Category: sequelize.import('./category'),
-  Rating: sequelize.import('./rating')
+  Rating: sequelize.import('./rating'),
+  Report: sequelize.import('./report'),
+  Reason: sequelize.import('./reasons')
 };
 
 Object.keys(models).forEach((key) => {

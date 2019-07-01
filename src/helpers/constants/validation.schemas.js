@@ -95,5 +95,15 @@ export default {
     rating: number
       .valid(numbers.ONE, numbers.TWO, numbers.THREE, numbers.FOUR, numbers.FIVE)
       .required()
+  }),
+  reportArticle: Joi.object().keys({
+    reason: number.min(1).integer().required()
+  }),
+  updateArticle: Joi.object().keys({
+    title: Joi.string().allow(''),
+    description: Joi.string().allow(''),
+    body: Joi.string().allow(''),
+    category: Joi.string().uppercase().allow(''),
+    tagList: Joi.array().items(Joi.string().alphanum()).allow('')
   })
 };

@@ -6,7 +6,10 @@ import articleValidator from '../../helpers/validators/articleValidator';
 import errorSender from '../../helpers/error.sender';
 import generatePagination from '../../helpers/generate.pagination.details';
 
-const { Article, Category, User } = models;
+const {
+  Article, Category, User, Report
+} = models;
+
 const { CREATED } = statusCodes;
 
 /**
@@ -179,6 +182,7 @@ export default class ArticleController {
       const image = await cloudinary.v2.uploader.upload(req.file.path);
       coverImage = image.secure_url;
     }
+
     const updateContent = {
       title: title || req.Existing.title,
       description: description || req.Existing.description,
@@ -203,5 +207,45 @@ export default class ArticleController {
       status: statusCodes.OK,
       message: 'Your Article is up-to-date now, Thanks'
     });
+  }
+
+  /**
+   * allow an author to report a certain article as inappropriate
+   *
+   * @author Frank Mutabazi
+   * @static
+   * @param {object} req the request
+   * @param {object} res the response to be sent
+   * @memberof ArticleController
+   * @returns {Object} res
+   */
+  static async reportAnArticle(req, res) {
+    const { slug } = req.params;
+    const { reason } = req.body;
+    const {
+      user: { id }
+    } = req.user;
+    try {
+      const response = await Report.findOrCreate({
+        where: {
+          userId: id,
+          reportedArticleSlug: slug,
+          reasonId: reason
+        }
+      });
+
+      return response[0]._options.isNewRecord === false ? errorSender(statusCodes.BAD_REQUEST,
+        res,
+        'Message',
+        `Sorry, You can not report this ${slug} with the same reason twice, Thanks `) : res.status(statusCodes.CREATED).json({
+        status: statusCodes.CREATED,
+        message: `Report for ${slug} is successfully submitted, Thanks`
+      });
+    } catch (SequelizeForeignKeyConstraintError) {
+      errorSender(statusCodes.NOT_FOUND,
+        res,
+        'Message',
+        'Sorry, but that reason does not exist, Thanks');
+    }
   }
 }

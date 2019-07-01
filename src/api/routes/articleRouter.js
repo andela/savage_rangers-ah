@@ -28,6 +28,7 @@ articleRouter.patch('/:slug',
   checkValidToken,
   bodyVerifier,
   checkArticle.getArticle,
+  validateInputs('updateArticle', ['title', 'description', 'body', 'category', 'tagList']),
   checkArticleOwner.checkOwner,
   articleController.updateArticle);
 
@@ -49,5 +50,13 @@ articleRouter.delete('/:slug',
   checkValidToken,
   checkArticleOwner.checkOwner,
   articleController.delete);
+
+articleRouter.post('/:slug/report',
+  checkValidToken,
+  bodyVerifier,
+  checkArticle.getArticle,
+  validateInputs('reportArticle', ['reason']),
+  checkArticleOwner.checkOwner,
+  articleController.reportAnArticle);
 
 export default articleRouter;
