@@ -1,8 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/index';
-import slugMaker from '../src/helpers/slug.maker';
-import statuses from '../src/helpers/constants/status.codes';
+import status from '../src/helpers/constants/status.codes';
 
 const { expect } = chai;
 chai.use(chaiHttp);
@@ -46,7 +45,7 @@ describe('testing the middlewares before reaching the update article controller'
         body: ['how did the classical Latin become']
       })
       .end((err, res) => {
-        expect(res.status).eql(statuses.NOT_FOUND);
+        expect(res.status).eql(status.NOT_FOUND);
         expect(res.body)
           .to.have.property('message')
           .eql(`Article with this ${slug} is not found, Thanks`);
@@ -64,25 +63,16 @@ describe('testing the middlewares before reaching the update article controller'
         body: ['how did the classical Latin become']
       })
       .end((err, res) => {
-        expect(res.status).eql(statuses.ACCESS_DENIED);
+        expect(res.status).eql(status.ACCESS_DENIED);
         expect(res.body)
           .to.have.property('message')
           .eql('Please you must be the owner of this Article in order to modify it, Thanks');
         done();
       });
   });
-
-  it('should check for the slug maker', (done) => {
-    const title = 'meditate about yourself';
-    const slugWord = slugMaker(title);
-    expect(slugWord)
-      .to.be.a('string')
-      .eql(slugWord);
-    done();
-  });
 });
 
-describe('testing testing testing and testing for the article update controller', () => {
+describe('testing for the article update controller', () => {
   it('should login a user and get a token to use against', (done) => {
     chai
       .request(app)
@@ -107,7 +97,7 @@ describe('testing testing testing and testing for the article update controller'
       })
       .attach('coverImage', './tests/images/eric.jpg', 'eric.jpg')
       .end((err, res) => {
-        expect(res.status).eql(statuses.OK);
+        expect(res.status).eql(status.OK);
         expect(res.body)
           .to.have.property('message')
           .eql('Your Article is up-to-date now, Thanks');
@@ -125,7 +115,7 @@ describe('testing testing testing and testing for the article update controller'
         body: ''
       })
       .end((err, res) => {
-        expect(res.status).eql(statuses.OK);
+        expect(res.status).eql(status.OK);
         expect(res.body)
           .to.have.property('message')
           .eql('Your Article is up-to-date now, Thanks');

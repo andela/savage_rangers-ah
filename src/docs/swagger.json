@@ -248,6 +248,46 @@
         }
       }
     },
+    "/articles/{slug}/rating": {
+      "post": {
+        "tags":["articles"],
+        "summary": "Rating a specific article based on its slug",
+        "description": "Rating",
+        "produces":["application/json"],
+        "consumes":["application/json"],
+        "parameters":[
+            {
+              "in":"header",
+              "name":"authorization",
+              "description":"user token to verify",
+              "required":true
+            },
+            {
+              "in":"path",
+              "name":"slug",
+              "description":"slug to be used in rating an article",
+              "required":true
+            },
+            {
+              "in":"body",
+              "name":"rating",
+              "description":"update all of the body or any property among them",
+              "required":true
+            }
+        ],
+        "response": {
+          "201": {
+            "description": "Rating for ${slug} submitted successfully"
+          },
+          "400":{
+            "description": "Sorry, you can not update this article twice with the same rating number, please update it"
+          },
+          "403": {
+            "description": "Forbiden access"
+          }
+        }
+      }
+    },
     "/password-reset/update/{email}": {
       "post": {
         "tags": [
@@ -296,9 +336,7 @@
     },
     "/users/signout": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["Users"],
         "summary": "signs out the logged in user",
         "description": "drop the token",
         "produces": [
