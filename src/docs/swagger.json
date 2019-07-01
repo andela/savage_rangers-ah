@@ -208,27 +208,27 @@
         "tags": ["articles"],
         "summary": "Rating a specific article based on its slug",
         "description": "Rating",
-        "produces":["application/json"],
-        "consumes":["application/json"],
-        "parameters":[
-            {
-              "in":"header",
-              "name":"authorization",
-              "description":"user token to verify",
-              "required":true
-            },
-            {
-              "in":"path",
-              "name":"slug",
-              "description":"slug to be used in rating an article",
-              "required":true
-            },
-            {
-              "in":"body",
-              "name":"rating",
-              "description":"rate an article based on the body input value",
-              "required":true
-            }
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "user token to verify",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "slug",
+            "description": "slug to be used in rating an article",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "rating",
+            "description": "rate an article based on the body input value",
+            "required": true
+          }
         ],
         "response": {
           "201": {
@@ -245,36 +245,36 @@
     },
     "/articles/${slug}/report": {
       "post": {
-        "tags":["articles"],
+        "tags": ["articles"],
         "summary": "Report an article as inappropriate",
         "description": "Report",
-        "produces":["application/json"],
-        "consumes":["application/json"],
-        "parameters":[
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
           {
-            "in":"header",
-            "name":"authorization",
-            "description":"user token to verify",
-            "required":true
+            "in": "header",
+            "name": "authorization",
+            "description": "user token to verify",
+            "required": true
           },
           {
-            "in":"path",
-            "name":"slug",
-            "description":"slug to be used in reporting an article",
-            "required":true
+            "in": "path",
+            "name": "slug",
+            "description": "slug to be used in reporting an article",
+            "required": true
           },
           {
-            "in":"body",
-            "name":"reason",
-            "description":"report an article based on the reason provided in the request body",
-            "required":true
+            "in": "body",
+            "name": "reason",
+            "description": "report an article based on the reason provided in the request body",
+            "required": true
           }
         ],
         "response": {
           "201": {
             "description": "Report for ${slug} is successfully submitted, Thanks"
           },
-          "400":{
+          "400": {
             "description": "Sorry, you can not report this article with the same reason twice, Thanks"
           },
           "403": {
@@ -285,7 +285,6 @@
           }
         }
       }
-
     },
     "/password-reset/update/{email}": {
       "post": {
@@ -696,6 +695,220 @@
           }
         }
       },
+
+      "/admin/users": {
+        "create": {
+          "tags": ["Admin"],
+          "summary": "allow Admin to create a user",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "must be admin",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User created successfully"
+            },
+            "401": {
+              "description": "Please you must be the Admin"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        }
+      },
+
+      "/admin/users/:email": {
+        "patch": {
+          "tags": ["Admin"],
+          "summary": "allow Admin to update a user",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "must be admin",
+              "required": true
+            },
+            {
+              "in": "path",
+              "name": "email",
+              "description": "update user",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User updated successfully"
+            },
+            "401": {
+              "description": "Please you must be the Admin in order to modify it, Thanks"
+            },
+            "403": {
+              "description": "User does exist"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        }
+      },
+
+      "/admin/users/add/moderator/:email": {
+        "patch": {
+          "tags": ["Admin"],
+          "summary": "allow Admin to make a user a moderetor",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "must be admin",
+              "required": true
+            },
+            {
+              "in": "path",
+              "name": "email",
+              "description": "update user role user",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User updated successfully"
+            },
+            "401": {
+              "description": "Please you must be the Admin in order to modify it, Thanks"
+            },
+            "403": {
+              "description": "User is already a moderetor"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        }
+      },
+
+      "/admin/users/remove/moderator/:email": {
+        "patch": {
+          "tags": ["Admin"],
+          "summary": "allow Admin to remove a user from moderetor role",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "must be admin",
+              "required": true
+            },
+            {
+              "in": "path",
+              "name": "email",
+              "description": "update user role user",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User updated successfully"
+            },
+            "401": {
+              "description": "Please you must be the Admin in order to modify it, Thanks"
+            },
+            "403": {
+              "description": "User is not a moderetor"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        }
+      },
+
+      "/admin/users/block/:email": {
+        "patch": {
+          "tags": ["Admin"],
+          "summary": "allow Admin to block a user a moderetor",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "must be admin",
+              "required": true
+            },
+            {
+              "in": "path",
+              "name": "email",
+              "description": "block user",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User blocked successfully"
+            },
+            "401": {
+              "description": "Please you must be the Admin in order to modify it, Thanks"
+            },
+            "403": {
+              "description": "User is already a blocked"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        }
+      },
+
+      "/admin/users/unblock/:email": {
+        "patch": {
+          "tags": ["Admin"],
+          "summary": "allow Admin to unblock a user a moderetor",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "must be admin",
+              "required": true
+            },
+            {
+              "in": "path",
+              "name": "email",
+              "description": "unblock user",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User unblocked successfully"
+            },
+            "401": {
+              "description": "Please you must be the Admin in order to modify it, Thanks"
+            },
+            "403": {
+              "description": "User is already a unblocked"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        }
+      },
+
       "externalDocs": {
         "description": "Find out more about Swagger",
         "url": "http://swagger.io"

@@ -51,6 +51,14 @@ export default (sequelize, DataTypes) => {
       },
       twitter: {
         type: DataTypes.STRING
+      },
+      role: {
+        type: DataTypes.STRING,
+        defaultValue: 'normal'
+      },
+      isBlocked: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     { tableName: 'Users' });

@@ -39,6 +39,8 @@ module.exports = {
         updatedAt: new Date()
       },
       {
+        firstName: 'burundi',
+        lastName: 'DieHard',
         username: 'BurindiAlain5',
         email: 'alain5@gmail.com',
         password: hashedPassword,
@@ -90,6 +92,7 @@ module.exports = {
       {
         username: 'BurindiAlain12',
         email: 'alain12@gmail.com',
+        role: 'admin',
         password: hashedPassword,
         createdAt: new Date(),
         updatedAt: new Date()
