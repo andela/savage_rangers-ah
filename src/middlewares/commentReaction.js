@@ -1,5 +1,4 @@
-import models from '../api/models';
-import statusCodes from '../helpers/constants/status.codes';
+import didReact from '../helpers/commonAction/commentReaction';
 
 /**
  * @class checkLikesDislikes
@@ -14,23 +13,7 @@ export default class checkReactions {
    * @returns {Object} The response object
    */
   static async liked(req, res, next) {
-    const { commentId } = req.params;
-    const { id } = req.user.user;
-    const hasLiked = await models.Reaction.findOne({
-      where: {
-        commentId,
-        userId: id,
-        likes: 1
-      }
-    });
-    // If the user has already liked that comment
-    if (hasLiked) {
-      return res.status(statusCodes.BAD_REQUEST).json({
-        status: statusCodes.BAD_REQUEST,
-        message: 'You have already liked this comment!'
-      });
-    }
-    next();
+    didReact(req, res, next, 'liked');
   }
 
   /**
@@ -41,22 +24,6 @@ export default class checkReactions {
    * @returns {Object} The response object
    */
   static async disliked(req, res, next) {
-    const { commentId } = req.params;
-    const { id } = req.user.user;
-    const hasDisliked = await models.Reaction.findOne({
-      where: {
-        commentId,
-        userId: id,
-        dislikes: 1
-      }
-    });
-    // If the user has already disliked that comment
-    if (hasDisliked) {
-      return res.status(statusCodes.BAD_REQUEST).json({
-        status: statusCodes.BAD_REQUEST,
-        message: 'You have already disliked this comment!'
-      });
-    }
-    next();
+    didReact(req, res, next, 'disliked');
   }
 }

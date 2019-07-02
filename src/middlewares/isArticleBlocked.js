@@ -1,18 +1,15 @@
 import models from '../api/models';
-import status from '../helpers/constants/status.codes';
-import sendError from '../helpers/error.sender';
+import checkBlockeStatus from '../helpers/commonAction/checkBlockedStatus';
 
 const { Article } = models;
 /**
- * check if Article is blocked
- *
+ * @description checks if an article is blocked or not.
  * @export
  * @class checkIfBlocked
  */
-class checkIfBlocked {
+export default class checkIfBlocked {
   /**
-   * this is a middleware which checks if a Article is blocked.
-   *
+   * @description This middleware will check if the article is blocked
    * @static
    * @param {object} req the request
    * @param {object} res the response
@@ -21,26 +18,11 @@ class checkIfBlocked {
    * @returns {Object} res
    */
   static async checkBlocked(req, res, next) {
-    const { slug } = req.params;
-
-    const result = await Article.findOne({
-      where: {
-        slug,
-        isBlocked: false
-      }
-    });
-
-    if (result) {
-      req.title = result.dataValues.title;
-      req.body = result.dataValues.body;
-      return next();
-    }
-    sendError(status.BAD_REQUEST, res, 'isBlocked', `${slug} is already blocked`);
+    checkBlockeStatus(req, res, next, false, Article);
   }
 
   /**
-   * this is a middleware which checks if a Article is not blocked.
-   *
+   * @description This function checks if the article is unblocked
    * @static
    * @param {object} req the request
    * @param {object} res the response
@@ -49,22 +31,6 @@ class checkIfBlocked {
    * @returns {Object} res
    */
   static async checkUnBlocked(req, res, next) {
-    const { slug } = req.params;
-
-    const result = await Article.findOne({
-      where: {
-        slug,
-        isBlocked: true
-      }
-    });
-
-    if (result) {
-      req.title = result.dataValues.title;
-      req.body = result.dataValues.body;
-      return next();
-    }
-    sendError(status.BAD_REQUEST, res, 'isBlocked', `${slug} is not blocked`);
+    checkBlockeStatus(req, res, next, true, Article);
   }
 }
-
-export default checkIfBlocked;

@@ -1,0 +1,6 @@
+exclude_patterns:
+- "src/configs/*"
+- "src/api/migrations/*"
+- "src/api/seeders/*"
+- "src/api/models/*"
+- "tests/*"

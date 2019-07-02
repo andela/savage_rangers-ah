@@ -26,7 +26,6 @@ export default async (req, res, next) => {
   });
 
   if (response) {
-    req.Existing = response.dataValues;
     next();
   } else {
     sendError(statusCode.ACCESS_DENIED, res, 'userId', errorMessages.notCommentOwner);

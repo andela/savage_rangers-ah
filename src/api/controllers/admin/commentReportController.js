@@ -1,11 +1,12 @@
 import models from '../../models';
 import status from '../../../helpers/constants/status.codes';
 import paginateUser from '../../../helpers/generate.pagination.details';
+import join from '../../../helpers/commonAction/commonQueries';
 
 const generatePagination = paginateUser;
 
 const {
-  Comment, ReportedComment, User, Reason
+  Comment, ReportedComment
 } = models;
 
 /**
@@ -32,23 +33,7 @@ class AdminReportedCommentController {
     const limit = req.query.limit || defaultLimit;
     const result = await ReportedComment.findAll({
       attributes: ['createdAt'],
-      include: [
-        {
-          model: Comment,
-          required: true,
-          attributes: ['id', 'body', 'articleSlug']
-        },
-        {
-          model: User,
-          required: true,
-          attributes: ['username', 'email']
-        },
-        {
-          model: Reason,
-          required: true,
-          attributes: ['description']
-        }
-      ],
+      include: join.reportCommentJoin,
       offset,
       limit
     });
@@ -76,17 +61,7 @@ class AdminReportedCommentController {
         id
       },
       attributes: ['id', 'body', 'userId', 'articleSlug'],
-      include: [
-        {
-          model: Reason,
-          required: true,
-          attributes: ['id', 'description'],
-          through: {
-            model: ReportedComment,
-            attributes: ['userId']
-          }
-        }
-      ]
+      include: join.commentJoin
     });
 
     return response

@@ -23,7 +23,7 @@ describe('react on  comment', () => {
         done();
       });
   });
-  it('should  like a comment  ', (done) => {
+  it('should  like a comment', (done) => {
     chai
       .request(server)
       .post('/api/comment/dislikes/5')
@@ -33,7 +33,7 @@ describe('react on  comment', () => {
         expect(status).to.equal(statusCode.CREATED);
         expect(res.body)
           .to.have.property('message')
-          .eql(' You have successfully  disliked this comment ');
+          .eql('You have successfully  disliked this comment');
         done();
       });
   });
@@ -73,7 +73,7 @@ describe('react on  comment', () => {
         expect(status).to.equal(statusCode.CREATED);
         expect(res.body)
           .to.have.property('message')
-          .eql(' You have successfully  liked this comment ');
+          .eql('You have successfully  liked this comment');
         done();
       });
   });
@@ -89,13 +89,14 @@ describe('react on  comment', () => {
         done();
       });
   });
-  it('should   not like a comment twice ', (done) => {
+  it('should not like a comment twice', (done) => {
     chai
       .request(server)
       .post('/api/comment/likes/6')
       .set('authorization', userToken)
       .end((err, res) => {
         const { status } = res;
+
         expect(status).to.equal(statusCode.BAD_REQUEST);
         expect(res.body)
           .to.have.property('message')

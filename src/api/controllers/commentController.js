@@ -126,9 +126,12 @@ class CommentController {
   }
 
   /**
-   * A method to update a single comment
-   *
+   * @description this method stores the updated comment
+   * that  is passed by the comparison middleware.
+   * @success it will respond with a success message to
+   *  inform the user of successful execution of the task.
    * @author Prémices
+   * @modified Daniel Charles Mwangila
    * @static
    * @param {object} req - this is the request object
    * @param {object} res - this is the response object
@@ -136,11 +139,11 @@ class CommentController {
    * @memberof commentController
    */
   static async updateComment(req, res) {
-    // Initializing variables
     const { slug, id } = req.params;
+    const { body, iteration, isEdited } = req.newComment;
 
     await Comment.update({
-      body: req.body.body
+      body, iteration, isEdited
     },
     {
       where: {
@@ -151,6 +154,9 @@ class CommentController {
 
     res.status(status.OK).json({
       status: status.OK,
+      comment: body,
+      iteration,
+      isEdited,
       message: 'Comment updated successfully'
     });
   }

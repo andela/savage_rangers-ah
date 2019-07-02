@@ -1,6 +1,6 @@
 import models from '../api/models';
-import statusCode from '../helpers/constants/status.codes';
-import sendError from '../helpers/error.sender';
+
+import checkexistance from '../helpers/commonAction/checkExistence';
 
 const { Comment } = models;
 /**
@@ -22,17 +22,7 @@ class checkIfCommentExist {
    * @returns {Object} res
    */
   static async checkIfExist(req, res, next) {
-    const { id } = req.params;
-    const result = await Comment.findOne({
-      where: {
-        id
-      }
-    });
-    if (result) req.article = result.dataValues;
-
-    return result
-      ? next()
-      : sendError(statusCode.NOT_FOUND, res, 'id', `Comment with id ${id} is not found, Thanks`);
+    checkexistance(req, res, next, Comment, 'Comment');
   }
 }
 

@@ -40,6 +40,14 @@ export default (sequelize, DataTypes) => {
       isBlocked: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+      },
+      iteration: {
+        type: DataTypes.INTEGER,
+        defaultValue: '0'
+      },
+      isEdited: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {

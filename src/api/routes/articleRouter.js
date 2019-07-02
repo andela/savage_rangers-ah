@@ -22,11 +22,18 @@ import createAndGetNewTags from '../../middlewares/get.new.tags';
 import validateTagsTableQueryRoute from '../../middlewares/validations/query.tags.table.route';
 import optionalAuth from '../../middlewares/optionalAuth';
 import reportCommentController from '../controllers/reportCommentController';
+import commentComparison from '../../middlewares/commentComparison';
+import reportArticleController from '../controllers/reportArticleController';
+import highlightController from '../controllers/highlightController';
+import shareArticleController from '../controllers/shareArticleController';
+import searchController from '../controllers/searchController';
+import statsController from '../controllers/statsController';
 
 const articleRouter = new Router();
 
-articleRouter.get('/search/', articleController.search);
-articleRouter.get('/:slug/stats', checkArticle.getArticle, optionalAuth, articleController.stats);
+articleRouter.get('/search/', searchController.search);
+articleRouter.get('/:slug/stats', checkArticle.getArticle, optionalAuth, statsController.stats);
+
 articleRouter.get('/drafts', checkValidToken, articleController.getDraftedArticles);
 
 articleRouter.post('/:slug/rating',
@@ -79,17 +86,17 @@ articleRouter.post('/:slug/highlight',
   checkValidToken,
   checkArticle.getArticle,
   validateInputs('highlight', highlightFields),
-  articleController.highlight);
+  highlightController.highlight);
 
-articleRouter.get('/:slug/highlight', checkArticle.getArticle, articleController.getHighlight);
+articleRouter.get('/:slug/highlight', checkArticle.getArticle, highlightController.getHighlight);
 
 articleRouter.post('/:slug/report',
   checkValidToken,
   bodyVerifier,
   checkArticle.getArticle,
   validateInputs('reportArticle', ['reason']),
-  checkArticleOwner.checkOwner,
-  articleController.reportAnArticle);
+  reportArticleController.reportAnArticle);
+
 articleRouter.get('/category/:categoryId', articleController.getArticlesByCategory);
 
 articleRouter.get('/:slug/tags',
@@ -106,25 +113,25 @@ articleRouter.post('/:slug/share/facebook',
   checkValidToken,
   checkArticle.getArticle,
   shareArticle,
-  articleController.socialShareArticle);
+  shareArticleController.socialShareArticle);
 
 articleRouter.post('/:slug/share/twitter',
   checkValidToken,
   checkArticle.getArticle,
   shareArticle,
-  articleController.socialShareArticle);
+  shareArticleController.socialShareArticle);
 
 articleRouter.post('/:slug/share/linkedin',
   checkValidToken,
   checkArticle.getArticle,
   shareArticle,
-  articleController.socialShareArticle);
+  shareArticleController.socialShareArticle);
 
 articleRouter.post('/:slug/share/gmail',
   checkValidToken,
   checkArticle.getArticle,
   shareArticle,
-  articleController.socialShareArticle);
+  shareArticleController.socialShareArticle);
 
 articleRouter.post('/:slug/comments',
   checkValidToken,
@@ -143,9 +150,10 @@ articleRouter.patch('/:slug/comments/:id',
   checkValidToken,
   validateCommentUpdateDelete,
   bodyVerifier,
-  validateInputs('updateComment', ['body']),
   getComment,
   checkCommentOwner,
+  validateInputs('commentBody', ['body']),
+  commentComparison.compare,
   commentController.updateComment);
 
 articleRouter.delete('/:slug/comments/:id',

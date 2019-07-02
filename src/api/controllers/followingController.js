@@ -2,9 +2,8 @@ import models, { sequelize } from '../models/index';
 import status from '../../helpers/constants/status.codes';
 import errorSender from '../../helpers/error.sender';
 import errorMessage from '../../helpers/constants/error.messages';
-import generatePagination from '../../helpers/generate.pagination.details';
+import getFollowingScript from '../../helpers/commonAction/getFollowingScript';
 
-const emptyArrayLength = 0;
 
 /**
  * @class
@@ -35,7 +34,8 @@ export default class FollowingController {
 
       if (error.original.code === selfFollowErrorCode) {
         errorSender(status.ACCESS_DENIED, res, 'User', errorMessage.followError);
-      } else if (error.original.code === duplicateErrorCode) {
+      }
+      if (error.original.code === duplicateErrorCode) {
         errorSender(status.BAD_REQUEST, res, 'follow', `Already following ${username}`);
       }
     }
@@ -78,32 +78,8 @@ export default class FollowingController {
    * @memberof Follow
    *
    */
-  static async getUserfollower(req, res) {
-    const { username } = req.user.user;
-    const defaultOffset = 0;
-    const defaultLimit = 10;
-    let data = {};
-    const offset = req.query.offset || defaultOffset;
-    const limit = req.query.limit || defaultLimit;
-
-    const followerList = await sequelize.query(`
-    SELECT follower,u."profileImage"
-    FROM followings as f 
-    INNER JOIN public."Users" as u ON f.following = u.username 
-    WHERE f.following = '${username}'
-    LIMIT '${limit}' OFFSET '${offset}'
-    `);
-
-    data = generatePagination(followerList[1].rowCount, followerList[1].rows, offset, limit);
-    data.followers = followerList[1].rows;
-    if (followerList[1].rows.length > emptyArrayLength) {
-      res.status(status.OK).json({
-        status: 200,
-        data
-      });
-    } else {
-      errorSender(status.NOT_FOUND, res, 'Follower', errorMessage.followerError);
-    }
+  static getUserfollower(req, res) {
+    getFollowingScript(req, res, 'following', sequelize, errorMessage.followerError, 'follower');
   }
 
   /**
@@ -116,30 +92,6 @@ export default class FollowingController {
    *
    */
   static async getUserfollowing(req, res) {
-    const { username } = req.user.user;
-    const defaultOffset = 0;
-    const defaultLimit = 10;
-    let data = {};
-    const offset = req.query.offset || defaultOffset;
-    const limit = req.query.limit || defaultLimit;
-
-    const followingList = await sequelize.query(`
-    SELECT following,u."profileImage"
-    FROM followings as f 
-    INNER JOIN public."Users" as u ON f.follower = u.username 
-    WHERE f.follower = '${username}'
-    LIMIT '${limit}' OFFSET '${offset}'
-    `);
-
-    data = generatePagination(followingList[1].rowCount, followingList[1].rows, offset, limit);
-    data.following = followingList[1].rows;
-    if (followingList[1].rows.length > emptyArrayLength) {
-      res.status(status.OK).json({
-        status: 200,
-        data
-      });
-    } else {
-      errorSender(status.NOT_FOUND, res, 'Following', errorMessage.followingError);
-    }
+    getFollowingScript(req, res, 'follower', sequelize, errorMessage.followingError, 'following');
   }
 }
