@@ -1,6 +1,5 @@
 import models from '../api/models';
-import statusCode from '../helpers/constants/status.codes';
-import sendError from '../helpers/error.sender';
+import checkExistence from '../helpers/commonAction/checkExistence';
 
 const { Article } = models;
 /**
@@ -22,21 +21,7 @@ class getOneArticle {
    * @returns {Object} res
    */
   static async getArticle(req, res, next) {
-    const { slug } = req.params;
-    const result = await Article.findOne({
-      where: {
-        slug
-      }
-    });
-
-    if (result) req.article = result.dataValues;
-
-    return result
-      ? next()
-      : sendError(statusCode.NOT_FOUND,
-        res,
-        'slug',
-        `Article with slug ${slug} is not found, Thanks`);
+    checkExistence(req, res, next, Article, 'Article');
   }
 }
 

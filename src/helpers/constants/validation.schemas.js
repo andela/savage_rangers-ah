@@ -5,6 +5,7 @@
 
 import Joi from '@hapi/joi';
 import numbers from './numbers';
+import commonJoi from './joiCommonSchemas';
 
 const string = Joi.string();
 const minPasswordLength = 8,
@@ -23,8 +24,8 @@ const validRatings = {
   FIVE_STARS: 5
 };
 
-const SLUG_MIN_LENTH = 3;
-const SLUG_MAX_LENTH = 45;
+const SLUG_MIN_LENGTH = 3;
+const SLUG_MAX_LENGTH = 45;
 
 const TAGNAME_CONTENT_MIN_LENGTH = 1;
 const TAGNAME_CONTENT_MAX_LENGTH = 30;
@@ -34,22 +35,8 @@ const DEFAULT_LIMIT = 10;
 
 const configureNotification = Joi.object()
   .keys({
-    articles: Joi.object()
-      .keys({
-        show: Joi.boolean().required(),
-        on: Joi.array()
-          .items(Joi.string().valid(['report', 'block']))
-          .required()
-      })
-      .required(),
-    comments: Joi.object()
-      .keys({
-        show: Joi.boolean().required(),
-        on: Joi.array()
-          .items(Joi.string().valid(['report', 'block']))
-          .required()
-      })
-      .required()
+    articles: commonJoi.showOn,
+    comments: commonJoi.showOn
   })
   .required();
 
@@ -102,8 +89,8 @@ export default {
     offset: number.required().default(DEFAULT_OFFSET),
     limit: number.required().default(DEFAULT_LIMIT),
     slug: string
-      .min(SLUG_MIN_LENTH)
-      .max(SLUG_MAX_LENTH)
+      .min(SLUG_MIN_LENGTH)
+      .max(SLUG_MAX_LENGTH)
       .required(),
     rating: number
       .valid([
@@ -118,14 +105,15 @@ export default {
 
   rateArticle: Joi.object().keys({
     rating: number
-      .valid(numbers.ONE, numbers.TWO, numbers.THREE, numbers.FOUR, numbers.FIVE)
+      .valid(numbers.ONE,
+        numbers.TWO,
+        numbers.THREE,
+        numbers.FOUR,
+        numbers.FIVE)
       .required()
   }),
   reportArticle: Joi.object().keys({
-    reason: number
-      .min(1)
-      .integer()
-      .required()
+    reason: commonJoi.reason
   }),
   updateArticle: Joi.object().keys({
     title: Joi.string().allow(''),
@@ -165,8 +153,8 @@ export default {
   commentUpdateDeleteRoute: Joi.object().keys({
     id: number.required(),
     slug: string
-      .min(SLUG_MIN_LENTH)
-      .max(SLUG_MAX_LENTH)
+      .min(SLUG_MIN_LENGTH)
+      .max(SLUG_MAX_LENGTH)
       .required()
   }),
 
@@ -174,20 +162,16 @@ export default {
     offset: number.required().default(DEFAULT_OFFSET),
     limit: number.required().default(DEFAULT_LIMIT),
     slug: string
-      .min(SLUG_MIN_LENTH)
-      .max(SLUG_MAX_LENTH)
+      .min(SLUG_MIN_LENGTH)
+      .max(SLUG_MAX_LENGTH)
       .required()
   }),
   addArticleTag: Joi.object().keys({
-    tags: Joi.array()
-      .items(string.alphanum())
-      .required()
+    tags: commonJoi.tags
   }),
 
   deleteArticleTags: Joi.object().keys({
-    tags: Joi.array()
-      .items(string.alphanum())
-      .required()
+    tags: commonJoi.tags
   }),
 
   queryTagsTable: Joi.object().keys({
@@ -200,10 +184,7 @@ export default {
       .required()
   }),
   reportComment: Joi.object().keys({
-    commentReason: number
-      .min(1)
-      .integer()
-      .required()
+    commentReason: commonJoi.reason
   }),
 
   notificationConfig: Joi.object()
@@ -211,5 +192,8 @@ export default {
       inApp: configureNotification,
       email: configureNotification
     })
-    .required()
+    .required(),
+  commentBody: Joi.object().keys({
+    body: string.required().trim()
+  })
 };

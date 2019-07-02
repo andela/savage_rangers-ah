@@ -5,7 +5,7 @@ import models from '../../api/models';
 import sendNotification from './sender';
 
 const { Article, User } = models;
-
+/* istanbul ignore next */
 export default async (operation, articleSlug) => {
   try {
     const url = `${env.baseUrl}/api/articles`;

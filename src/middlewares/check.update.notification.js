@@ -14,6 +14,7 @@ const { Notification } = models;
  * @param { object } next the next route controller to be called
  * @returns {Object} req, next
  */
+/* istanbul ignore next */
 export default async (req, res, next) => {
   // Initializing variables
   const { id } = req.params;

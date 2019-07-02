@@ -4,7 +4,7 @@ export default {
       {
         id: 5,
         body: 'How to create sequalize seeds',
-        userId: 2,
+        userId: 5,
         articleSlug: 'What-is-a-Version-1-UUID',
         createdAt: new Date(),
         updatedAt: new Date()
@@ -12,7 +12,7 @@ export default {
       {
         id: 6,
         body: 'How to create sequalized great seeds',
-        userId: 2,
+        userId: 8,
         articleSlug: 'What-is-a-Version-1-UUID',
         createdAt: new Date(),
         updatedAt: new Date()

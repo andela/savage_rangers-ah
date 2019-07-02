@@ -18,6 +18,10 @@ export default async (req, res, next) => {
   let newAddedTags = [];
 
   // Adding new tags to the table then to the article
+  /*
+   throwing an error with this module is really tricky.
+  */
+  /* istanbul ignore next */
   async.each(req.newTags,
     async (tag, callback) => {
       // Adding to the table

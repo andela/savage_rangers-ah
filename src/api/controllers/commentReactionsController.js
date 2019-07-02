@@ -1,5 +1,7 @@
-import models from '../models';
+
 import statusCode from '../../helpers/constants/status.codes';
+import reactionCount from '../../helpers/commonAction/reactionCount';
+import createCommentReaction from '../../helpers/commonAction/createCommentReaction';
 
 /**
  * Contains  comment reactions controllers
@@ -16,35 +18,7 @@ export default class commentReactionsController {
    * @returns {Object} res
    */
   static async likeComment(req, res) {
-    const { commentId } = req.params;
-    const { id } = req.user.user;
-    const hasDisliked = await models.Reaction.findOne({
-      where: {
-        commentId,
-        userId: id,
-        dislikes: 1,
-        likes: 0
-      }
-    });
-    if (hasDisliked) {
-      await models.Reaction.update({ dislikes: 0, likes: 1 },
-        { where: { id: hasDisliked.dataValues.id } });
-      return res.status(statusCode.OK).json({
-        status: statusCode.OK,
-        message: ' You have successfully  liked this comment '
-      });
-    }
-    await models.Reaction.create({
-      userId: id,
-      commentId,
-      dislikes: 0,
-      likes: 1
-    });
-
-    return res.status(statusCode.CREATED).json({
-      status: statusCode.CREATED,
-      message: ' You have successfully  liked this comment '
-    });
+    await createCommentReaction(req, res, statusCode.CREATED, 'You have successfully  liked this comment', 'like');
   }
 
   /**
@@ -54,35 +28,7 @@ export default class commentReactionsController {
    * @returns {Object} - Response object
    */
   static async dislikeComment(req, res) {
-    const { commentId } = req.params;
-    const { id } = req.user.user;
-    const hasLiked = await models.Reaction.findOne({
-      where: {
-        commentId,
-        userId: id,
-        likes: 1
-      }
-    });
-    if (hasLiked) {
-      await models.Reaction.update({ dislikes: 1, likes: 0 },
-        { where: { id: hasLiked.dataValues.id } });
-      return res.status(statusCode.OK).json({
-        status: statusCode.OK,
-        message: ' You have successfully  disliked this comment '
-      });
-    }
-
-    models.Reaction.create({
-      userId: id,
-      commentId,
-      dislikes: 1,
-      likes: 0
-    });
-
-    return res.status(statusCode.CREATED).json({
-      status: statusCode.CREATED,
-      message: ' You have successfully  disliked this comment '
-    });
+    await createCommentReaction(req, res, statusCode.CREATED, 'You have successfully  disliked this comment', 'dislike');
   }
 
   /**
@@ -91,18 +37,8 @@ export default class commentReactionsController {
    * @param {Object} res  - Response Object
    * @returns {Object} - Response object
    */
-  static async getLikeCount(req, res) {
-    const { commentId } = req.params;
-    const likeCount = await models.Reaction.count({
-      where: {
-        commentId,
-        likes: 1
-      }
-    });
-    return res.status(statusCode.OK).json({
-      status: statusCode.OK,
-      likeCount
-    });
+  static getLikeCount(req, res) {
+    reactionCount(req, res, statusCode.OK, 'likeCount');
   }
 
   /**
@@ -111,17 +47,7 @@ export default class commentReactionsController {
    * @param {Object} res  - Response Object
    * @returns {Object} - Response object
    */
-  static async getDislikeCount(req, res) {
-    const { commentId } = req.params;
-    const disLikeCount = await models.Reaction.count({
-      where: {
-        commentId,
-        dislikes: 1
-      }
-    });
-    return res.status(statusCode.OK).json({
-      status: statusCode.OK,
-      disLikeCount
-    });
+  static getDislikeCount(req, res) {
+    reactionCount(req, res, statusCode.OK, 'disLikeCount');
   }
 }

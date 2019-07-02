@@ -9,6 +9,10 @@ const isTokenDropped = token => new Promise((resolve, reject) => {
       resolve(reply);
     });
   } catch (error) {
+    /*
+  can't throw an error under normal conditions unless there is no internet
+  */
+    /* istanbul ignore next  */
     reject(error);
   }
 });

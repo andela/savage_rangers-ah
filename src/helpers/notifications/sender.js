@@ -13,6 +13,7 @@ const { Notification } = models;
  * @param {object} url
  * @returns {object} notification
  */
+/* istanbul ignore next */
 export default async (resource, action, user, message, url) => {
   // Initializing variables
   let inAppNotification = {};

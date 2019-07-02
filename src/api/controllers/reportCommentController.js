@@ -24,6 +24,7 @@ class CommentReactionController {
     const {
       user: { id }
     } = req.user;
+
     try {
       const result = await ReportedComment.findOrCreate({
         where: {
@@ -32,7 +33,6 @@ class CommentReactionController {
           reasonId: commentReason
         }
       });
-
       return result[0]._options.isNewRecord === false
         ? errorSender(status.BAD_REQUEST,
           res,

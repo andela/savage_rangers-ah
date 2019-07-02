@@ -7,6 +7,7 @@ const { NotificationConfig } = models;
  * @param {integer} userId
  * @returns {object} the config token
  */
+/* istanbul ignore next */
 export default async (userId) => {
   const resultObject = {};
   let userConfig;

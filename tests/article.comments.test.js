@@ -4,6 +4,7 @@ import chaiHttp from 'chai-http';
 import status from '../src/helpers/constants/status.codes';
 
 import server from '../src/index';
+import errorMessage from '../src/helpers/constants/error.messages';
 
 chai.use(chaiHttp);
 chai.should();
@@ -111,6 +112,40 @@ describe('Article comments', async () => {
       .set('authorization', `${testUserToken}`)
       .end((err, res) => {
         res.should.have.status(status.NOT_FOUND);
+        done();
+      });
+  });
+  it('Should check if the new comment is not a duplicate', (done) => {
+    chai
+      .request(server)
+      .patch('/api/articles/How-to-create-sequalize-seeds/comments/1')
+      .set('Authorization', `${testUserToken}`)
+      .send({
+        body: "Really interesting article. I've been searching for this"
+      })
+      .end((err, res) => {
+        res.body.should.have.status(status.BAD_REQUEST);
+        res.body.errors.comment.should.eq(errorMessage.notModifiedComment);
+        done();
+      });
+  });
+  it('Should reach the controller and create a new comment', (done) => {
+    chai
+      .request(server)
+      .patch('/api/articles/How-to-create-sequalize-seeds/comments/1')
+      .set('Authorization', `${testUserToken}`)
+      .send({
+        body: "Really interesting article. I've been searching for ths"
+      })
+      .end(async (err, res) => {
+        res.body.should.have.status(status.OK);
+        res.body.should.include({
+          status: 200,
+          comment: "Really interesting article. I've been searching for ths",
+          iteration: 1,
+          isEdited: true,
+          message: 'Comment updated successfully'
+        });
         done();
       });
   });

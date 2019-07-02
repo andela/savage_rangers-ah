@@ -31,7 +31,10 @@ const validationOptions = {
  */
 export default (schema, fields) => (req, res, next) => {
   const method = req.method.toLowerCase();
-
+  /*
+   else statement violate style guide rules
+  */
+  /* istanbul ignore next */
   if (_.includes(supportedMethods, method) && _.has(Schemas, schema) && _.get(Schemas, schema)) {
     // get the schema for the route
 
