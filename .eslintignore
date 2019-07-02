@@ -19,6 +19,5 @@ src/api/migrations
 
 # Seeders
 src/api/seeders
-
-# models
+# Models
 src/api/models

@@ -84,5 +84,4 @@ const environments = [
 ];
 
 const currentEnv = environments.find(el => el.name === env.toLocaleLowerCase());
-
 module.exports = currentEnv;

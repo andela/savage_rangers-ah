@@ -8,11 +8,11 @@ const { User } = models;
  */
 export default class {
   /**
-  * @param  {object} req The request object containing method, body, params, query,...ß
-  * @param  {object} res The response object for the request
-  * @param  {function} next The next middleware function in the request pipeline
-  * @returns {object} The response with status and data or error message
-  */
+   * @param  {object} req The request object containing method, body, params, query,...ß
+   * @param  {object} res The response object for the request
+   * @param  {function} next The next middleware function in the request pipeline
+   * @returns {object} The response with status and data or error message
+   */
   static async validateSignup(req, res, next) {
     const { email } = req.body;
     try {

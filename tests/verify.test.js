@@ -6,18 +6,15 @@ import server from '../src/index';
 import status from '../src/helpers/constants/status.codes';
 import errorMessages from '../src/helpers/constants/error.messages';
 
-
 chai.use(chaihttp);
 chai.should();
-
 
 describe('GET /verifyEmail', () => {
   it('Should return a success message if the link is valid', (done) => {
     const user = {
-      username: 'BurindiAlain',
-      email: 'alain@gmail.com',
-      password: 'password23423',
-      confirmPassword: 'password23423'
+      username: 'Burindi',
+      email: 'alain1@gmail.com',
+      password: 'password23423'
     };
 
     const { username, email } = user;
@@ -33,7 +30,7 @@ describe('GET /verifyEmail', () => {
       });
   });
 
-  it('Should return a message if a user doesn\'t exist', (done) => {
+  it("Should return a message if a user doesn't exist", (done) => {
     const user = {
       username: 'BurindiAlain',
       email: 'alain@gmail.com',
@@ -62,10 +59,9 @@ describe('GET /verifyEmail', () => {
 
   it('Should respond with a message if the token is invalid', (done) => {
     const user = {
-      username: 'BurindiAlain',
-      email: 'alain@gmail.com',
-      password: 'password23423',
-      confirmPassword: 'password23423'
+      username: 'Burindi',
+      email: 'alain1@gmail.com',
+      password: 'password23423'
     };
 
     chai

@@ -25,11 +25,15 @@ class getOneArticle {
 
     const result = await Article.findOne({
       where: {
-        slug,
+        slug
       }
     });
 
-    return result ? next() : res.status(statusCode.NOT_FOUND).json({ message: `Article with this ${slug} is not found, Thanks` });
+    return result
+      ? next()
+      : res
+        .status(statusCode.NOT_FOUND)
+        .json({ message: `Article with this ${slug} is not found, Thanks` });
   }
 }
 

@@ -6,7 +6,7 @@ import statuses from '../src/helpers/constants/status.codes';
 
 const { expect } = chai;
 chai.use(chaiHttp);
-let UserToken = '';
+let UserToken;
 
 describe('testing the middlewares before reaching the update article controller', () => {
   it('should signup a user to be checking against', (done) => {
@@ -41,9 +41,9 @@ describe('testing the middlewares before reaching the update article controller'
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
-      .set('Authorization', UserToken)
+      .set('authorization', UserToken)
       .send({
-        tagList: ['Yoga', 'Health']
+        body: ['how did the classical Latin become']
       })
       .end((err, res) => {
         expect(res.status).eql(statuses.NOT_FOUND);
@@ -59,9 +59,9 @@ describe('testing the middlewares before reaching the update article controller'
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
-      .set('Authorization', UserToken)
+      .set('authorization', UserToken)
       .send({
-        tagList: ['sequelize', 'postgres', 'controllers']
+        body: ['how did the classical Latin become']
       })
       .end((err, res) => {
         expect(res.status).eql(statuses.ACCESS_DENIED);
@@ -101,9 +101,9 @@ describe('testing testing testing and testing for the article update controller'
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
-      .set('Authorization', UserToken)
+      .set('authorization', UserToken)
       .field({
-        tagList: ['sequelize', 'postgres', 'controllers']
+        body: ['how did the classical Latin become']
       })
       .attach('coverImage', './tests/images/eric.jpg', 'eric.jpg')
       .end((err, res) => {
@@ -120,9 +120,9 @@ describe('testing testing testing and testing for the article update controller'
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
-      .set('Authorization', UserToken)
+      .set('authorization', UserToken)
       .send({
-        tagList: ''
+        body: ''
       })
       .end((err, res) => {
         expect(res.status).eql(statuses.OK);
