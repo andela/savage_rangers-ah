@@ -1,6 +1,5 @@
 import cloudinary from 'cloudinary';
 import models from '../models';
-import slugHelper from '../../helpers/slug.maker';
 import statusCodes from '../../helpers/constants/status.codes';
 import errorMessage from '../../helpers/constants/error.messages';
 import articleValidator from '../../helpers/validators/articleValidator';
@@ -73,14 +72,11 @@ export default class ArticleController {
 
     let { coverImage } = req.Existing;
 
-    const slugCreation = slugHelper(title || req.Existing.title);
-
     if (req.file) {
       const image = await cloudinary.v2.uploader.upload(req.file.path);
       coverImage = image.secure_url;
     }
     const updateContent = {
-      slug: slugCreation,
       title: title || req.Existing.title,
       description: description || req.Existing.description,
       body: body || req.Existing.body,
@@ -89,7 +85,6 @@ export default class ArticleController {
     };
 
     await Article.update({
-      slug: updateContent.slug,
       title: updateContent.title,
       description: updateContent.description,
       body: updateContent.body,
