@@ -59,7 +59,6 @@ export default class ArticleController {
   /**
    * allow an author to update his/her article
    *
-   * @author Frank Mutabazi
    * @static
    * @param {object} req the request
    * @param {object} res the response to be sent

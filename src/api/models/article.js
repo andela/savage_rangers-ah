@@ -48,14 +48,12 @@ export default (sequelize, DataTypes) => {
     });
   Article.associate = (models) => {
     Article.belongsTo(models.User, {
-      foreignKey: 'userId',
-      as: 'author',
+      foreignKey: 'author',
       onDelete: 'CASCADE',
       hooks: true
     });
     Article.belongsTo(models.Category, {
-      foreignKey: 'categoryId',
-      as: 'category',
+      foreignKey: 'category',
       onDelete: 'CASCADE',
       hooks: true
     });
