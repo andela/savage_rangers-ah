@@ -105,5 +105,19 @@ export default {
     body: Joi.string().allow(''),
     category: Joi.string().uppercase().allow(''),
     tagList: Joi.array().items(Joi.string().alphanum()).allow('')
-  })
+  }),
+  highlight: Joi.object().keys({
+    startIndex: Joi.number()
+      .min(1)
+      .required(),
+    lastIndex: Joi.number()
+      .min(1)
+      .required(),
+    text: Joi.string()
+      .trim()
+      .required(),
+    comment: Joi.string()
+      .trim()
+      .required(),
+  }),
 };
