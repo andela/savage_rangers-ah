@@ -30,9 +30,9 @@ export default (sequelize, DataTypes) => {
     });
 
   Rating.removeAttribute('id');
-  Rating.associate = ({ User, Article }) => {
-    Rating.belongsTo(User, { foreignKey: 'userId' });
-    Rating.belongsTo(Article, { foreignKey: 'articleSlug' });
+  Rating.associate = (models) => {
+    Rating.belongsTo(models.User, { foreignKey: 'userId' });
+    Rating.belongsTo(models.Article, { foreignKey: 'articleSlug' });
   };
   return Rating;
 };

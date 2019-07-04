@@ -15,8 +15,9 @@ export default class {
    */
   static async verifyEmail(req, res) {
     const { token } = req.params;
-    const result = decodejwt(token);
-    if (result !== undefined) {
+    let result;
+    try {
+      result = decodejwt(token);
       const action = await models.User.update({ verified: true },
         {
           where: {
@@ -32,7 +33,7 @@ export default class {
       } else {
         error(status.NOT_FOUND, res, 'user', errorMessages.noUser);
       }
-    } else {
+    } catch (err) {
       error(status.BAD_REQUEST, res, 'link', errorMessages.emailLinkInvalid);
     }
   }

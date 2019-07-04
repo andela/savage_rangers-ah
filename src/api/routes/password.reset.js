@@ -10,13 +10,13 @@ const router = new Router();
 
 router.post('/',
   verifyBody,
-  validateInputs(true, 'resetPassword', ['email']),
+  validateInputs('resetPassword', ['email']),
   validateResetEmail,
   resetController.sendRecoveryEmail);
 
 router.post('/update/:email',
   verifyBody,
-  validateInputs(true, 'updatePassword', ['password']),
+  validateInputs('updatePassword', ['password']),
   validateUpdatePassword,
   resetController.updatePassword);
 

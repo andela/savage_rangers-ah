@@ -9,6 +9,7 @@ import checkArticleOwner from '../../middlewares/checkArticleOwnership';
 import checkExistingRates from '../../middlewares/checkExistingRating';
 import uploadImage from '../../middlewares/upload';
 import errorHandler from '../../middlewares/errorHandler';
+import validateRatingsRoute from '../../middlewares/validations/ratings.routes';
 
 const articleRouter = new Router();
 
@@ -16,7 +17,7 @@ articleRouter.post('/:slug/rating',
   checkValidToken,
   bodyVerifier,
   checkArticle.getArticle,
-  validateInputs(true, 'rateArticle', ['rating']),
+  validateInputs('rateArticle', ['rating']),
   checkExistingRates.ExistingRating,
   ratingsController.rateArticle);
 
@@ -32,6 +33,15 @@ articleRouter.post('/',
   checkValidToken,
   uploadImage.single('coverImage'),
   errorHandler(articleController.create));
+
+articleRouter.get('/:slug/ratings/statistics',
+  checkValidToken,
+  ratingsController.getArticleRatingStatistics);
+
+articleRouter.get('/:slug/:rating/users',
+  checkValidToken,
+  validateRatingsRoute,
+  ratingsController.getRatingUsers);
 
 articleRouter.delete('/:slug',
   checkValidToken,

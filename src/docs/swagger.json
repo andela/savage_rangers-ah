@@ -285,7 +285,7 @@
     },
     "/users/signout": {
       "get": {
-        "tags": ["Users"],
+        "tags": ["auth"],
         "summary": "signs out the logged in user",
         "description": "drop the token",
         "produces": ["application/json"],
@@ -491,6 +491,23 @@
             "description": "Something went wrong"
           }
         }
+      }
+    },
+    "/articles/{slug}/ratings/statistics": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all the ratings of an article",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "description": "login existing user",
+            "required": true
+          }
+        ]
       }
     },
     "externalDocs": {
