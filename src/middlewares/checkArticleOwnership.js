@@ -12,7 +12,7 @@ class CheckUserOwnership {
   /**
    * this is a middleware which checks if the user is registered in to our database.
    *
-   * @author Frank Mutabazi
+   * @author Frank Mutabazi, Prémices
    * @static
    * @param {object} req the request
    * @param {object} res the response to be sent

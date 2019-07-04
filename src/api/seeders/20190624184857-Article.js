@@ -13,6 +13,17 @@ export default {
         updatedAt: new Date()
       },
       {
+        title: 'How to create sequalize seedss',
+        slug: 'How-to-create-sequalize-seedss',
+        description: 'How to set dummy data automaticallyy',
+        body: 'Suppose we want to insert some dataa.',
+        coverImage: 'default.jpeg',
+        category: 1,
+        author: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
         title: 'What is a Version 1 UUID',
         slug: 'What-is-a-Version-1-UUID',
         description: 'Velit non sit culpa pariatur proident',

@@ -10,7 +10,7 @@ const models = {
   User: sequelize.import('./user'),
   Article: sequelize.import('./article'),
   Category: sequelize.import('./category'),
-  Rating: sequelize.import('./rating'),
+  Rating: sequelize.import('./rating')
 };
 Object.keys(models).forEach((key) => {
   if ('associate' in models[key]) {
