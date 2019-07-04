@@ -560,6 +560,33 @@
           }
         }
       },
+      "/articles/:slug": {
+        "delete": {
+          "tags": ["Authors"],
+          "summary": "allow Authors to delete their own article",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "Delete article",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "article deleted successfully"
+            },
+            "401": {
+              "description": "Please you must be the owner of this Article in order to modify it, Thanks"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        }
+      },
       "externalDocs": {
         "description": "Find out more about Swagger",
         "url": "http://swagger.io"

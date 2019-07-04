@@ -26,5 +26,6 @@ export default {
   rating: 'you can not go beyond 5 as a rating number, Thanks',
   authorisation: 'A token must be provided',
   token: 'Invalid token provided',
-  ratingsNotFound: 'No ratings found for this article'
+  ratingsNotFound: 'No ratings found for this article',
+  notOwner: 'Please you must be the owner of this Article in order to modify it, Thanks'
 };

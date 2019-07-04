@@ -43,4 +43,9 @@ articleRouter.get('/:slug/:rating/users',
   validateRatingsRoute,
   ratingsController.getRatingUsers);
 
+articleRouter.delete('/:slug',
+  checkValidToken,
+  checkArticleOwner.checkOwner,
+  articleController.delete);
+
 export default articleRouter;
