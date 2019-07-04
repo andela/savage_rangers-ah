@@ -20,7 +20,9 @@ const models = {
   Bookmark: sequelize.import('./bookmark'),
   Tag: sequelize.import('./tag'),
   ArticleTag: sequelize.import('./articlesTags'),
-  TermsAndConditions: sequelize.import('./termsAndConditions')
+  TermsAndConditions: sequelize.import('./termsAndConditions'),
+  Reaction: sequelize.import('./reactions'),
+  Rating: sequelize.import('./rating')
 };
 
 Object.keys(models).forEach((key) => {

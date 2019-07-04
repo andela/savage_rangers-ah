@@ -72,10 +72,10 @@ export default (sequelize, DataTypes) => {
     });
 
     User.hasMany(models.Rating, {
-      foreignKey: 'userId' 
+      foreignKey: 'userId'
     });
     User.hasMany(models.Bookmark, {
-      foreignKey: 'username',
+      foreignKey: 'username'
     });
     User.hasMany(models.Highlight, {
       foreignKey: 'userId',
@@ -95,7 +95,10 @@ export default (sequelize, DataTypes) => {
     });
     User.hasMany(models.Report, {
       foreignKey: 'userId',
-      sourceId: 'id',
+      sourceId: 'id'
+    });
+    User.hasMany(models.Reaction, {
+      foreignKey: 'userId',
       onDelete: 'CASCADE',
       hooks: true
     });
@@ -106,6 +109,6 @@ export default (sequelize, DataTypes) => {
 
     return queryResult;
   };
-  
+
   return User;
 };
