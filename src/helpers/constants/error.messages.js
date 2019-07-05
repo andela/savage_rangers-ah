@@ -28,5 +28,6 @@ export default {
   ratingsNotFound: 'No ratings found for this article',
   notOwner: 'Please you must be the owner of this Article in order to modify it, Thanks',
   noArticles: 'Article not found!',
-  noMoreArticle: 'There no more articles at the moment.'
+  noMoreArticle: 'There no more articles at the moment.',
+  reason: 'a reason can not be a string, Please provide a number starting from 1, Thanks',
 };

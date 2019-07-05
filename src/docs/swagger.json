@@ -208,27 +208,27 @@
         "tags": ["articles"],
         "summary": "Rating a specific article based on its slug",
         "description": "Rating",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "authorization",
-            "description": "user token to verify",
-            "required": true
-          },
-          {
-            "in": "path",
-            "name": "slug",
-            "description": "slug to be used in rating an article",
-            "required": true
-          },
-          {
-            "in": "body",
-            "name": "rating",
-            "description": "update all of the body or any property among them",
-            "required": true
-          }
+        "produces":["application/json"],
+        "consumes":["application/json"],
+        "parameters":[
+            {
+              "in":"header",
+              "name":"authorization",
+              "description":"user token to verify",
+              "required":true
+            },
+            {
+              "in":"path",
+              "name":"slug",
+              "description":"slug to be used in rating an article",
+              "required":true
+            },
+            {
+              "in":"body",
+              "name":"rating",
+              "description":"rate an article based on the body input value",
+              "required":true
+            }
         ],
         "response": {
           "201": {
@@ -242,6 +242,50 @@
           }
         }
       }
+    },
+    "/articles/${slug}/report": {
+      "post": {
+        "tags":["articles"],
+        "summary": "Report an article as inappropriate",
+        "description": "Report",
+        "produces":["application/json"],
+        "consumes":["application/json"],
+        "parameters":[
+          {
+            "in":"header",
+            "name":"authorization",
+            "description":"user token to verify",
+            "required":true
+          },
+          {
+            "in":"path",
+            "name":"slug",
+            "description":"slug to be used in reporting an article",
+            "required":true
+          },
+          {
+            "in":"body",
+            "name":"reason",
+            "description":"report an article based on the reason provided in the request body",
+            "required":true
+          }
+        ],
+        "response": {
+          "201": {
+            "description": "Report for ${slug} is successfully submitted, Thanks"
+          },
+          "400":{
+            "description": "Sorry, you can not report this article with the same reason twice, Thanks"
+          },
+          "403": {
+            "description": "Forbiden access"
+          },
+          "404": {
+            "description": "Sorry, but that reason does not exist, Thanks"
+          }
+        }
+      }
+
     },
     "/password-reset/update/{email}": {
       "post": {
