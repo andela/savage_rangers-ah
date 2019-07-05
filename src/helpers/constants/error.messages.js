@@ -6,8 +6,7 @@ export default {
   unkownEmail: "A user with the provided email doesn't exist",
   invalidLink: 'Invalid link provided',
   incorectPassword: 'Incorect password provided',
-  emailLinkInvalid:
-    'The link provided is  corrupt, please request a new one or try to click it again',
+  emailLinkInvalid: 'The link provided is  corrupt, please request a new one or try to click it again',
   noUser: "User doesn't exist.",
   authenticationMessage: 'You have to login to perform this action.',
   serverError: 'Something went wrong',
@@ -27,5 +26,7 @@ export default {
   authorisation: 'A token must be provided',
   token: 'Invalid token provided',
   ratingsNotFound: 'No ratings found for this article',
-  notOwner: 'Please you must be the owner of this Article in order to modify it, Thanks'
+  notOwner: 'Please you must be the owner of this Article in order to modify it, Thanks',
+  noArticles: 'Article not found!',
+  noMoreArticle: 'There no more articles at the moment.'
 };

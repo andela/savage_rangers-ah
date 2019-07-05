@@ -54,6 +54,7 @@ export default (sequelize, DataTypes) => {
     });
     Article.belongsTo(models.Category, {
       foreignKey: 'category',
+      as: 'Category',
       onDelete: 'CASCADE',
       hooks: true
     });

@@ -10,6 +10,9 @@ module.exports = {
       {
         username: 'Burindi',
         email: 'alain1@gmail.com',
+        firstName: 'Alain',
+        lastName: 'Burindi',
+        profileImage: 'defaultAvatar.jpg',
         password: hashedPassword,
         createdAt: new Date(),
         updatedAt: new Date()
