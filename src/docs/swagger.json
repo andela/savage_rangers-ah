@@ -452,62 +452,56 @@
         }
       }
     },
-      "/articles/{slug}": {
-        "patch": {
-          "tags": ["Articles"],
-          "summary": "Update the article based on its current s-l-u-g",
-          "description": "update article by slug",
-          "produces": ["application/json"],
-          "consumes": ["application/json"],
-          "parameters": [
-            {
-              "in": "header",
-              "name": "authorization",
-              "description": "user token to verify",
-              "required": true
-            },
-            {
-              "in": "path",
-              "name": "slug",
-              "description": "slug to be used in updating the article",
-              "required": true
-            },
-            {
-              "in": "body",
-              "name": "body",
-              "description": "update all of the body or any property among them",
-              "required": true
-            }
-          ],
-          "response": {
-            "200": {
-              "description": "Your Article is up-to-date now, Thanks"
-            },
-            "404": {
-              "description": "Article with this { slug } is not found, Thanks"
-            },
-            "403": {
-              "description": "Forbiden access"
-            },
-            "401": {
-              "description": "Please you must be the owner of this Article in order to modify it, Thanks"
-            }
+    "/articles/{slug}": {
+      "patch": {
+        "tags": ["Articles"],
+        "summary": "Update the article based on its current s-l-u-g",
+        "description": "update article by slug",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "user token to verify",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "slug",
+            "description": "slug to be used in updating the article",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "update all of the body or any property among them",
+            "required": true
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "Your Article is up-to-date now, Thanks"
+          },
+          "404": {
+            "description": "Article with this { slug } is not found, Thanks"
+          },
+          "403": {
+            "description": "Forbiden access"
+          },
+          "401": {
+            "description": "Please you must be the owner of this Article in order to modify it, Thanks"
           }
         }
+      }
     },
     "/articles/": {
       "get": {
-        "tags": [
-          "Articles"
-        ],
+        "tags": ["Articles"],
         "summary": "Get a list of all articles",
         "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "consumes": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
         "parameters": [
           {
             "in": "query",
@@ -531,17 +525,11 @@
     },
     "articles/{slug}": {
       "get": {
-        "tags": [
-          "Articles"
-        ],
+        "tags": ["Articles"],
         "summary": "Get a single articles",
         "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "consumes": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
         "parameters": [
           {
             "in": "path",
@@ -609,6 +597,26 @@
             "required": true
           }
         ]
+      }
+    },
+    "/api/authors": {
+      "get": {
+        "tags": ["Authors"],
+        "summary": "Get all Authors",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Authors"
+          },
+          "401": {
+            "description": "Authentication failed"
+          },
+          "default": {
+            "description": "Something went wrong"
+          }
+        }
       }
     },
     "externalDocs": {
