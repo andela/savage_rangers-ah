@@ -2,7 +2,11 @@ import models from '../models';
 import status from '../../helpers/constants/status.codes';
 import paginateUser from '../../helpers/generate.pagination.details';
 
-const { User } = models;
+const generatePagination = paginateUser;
+
+const {
+  Article, Report, User, Reason
+} = models;
 /**
  * containing all user's model controllers (signup, login)
  *
@@ -62,7 +66,7 @@ export default class adminPermissions {
     const { email } = req.params;
     const { firstName, lastName } = req.body;
 
-    const result = await User.update({
+    await User.update({
       email,
       firstName,
       lastName
@@ -204,6 +208,157 @@ export default class adminPermissions {
       data: {
         username,
         email
+      }
+    });
+  }
+
+  /**
+   * fetch all reported Articles
+   *
+   * @static
+   * @param {array} req - request array
+   * @param {array} res - respond array
+   * @returns {array} response body
+   * @memberof getArticles
+   */
+  static async getReportedArticles(req, res) {
+    const defaultOffset = 0;
+    const defaultLimit = 10;
+    const offset = req.query.offset || defaultOffset;
+    const limit = req.query.limit || defaultLimit;
+    const paginatedArticle = await Report.findAll({
+      attributes: ['createdAt'],
+      include: [
+        {
+          model: Article,
+          required: true,
+          attributes: ['title', 'slug', 'description', 'body', 'coverImage']
+        },
+        {
+          model: User,
+          required: true,
+          attributes: ['username', 'email']
+        },
+        {
+          model: Reason,
+          required: true,
+          attributes: ['description']
+        }
+      ],
+      offset,
+      limit
+    });
+    res.status(status.OK).send({
+      status: status.OK,
+      paginationDetails: generatePagination(paginatedArticle.length,
+        paginatedArticle,
+        offset,
+        limit),
+      data: paginatedArticle
+    });
+  }
+
+  /**
+   * fetch single reported Article
+   *
+   * @static
+   * @param {array} req - request array
+   * @param {array} res - respond array
+   * @returns {array} response body
+   * @memberof getArticles
+   */
+  static async getReportedArticle(req, res) {
+    const { slug } = req.params;
+    const reportedArticle = await Report.findOne({
+      attributes: ['createdAt'],
+      where: {
+        reportedArticleSlug: slug
+      },
+      include: [
+        {
+          model: Article,
+          required: true,
+          attributes: ['title', 'slug', 'description', 'body', 'coverImage']
+        },
+        {
+          model: User,
+          required: true,
+          attributes: ['username', 'email']
+        },
+        {
+          model: Reason,
+          required: true,
+          attributes: ['description']
+        }
+      ]
+    });
+    res.status(status.OK).send({
+      status: status.OK,
+      data: reportedArticle
+    });
+  }
+
+  /**
+   * block Article
+   *
+   * @static
+   * @param {object} req - request body
+   * @param {object} res - response body
+   * @returns { object } - response
+   * @memberof blockArticle
+   */
+  static async blockArticle(req, res) {
+    const { slug } = req.params;
+    const { title, body } = req;
+    const isBlocked = true;
+
+    await Article.update({
+      isBlocked
+    },
+    {
+      where: {
+        slug
+      }
+    });
+    return res.status(status.OK).json({
+      status: status.OK,
+      message: `${slug} blocked successfully`,
+      data: {
+        title,
+        slug,
+        body
+      }
+    });
+  }
+
+  /**
+   * unblock Article
+   *
+   * @static
+   * @param {object} req - request body
+   * @param {object} res - response body
+   * @returns { object } - response
+   * @memberof blockArticle
+   */
+  static async unBlockArticle(req, res) {
+    const { slug } = req.params;
+    const isBlocked = 'false';
+    const { title, body } = req;
+    await Article.update({
+      isBlocked
+    },
+    {
+      where: {
+        slug
+      }
+    });
+    return res.status(status.OK).json({
+      status: status.OK,
+      message: `${slug} unblocked successfully`,
+      data: {
+        title,
+        slug,
+        body
       }
     });
   }

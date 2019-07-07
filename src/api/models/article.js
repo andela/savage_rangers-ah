@@ -33,6 +33,10 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: { model: 'Categories', key: 'id' }
+      },
+      isBlocked: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {

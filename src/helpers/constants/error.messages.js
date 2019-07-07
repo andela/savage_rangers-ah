@@ -29,7 +29,7 @@ export default {
   ratingsNotFound: 'No ratings found for this article',
   notOwner: 'Please you must be the owner of this Article in order to modify it, Thanks',
   noArticles: 'Article not found!',
-  noMoreArticle: 'There no more articles at the moment.',
+  noMoreArticle: 'There  no more articles at the moment.',
   reason: 'a reason can not be a string, Please provide a number starting from 1, Thanks',
   textMatch: 'The text does not match the indexes',
   authorization: 'Please log in to perform this task',
@@ -49,5 +49,6 @@ export default {
   parentCommentId: 'You can not reply to a reply',
   notCommentOwner: 'You must be the owner of the comment in order to proceed',
   noBookmark: 'You have no bookmarks',
-  noSlug: 'There is no article with the slug provided'
+  noSlug: 'There is no article with the slug provided',
+  noAccess: 'you must be a Moderator or an Admin to perform this operation'
 };

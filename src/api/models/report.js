@@ -35,9 +35,9 @@ export default (sequelize, DataTypes) => {
   });
   Report.removeAttribute('id');
   Report.associate = ({ User, Article, Reason }) => {
-    Report.belongsTo(User, { foreignKey: 'userId' });
-    Report.belongsTo(Article, { foreignKey: 'reportedArticleSlug' });
-    Report.belongsTo(Reason, { foreignKey: 'reasonId' });
+    Report.belongsTo(User, { foreignKey: 'userId', targetKey: 'id' });
+    Report.belongsTo(Article, { foreignKey: 'reportedArticleSlug', targetKey: 'slug' });
+    Report.belongsTo(Reason, { foreignKey: 'reasonId', targetKey: 'id' });
   };
   return Report;
 };

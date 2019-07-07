@@ -100,6 +100,7 @@ module.exports = {
       {
         username: 'BurindiAlain13',
         email: 'alain13@gmail.com',
+        role: 'moderator',
         password: hashedPassword,
         createdAt: new Date(),
         updatedAt: new Date()
