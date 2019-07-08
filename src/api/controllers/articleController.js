@@ -7,19 +7,10 @@ import errorSender from '../../helpers/error.sender';
 import generatePagination from '../../helpers/generate.pagination.details';
 
 const {
-  Article, Category, User, Report
+  Article, Category, User, Report, Highlight
 } = models;
 
-const { CREATED } = statusCodes;
-
-/**
- *
- *
- * this is the article controller
- *
- * @export
- * @class ArticleController
- */
+const { CREATED, BAD_REQUEST } = statusCodes;
 
 /**
  * containing all article's model controllers
@@ -246,6 +237,37 @@ export default class ArticleController {
         res,
         'Message',
         'Sorry, but that reason does not exist, Thanks');
+    }
+  }
+  
+  /*
+  * allow a user to highlight a text in an article
+  *
+  * @author Alain Burindi
+  * @static
+  * @param {object} req the request
+  * @param {object} res the response to be sent
+  * @memberof ArticleController
+  * @returns {Object} res
+  */
+  static async highlight(req, res) {
+    const { slug } = req.params;
+    const {
+      startIndex, lastIndex, text, comment
+    } = req.body;
+    const correctLength = lastIndex - startIndex + 1;
+
+    if (correctLength === text.length) {
+      const userId = req.user.user.id;
+      const highlighted = await Highlight.create({
+        startIndex, lastIndex, text, comment, articleSlug: slug, userId
+      });
+      res.status(CREATED).json({
+        status: CREATED,
+        highlighted
+      });
+    } else {
+      errorSender(BAD_REQUEST, res, 'text', errorMessage.textMatch);
     }
   }
 }

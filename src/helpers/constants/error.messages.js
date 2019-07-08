@@ -32,4 +32,5 @@ export default {
   noArticles: 'Article not found!',
   noMoreArticle: 'There no more articles at the moment.',
   reason: 'a reason can not be a string, Please provide a number starting from 1, Thanks',
+  textMatch: 'The text does not match the indexes'
 };

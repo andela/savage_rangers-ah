@@ -12,7 +12,8 @@ const models = {
   Category: sequelize.import('./category'),
   Rating: sequelize.import('./rating'),
   Report: sequelize.import('./report'),
-  Reason: sequelize.import('./reasons')
+  Reason: sequelize.import('./reasons'),
+  Highlight: sequelize.import('./highlight')
 };
 
 Object.keys(models).forEach((key) => {
@@ -20,6 +21,7 @@ Object.keys(models).forEach((key) => {
     models[key].associate(models);
   }
 });
+
 export { sequelize };
 
 export default models;

@@ -20,6 +20,7 @@ articleRouter.post('/:slug/rating',
   validateInputs('rateArticle', ['rating']),
   checkExistingRates.ExistingRating,
   ratingsController.rateArticle);
+const highlightFields = ['firstIndex', 'lastIndex', 'comment', 'text'];
 
 articleRouter.get('/', articleController.getArticles);
 articleRouter.get('/:slug', articleController.getArticle);
@@ -50,6 +51,8 @@ articleRouter.delete('/:slug',
   checkValidToken,
   checkArticleOwner.checkOwner,
   articleController.delete);
+articleRouter.post('/:slug/highlight', checkValidToken, checkArticle.getArticle, validateInputs('highlight', highlightFields),
+  articleController.highlight);
 
 articleRouter.post('/:slug/report',
   checkValidToken,
