@@ -67,10 +67,17 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'userId',
       onDelete: 'CASCADE',
     });
+    User.hasMany(models.Following, {
+      foreignKey: 'follower'
+    });
+    User.hasMany(models.Following, {
+      foreignKey: 'following'
+    });
   };
 
   User.findByEmail = (email) => {
     const queryResult = User.findOne({ where: { email } });
+    
     return queryResult;
   };
   return User;

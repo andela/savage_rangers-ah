@@ -8,32 +8,27 @@ import errorMessages from '../../helpers/constants/error.messages';
  */
 export default class {
   /**
-   * @description verification link controller
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} void
-   */
+     * @description verification link controller
+     * @param {*} req
+     * @param {*} res
+     * @returns {*} void
+     */
   static async verifyEmail(req, res) {
-    const { token } = req.params;
-    let result;
     try {
-      result = decodejwt(token);
-      const action = await models.User.update({ verified: true },
-        {
-          where: {
-            email: result.user.email
-          }
-        });
+      const { token } = req.params;
+      const result = decodejwt(token);
+      const action = await models.User.update({ verified: true }, {
+        where: {
+          email: result.user.email,
+        }
+      });
       const ZERO = 0;
       if (!action.includes(ZERO)) {
-        res.status(status.OK).json({
-          status: 200,
-          message: 'Your email is successfully verified'
-        });
+        res.status(status.OK).json({ status: 200, message: 'Your email is successfully verified' });
       } else {
         error(status.NOT_FOUND, res, 'user', errorMessages.noUser);
       }
-    } catch (err) {
+    } catch (tokenError) {
       error(status.BAD_REQUEST, res, 'link', errorMessages.emailLinkInvalid);
     }
   }

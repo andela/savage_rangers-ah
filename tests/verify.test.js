@@ -77,7 +77,7 @@ describe('GET /verifyEmail', () => {
     chai
       .request(server)
       .get(`/api/users/verifyEmail/${verifytoken}`)
-      .end((err, res) => {
+      .end(async (err, res) => {
         res.should.have.status(status.BAD_REQUEST);
         res.body.errors.link.should.be.eq(errorMessages.emailLinkInvalid);
         done();
