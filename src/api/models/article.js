@@ -16,7 +16,7 @@ export default (sequelize, DataTypes) => {
       title: { type: DataTypes.STRING, allowNull: false },
       description: { type: DataTypes.TEXT, allowNull: false },
       body: { type: DataTypes.TEXT, allowNull: false },
-      slug: { type: DataTypes.STRING, allowNull: false },
+      slug: { type: DataTypes.STRING, allowNull: false, unique: true },
       coverImage: { type: DataTypes.TEXT, allowNull: false },
       readTime: {
         type: DataTypes.FLOAT,
@@ -80,6 +80,10 @@ export default (sequelize, DataTypes) => {
     Article.belongsToMany(models.Tag, {
       through: 'ArticlesTags',
       foreignKey: 'articleId'
+    });
+    Article.hasMany(models.Read, {
+      foreignKey: 'articleSlug',
+      onDelete: 'CASCADE',
     });
   };
 

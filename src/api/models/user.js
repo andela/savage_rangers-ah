@@ -90,6 +90,10 @@ export default (sequelize, DataTypes) => {
     User.hasMany(models.Following, {
       foreignKey: 'following'
     });
+    User.hasMany(models.Read, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
+    });
     User.hasMany(models.Comment, {
       foreignKey: 'userId'
     });

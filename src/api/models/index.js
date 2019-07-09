@@ -22,7 +22,8 @@ const models = {
   ArticleTag: sequelize.import('./articlesTags'),
   TermsAndConditions: sequelize.import('./termsAndConditions'),
   Reaction: sequelize.import('./reactions'),
-  Rating: sequelize.import('./rating')
+  Rating: sequelize.import('./rating'),
+  Read: sequelize.import('./read'),
 };
 
 Object.keys(models).forEach((key) => {
