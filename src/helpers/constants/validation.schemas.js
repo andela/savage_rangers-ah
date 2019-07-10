@@ -91,20 +91,28 @@ export default {
       ])
       .required()
   }),
+
   rateArticle: Joi.object().keys({
     rating: number
       .valid(numbers.ONE, numbers.TWO, numbers.THREE, numbers.FOUR, numbers.FIVE)
       .required()
   }),
   reportArticle: Joi.object().keys({
-    reason: number.min(1).integer().required()
+    reason: number
+      .min(1)
+      .integer()
+      .required()
   }),
   updateArticle: Joi.object().keys({
     title: Joi.string().allow(''),
     description: Joi.string().allow(''),
     body: Joi.string().allow(''),
-    category: Joi.string().uppercase().allow(''),
-    tagList: Joi.array().items(Joi.string().alphanum()).allow('')
+    category: Joi.string()
+      .uppercase()
+      .allow(''),
+    tagList: Joi.array()
+      .items(Joi.string().alphanum())
+      .allow('')
   }),
   highlight: Joi.object().keys({
     startIndex: Joi.number()
@@ -118,6 +126,32 @@ export default {
       .required(),
     comment: Joi.string()
       .trim()
-      .required(),
+      .required()
   }),
+
+  postComment: Joi.object().keys({
+    body: string.required(),
+    parentCommentId: number.min(1)
+  }),
+
+  updateComment: Joi.object().keys({
+    body: string.required()
+  }),
+
+  commentUpdateDeleteRoute: Joi.object().keys({
+    id: number.required(),
+    slug: string
+      .min(SLUG_MIN_LENTH)
+      .max(SLUG_MAX_LENTH)
+      .required()
+  }),
+
+  getCommentRoute: Joi.object().keys({
+    offset: number.required().default(DEFAULT_OFFSET),
+    limit: number.required().default(DEFAULT_LIMIT),
+    slug: string
+      .min(SLUG_MIN_LENTH)
+      .max(SLUG_MAX_LENTH)
+      .required()
+  })
 };
