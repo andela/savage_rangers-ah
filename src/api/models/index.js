@@ -13,6 +13,7 @@ const models = {
   Rating: sequelize.import('./rating'),
   Report: sequelize.import('./report'),
   Reason: sequelize.import('./reasons'),
+  Share: sequelize.import('./share'),
   Highlight: sequelize.import('./highlight'),
   Following: sequelize.import('./following')
 };

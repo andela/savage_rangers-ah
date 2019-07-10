@@ -7,7 +7,7 @@ import errorSender from '../../helpers/error.sender';
 import generatePagination from '../../helpers/generate.pagination.details';
 
 const {
-  Article, Category, User, Report, Highlight
+  Article, Category, User, Report, Share, Highlight
 } = models;
 
 const { CREATED, BAD_REQUEST } = statusCodes;
@@ -239,8 +239,8 @@ export default class ArticleController {
         'Sorry, but that reason does not exist, Thanks');
     }
   }
-  
-  /*
+
+  /**
   * allow a user to highlight a text in an article
   *
   * @author Alain Burindi
@@ -269,5 +269,35 @@ export default class ArticleController {
     } else {
       errorSender(BAD_REQUEST, res, 'text', errorMessage.textMatch);
     }
+  }
+
+  /**
+   * allow an author to report a certain article as inappropriate
+   *
+   * @author Frank Mutabazi
+   * allow a user to share an article on social media
+   *
+   * @static
+   * @param {object} req the request
+   * @param {object} res the response to be sent
+   * @memberof ArticleController
+   * @returns {Object} res
+   */
+  static async socialShareArticle(req, res) {
+    const { user: { id } } = req.user;
+    const { slug } = req.params;
+    const { sharedOn } = req;
+    const { title } = req;
+
+    await Share.create({
+      userId: id,
+      articleSlug: slug,
+      sharedOn
+    });
+
+    return res.status(statusCodes.CREATED).json({
+      status: statusCodes.CREATED,
+      message: `${title} has been shared successfully on ${sharedOn}, Thanks`
+    });
   }
 }

@@ -9,6 +9,7 @@ import checkArticleOwner from '../../middlewares/checkArticleOwnership';
 import checkExistingRates from '../../middlewares/checkExistingRating';
 import uploadImage from '../../middlewares/upload';
 import errorHandler from '../../middlewares/errorHandler';
+import shareArticle from '../../middlewares/shareArticle';
 import validateRatingsRoute from '../../middlewares/validations/ratings.routes';
 
 const articleRouter = new Router();
@@ -61,5 +62,30 @@ articleRouter.post('/:slug/report',
   validateInputs('reportArticle', ['reason']),
   checkArticleOwner.checkOwner,
   articleController.reportAnArticle);
+
+articleRouter.post('/:slug/share/facebook',
+  checkValidToken,
+  checkArticle.getArticle,
+  shareArticle,
+  articleController.socialShareArticle);
+
+articleRouter.post('/:slug/share/twitter',
+  checkValidToken,
+  checkArticle.getArticle,
+  shareArticle,
+  articleController.socialShareArticle);
+
+articleRouter.post('/:slug/share/linkedin',
+  checkValidToken,
+  checkArticle.getArticle,
+  shareArticle,
+  articleController.socialShareArticle);
+
+articleRouter.post('/:slug/share/gmail',
+  checkValidToken,
+  checkArticle.getArticle,
+  shareArticle,
+  articleController.socialShareArticle);
+
 
 export default articleRouter;
