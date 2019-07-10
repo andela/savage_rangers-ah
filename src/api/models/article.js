@@ -60,7 +60,12 @@ export default (sequelize, DataTypes) => {
     });
     Article.hasMany(models.Highlight, {
       foreignKey: 'articleSlug',
+      onDelete: 'CASCADE'
+    });
+    Article.hasMany(models.Comment, {
+      foreignKey: 'articleSlug',
       onDelete: 'CASCADE',
+      sourceKey: 'slug'
     });
   };
 

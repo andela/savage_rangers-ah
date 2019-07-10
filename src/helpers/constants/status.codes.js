@@ -8,6 +8,7 @@ export default {
   NOT_FOUND: 404,
   TIMEOUT: 408,
   EXIST: 409,
+  NOT_ALLOWED: 406,
   SERVER_ERROR: 500,
   NOT_MODIFIED: 304
 };

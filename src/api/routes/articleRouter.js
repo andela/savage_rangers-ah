@@ -11,6 +11,11 @@ import uploadImage from '../../middlewares/upload';
 import errorHandler from '../../middlewares/errorHandler';
 import shareArticle from '../../middlewares/shareArticle';
 import validateRatingsRoute from '../../middlewares/validations/ratings.routes';
+import commentController from '../controllers/commentController';
+import validateGetCommentRoute from '../../middlewares/validations/get.comments.route';
+import getComment from '../../middlewares/get.comment.record';
+import validateCommentUpdateDelete from '../../middlewares/validations/comment.update.delete';
+import checkCommentOwner from '../../middlewares/check.comment.ownership';
 
 const articleRouter = new Router();
 
@@ -52,7 +57,10 @@ articleRouter.delete('/:slug',
   checkValidToken,
   checkArticleOwner.checkOwner,
   articleController.delete);
-articleRouter.post('/:slug/highlight', checkValidToken, checkArticle.getArticle, validateInputs('highlight', highlightFields),
+articleRouter.post('/:slug/highlight',
+  checkValidToken,
+  checkArticle.getArticle,
+  validateInputs('highlight', highlightFields),
   articleController.highlight);
 
 articleRouter.post('/:slug/report',
@@ -87,5 +95,32 @@ articleRouter.post('/:slug/share/gmail',
   shareArticle,
   articleController.socialShareArticle);
 
+articleRouter.post('/:slug/comments',
+  checkValidToken,
+  bodyVerifier,
+  checkArticle.getArticle,
+  validateInputs('postComment', ['body', 'parentCommentId']),
+  commentController.create);
+
+articleRouter.get('/:slug/comments',
+  validateGetCommentRoute,
+  checkArticle.getArticle,
+  commentController.getComments);
+
+articleRouter.patch('/:slug/comments/:id',
+  checkValidToken,
+  validateCommentUpdateDelete,
+  bodyVerifier,
+  validateInputs('updateComment', ['body']),
+  getComment,
+  checkCommentOwner,
+  commentController.updateComment);
+
+articleRouter.delete('/:slug/comments/:id',
+  checkValidToken,
+  validateCommentUpdateDelete,
+  getComment,
+  checkCommentOwner,
+  commentController.deleteComment);
 
 export default articleRouter;
