@@ -36,5 +36,12 @@ export default {
   authorization: 'Please log in to perform this task',
   followError: "You can't follow yourself",
   followingError: 'You are currently following no one',
-  followerError: 'You have no followers'
+  followerError: 'You have no followers',
+  moderator: 'is already a moderator',
+  notModerator: 'is not a moderator',
+  notAdmin: 'you must be an admin to perform this operation',
+  blocked: 'is already blocked',
+  notBlocked: 'is not blocked',
+  noMoreUsers: 'There are no more users at the moment.',
+  exist: ' The user already exists'
 };
