@@ -10,7 +10,9 @@ import errorMessage from '../src/helpers/constants/error.messages';
 chai.use(chaiHttp);
 chai.should();
 
-const { CREATED, BAD_REQUEST } = statusCodes;
+const {
+  CREATED, BAD_REQUEST, OK, NOT_FOUND
+} = statusCodes;
 const highlitedData = {
   startIndex: 3,
   lastIndex: 8,
@@ -35,6 +37,29 @@ describe('Highlight', () => {
       });
   });
 
+  it('should send highlighted text', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/How-to-create-sequalize-seeds/highlight')
+      .set('Authorization', token)
+      .end((err, res) => {
+        res.should.have.status(OK);
+        res.body.highlighted[0].should.include(highlitedData);
+        done();
+      });
+  });
+
+  it('should send no highlighted error', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/What-is-a-Version-1-UUID/highlight')
+      .set('Authorization', token)
+      .end((err, res) => {
+        res.should.have.status(NOT_FOUND);
+        res.body.errors.should.have.property('highlited', errorMessage.noHighlight);
+        done();
+      });
+  });
   describe('Validation', () => {
     it('the text length should match the indexes', (done) => {
       highlitedData.startIndex = 2;

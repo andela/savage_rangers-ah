@@ -50,5 +50,6 @@ export default {
   notCommentOwner: 'You must be the owner of the comment in order to proceed',
   noBookmark: 'You have no bookmarks',
   noSlug: 'There is no article with the slug provided',
-  noAccess: 'you must be a Moderator or an Admin to perform this operation'
+  noAccess: 'you must be a Moderator or an Admin to perform this operation',
+  noHighlight: 'No highlited text for this article',
 };

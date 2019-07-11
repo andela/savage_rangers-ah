@@ -63,6 +63,9 @@ articleRouter.post('/:slug/highlight',
   validateInputs('highlight', highlightFields),
   articleController.highlight);
 
+articleRouter.get('/:slug/highlight', checkArticle.getArticle, articleController.getHighlight);
+
+
 articleRouter.post('/:slug/report',
   checkValidToken,
   bodyVerifier,
