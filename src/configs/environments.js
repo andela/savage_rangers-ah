@@ -15,6 +15,7 @@ const testDatabase = process.env.TEST_DATABASE;
 const host = process.env.HOST;
 const dialect = 'postgres';
 const port = process.env.DB_PORT;
+const { APP_URL_FRONTEND } = process.env;
 
 const environments = [
   {
@@ -31,7 +32,8 @@ const environments = [
     database: testDatabase,
     host,
     dialect,
-    port
+    port,
+    APP_URL_FRONTEND
   },
   {
     name: 'development',
@@ -47,7 +49,8 @@ const environments = [
     database: devDatabase,
     host,
     dialect,
-    port
+    port,
+    APP_URL_FRONTEND
   },
   {
     name: 'production',
@@ -62,7 +65,8 @@ const environments = [
     password,
     host,
     dialect,
-    port
+    port,
+    APP_URL_FRONTEND
   },
   {
     name: 'stagging',
@@ -79,7 +83,8 @@ const environments = [
     database: devDatabase,
     host,
     dialect,
-    port
+    port,
+    APP_URL_FRONTEND
   }
 ];
 
