@@ -1,4 +1,6 @@
 import chai from 'chai';
+import sinon from 'sinon';
+import mailer from '@sendgrid/mail';
 import '@babel/polyfill';
 import chaiHttp from 'chai-http';
 import status from '../src/helpers/constants/status.codes';
@@ -16,6 +18,9 @@ const password = 'password23423';
 const adminUrl = '/api/admin/users';
 
 describe('Users', () => {
+  before(() => {
+    sinon.stub(mailer, 'send').yields(JSON.stringify([]));
+  });
   it('should login the user to get the token', (done) => {
     chai
       .request(server)
