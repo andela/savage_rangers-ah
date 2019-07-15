@@ -15,7 +15,7 @@ export default {
   articleCreate: 'Article created',
   title: 'The title is required',
   description: 'description is required.',
-  body: 'body is required',
+  body: 'body is required and must be a string',
   category: 'category is required',
   country: 'The country is required should only contain alphanumeric characters',
   firstName: 'The firstName should only contain alphanumeric characters',
@@ -43,5 +43,10 @@ export default {
   blocked: 'is already blocked',
   notBlocked: 'is not blocked',
   noMoreUsers: 'There are no more users at the moment.',
-  exist: ' The user already exists'
+  exist: ' The user already exists',
+  reply: 'reply is required and must be a boolean',
+  noComment: 'Invalid parent comment Id provided',
+  noCommentFound: 'No comments found. Try to reduce the provided entries or create a comment.',
+  parentCommentId: 'You can not reply to a reply',
+  notCommentOwner: 'You must be the owner of the comment in order to proceed'
 };

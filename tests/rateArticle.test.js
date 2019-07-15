@@ -23,29 +23,37 @@ describe('test the rating controller', () => {
   });
   it('should not be able to rate an article because it has not found the article slug', (done) => {
     const slug = 'How-to-create-sequalize-ses';
-    chai.request(app)
+    chai
+      .request(app)
       .post(`/api/articles/${slug}/rating`)
       .set('Authorization', userToken)
       .send({
-        rating: 5,
+        rating: 5
       })
       .end((err, res) => {
-        expect(res.body).to.have.property('message').eql('Article with this How-to-create-sequalize-ses is not found, Thanks');
+        expect(res.body)
+          .to.have.property('errors')
+          .eql({ slug: 'Article with slug How-to-create-sequalize-ses is not found, Thanks' });
         done();
       });
   });
   it('should be able to rate an article', (done) => {
     const slug = 'How-to-create-sequalize-seeds';
     const rate = 5;
-    chai.request(app)
+    chai
+      .request(app)
       .post(`/api/articles/${slug}/rating`)
       .set('Authorization', userToken)
       .send({
-        rating: rate,
+        rating: rate
       })
       .end((err, res) => {
-        expect(res.body).to.have.property('status').eql(status.CREATED);
-        expect(res.body).to.have.property('message').eql(`Rating for ${slug} submitted successfully`);
+        expect(res.body)
+          .to.have.property('status')
+          .eql(status.CREATED);
+        expect(res.body)
+          .to.have.property('message')
+          .eql(`Rating for ${slug} submitted successfully`);
         done();
       });
   });
@@ -53,16 +61,21 @@ describe('test the rating controller', () => {
   it('should not be able to rate an article twice', (done) => {
     const slug = 'How-to-create-sequalize-seeds';
     const rate = 5;
-    chai.request(app)
+    chai
+      .request(app)
       .post(`/api/articles/${slug}/rating`)
       .set('Authorization', userToken)
       .send({
-        rating: rate,
+        rating: rate
       })
       .end((err, res) => {
-        expect(res.body).to.have.property('status').eql(status.BAD_REQUEST);
-        expect(res.body).to.have.property('errors')
-          .to.have.property('Rating').eql('Sorry, you can not update this article twice with the same rating number, please update it');
+        expect(res.body)
+          .to.have.property('status')
+          .eql(status.BAD_REQUEST);
+        expect(res.body)
+          .to.have.property('errors')
+          .to.have.property('Rating')
+          .eql('Sorry, you can not update this article twice with the same rating number, please update it');
         done();
       });
   });
@@ -70,15 +83,20 @@ describe('test the rating controller', () => {
   it('should be able to rate an article with an updated input', (done) => {
     const slug = 'How-to-create-sequalize-seeds';
     const rate = 4;
-    chai.request(app)
+    chai
+      .request(app)
       .post(`/api/articles/${slug}/rating`)
       .set('Authorization', userToken)
       .send({
-        rating: rate,
+        rating: rate
       })
       .end((err, res) => {
-        expect(res.body).to.have.property('status').eql(status.OK);
-        expect(res.body).to.have.property('message').eql(`You have successfully updated your Ratings for ${slug}`);
+        expect(res.body)
+          .to.have.property('status')
+          .eql(status.OK);
+        expect(res.body)
+          .to.have.property('message')
+          .eql(`You have successfully updated your Ratings for ${slug}`);
         done();
       });
   });

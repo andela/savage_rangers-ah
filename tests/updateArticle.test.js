@@ -47,8 +47,8 @@ describe('testing the middlewares before reaching the update article controller'
       .end((err, res) => {
         expect(res.status).eql(status.NOT_FOUND);
         expect(res.body)
-          .to.have.property('message')
-          .eql(`Article with this ${slug} is not found, Thanks`);
+          .to.have.property('errors')
+          .eql({ slug: 'Article with slug meditate-about-yourself is not found, Thanks' });
         done();
       });
   });

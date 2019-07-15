@@ -1,5 +1,6 @@
 import models from '../api/models';
 import statusCode from '../helpers/constants/status.codes';
+import sendError from '../helpers/error.sender';
 
 const { Article } = models;
 /**
@@ -12,7 +13,7 @@ class getOneArticle {
   /**
    * this is a middleware which checks if the article slug is registered in to our database.
    *
-   * @author Frank Mutabazi
+   * @author Frank Mutabazi, Prémices
    * @static
    * @param {object} req the request
    * @param {object} res the response to be sent
@@ -29,11 +30,14 @@ class getOneArticle {
       }
     });
 
+    if (result) req.article = result.dataValues;
+
     return result
       ? next()
-      : res
-        .status(statusCode.NOT_FOUND)
-        .json({ message: `Article with this ${slug} is not found, Thanks` });
+      : sendError(statusCode.NOT_FOUND,
+        res,
+        'slug',
+        `Article with slug ${slug} is not found, Thanks`);
   }
 }
 
