@@ -177,5 +177,11 @@ export default {
       .min(TAGNAME_CONTENT_MIN_LENGTH)
       .max(TAGNAME_CONTENT_MAX_LENGTH)
       .required()
+  }),
+  reportComment: Joi.object().keys({
+    commentReason: number
+      .min(1)
+      .integer()
+      .required()
   })
 };

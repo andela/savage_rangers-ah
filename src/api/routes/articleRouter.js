@@ -21,6 +21,7 @@ import checkIncomingTags from '../../middlewares/check.incoming.tags';
 import createAndGetNewTags from '../../middlewares/get.new.tags';
 import validateTagsTableQueryRoute from '../../middlewares/validations/query.tags.table.route';
 import optionalAuth from '../../middlewares/optionalAuth';
+import reportCommentController from '../controllers/reportCommentController';
 
 const articleRouter = new Router();
 
@@ -157,5 +158,14 @@ articleRouter.delete('/:slug/comments/:id',
 
 articleRouter.patch('/:slug/publish', checkValidToken, checkArticleOwner.checkOwner,
   articleController.publish);
+
+articleRouter.post('/:slug/comments/:id/report',
+  checkValidToken,
+  bodyVerifier,
+  checkArticle.getArticle,
+  getComment,
+  validateInputs('reportComment', ['commentReason']),
+  reportCommentController.reportComment);
+
 
 export default articleRouter;

@@ -23,7 +23,6 @@ class getOneArticle {
    */
   static async getArticle(req, res, next) {
     const { slug } = req.params;
-
     const result = await Article.findOne({
       where: {
         slug
