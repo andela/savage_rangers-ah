@@ -70,6 +70,7 @@ export default (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       hooks: true
     });
+
     User.hasMany(models.Rating, {
       foreignKey: 'userId' 
     });
@@ -88,6 +89,12 @@ export default (sequelize, DataTypes) => {
     });
     User.hasMany(models.Comment, {
       foreignKey: 'userId'
+    });
+    User.hasMany(models.Report, {
+      foreignKey: 'userId',
+      sourceId: 'id',
+      onDelete: 'CASCADE',
+      hooks: true
     });
   };
 

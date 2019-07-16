@@ -92,17 +92,28 @@ export default class ArticleController {
     const articles = await Article.findAndCountAll({
       offset,
       limit,
-      attributes: ['id', 'title', 'description', 'body', 'slug', 'coverImage', 'tagList', 'createdAt', 'updatedAt'],
+      attributes: [
+        'id',
+        'title',
+        'description',
+        'body',
+        'slug',
+        'coverImage',
+        'tagList',
+        'createdAt',
+        'updatedAt'
+      ],
       include: [
         {
           model: Category,
           as: 'Category',
           attributes: ['name']
-        }, {
+        },
+        {
           model: User,
-          attributes: ['firstName', 'lastName', 'profileImage'],
-        }],
-
+          attributes: ['firstName', 'lastName', 'profileImage']
+        }
+      ]
     });
 
     result.status = 200;
@@ -129,17 +140,29 @@ export default class ArticleController {
   static async getArticle(req, res) {
     const { slug } = req.params;
     const article = await Article.findOne({
-      attributes: ['id', 'title', 'description', 'body', 'slug', 'coverImage', 'tagList', 'createdAt', 'updatedAt'],
+      attributes: [
+        'id',
+        'title',
+        'description',
+        'body',
+        'slug',
+        'coverImage',
+        'tagList',
+        'createdAt',
+        'updatedAt'
+      ],
       where: { slug },
       include: [
         {
           model: Category,
           as: 'Category',
           attributes: ['name']
-        }, {
+        },
+        {
           model: User,
-          attributes: ['firstName', 'lastName', 'profileImage'],
-        }]
+          attributes: ['firstName', 'lastName', 'profileImage']
+        }
+      ]
     });
 
     if (article) {
@@ -225,13 +248,15 @@ export default class ArticleController {
         }
       });
 
-      return response[0]._options.isNewRecord === false ? errorSender(statusCodes.BAD_REQUEST,
-        res,
-        'Message',
-        `Sorry, You can not report this ${slug} with the same reason twice, Thanks `) : res.status(statusCodes.CREATED).json({
-        status: statusCodes.CREATED,
-        message: `Report for ${slug} is successfully submitted, Thanks`
-      });
+      return response[0]._options.isNewRecord === false
+        ? errorSender(statusCodes.BAD_REQUEST,
+          res,
+          'Message',
+          `Sorry, You can not report this ${slug} with the same reason twice, Thanks `)
+        : res.status(statusCodes.CREATED).json({
+          status: statusCodes.CREATED,
+          message: `Report for ${slug} is successfully submitted, Thanks`
+        });
     } catch (SequelizeForeignKeyConstraintError) {
       errorSender(statusCodes.NOT_FOUND,
         res,

@@ -6,6 +6,10 @@ import validateToken from '../../middlewares/checkValidToken';
 import checkUser from '../../middlewares/checkUser';
 import checkIfAdmin from '../../middlewares/IsAdmin';
 import checkIfBlocked from '../../middlewares/isBlocked';
+import articleController from '../controllers/articleController';
+import checkIfArticleExist from '../../middlewares/getOneArticle';
+import CheckIfModerator from '../../middlewares/CheckIfModerator';
+import CheckIfBlocked from '../../middlewares/isArticleBlocked';
 
 const adminRouter = new Router();
 
@@ -53,5 +57,39 @@ adminRouter.patch('/users/:email/unblock',
   checkUser.checkIfUserExist,
   checkIfBlocked.checkUnBlocked,
   adminPermissionsController.unBlockUser);
+
+adminRouter.get('/articles',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  articleController.getArticles);
+
+adminRouter.get('/article/:slug',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  articleController.getArticle);
+
+adminRouter.get('/articles/reported',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  adminPermissionsController.getReportedArticles);
+
+adminRouter.get('/article/:slug/reported',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  adminPermissionsController.getReportedArticle);
+
+adminRouter.patch('/article/:slug/block',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  checkIfArticleExist.getArticle,
+  CheckIfBlocked.checkBlocked,
+  adminPermissionsController.blockArticle);
+
+adminRouter.patch('/article/:slug/unblock',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  checkIfArticleExist.getArticle,
+  CheckIfBlocked.checkUnBlocked,
+  adminPermissionsController.unBlockArticle);
 
 export default adminRouter;

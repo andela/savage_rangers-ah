@@ -14,7 +14,6 @@ router.use('/articles', articleRouter);
 router.use('/users', authRouter);
 router.use('/authors', authorsRouter);
 router.use('/profiles', profileRouter);
-
 router.use('/admin', adminRouter);
 router.use('/bookmarks', bookmarkRouter);
 
