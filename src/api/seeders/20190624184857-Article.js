@@ -33,7 +33,7 @@ export default {
             'A Version 1 UUID is a universally unique identifier that is generated using a timestamp and the MAC address of the computer on which it was generated.',
         coverImage: 'default.jpeg',
         tagList: ['UUID', 'express', 'sequelize'],
-        category: 1,
+        category: 2,
         author: 1,
         createdAt: new Date(),
         updatedAt: new Date()

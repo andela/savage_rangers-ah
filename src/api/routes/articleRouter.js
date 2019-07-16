@@ -73,6 +73,7 @@ articleRouter.post('/:slug/report',
   validateInputs('reportArticle', ['reason']),
   checkArticleOwner.checkOwner,
   articleController.reportAnArticle);
+articleRouter.get('/category/:categoryId', articleController.getArticlesByCategory);
 
 articleRouter.post('/:slug/share/facebook',
   checkValidToken,

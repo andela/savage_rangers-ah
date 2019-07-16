@@ -14,6 +14,7 @@ const {
 const {
   CREATED, BAD_REQUEST, OK, NOT_FOUND
 } = statusCodes;
+const minimumLimit = 0;
 
 /**
  * containing all article's model controllers
@@ -269,15 +270,15 @@ export default class ArticleController {
   }
 
   /**
-  * allow a user to highlight a text in an article
-  *
-  * @author Alain Burindi
-  * @static
-  * @param {object} req the request
-  * @param {object} res the response to be sent
-  * @memberof ArticleController
-  * @returns {Object} res
-  */
+   * allow a user to highlight a text in an article
+   *
+   * @author Alain Burindi
+   * @static
+   * @param {object} req the request
+   * @param {object} res the response to be sent
+   * @memberof ArticleController
+   * @returns {Object} res
+   */
   static async highlight(req, res) {
     const { slug } = req.params;
     const {
@@ -288,7 +289,12 @@ export default class ArticleController {
     if (correctLength === text.length) {
       const userId = req.user.user.id;
       const highlighted = await Highlight.create({
-        startIndex, lastIndex, text, comment, articleSlug: slug, userId
+        startIndex,
+        lastIndex,
+        text,
+        comment,
+        articleSlug: slug,
+        userId
       });
       res.status(CREATED).json({
         status: CREATED,
@@ -312,7 +318,9 @@ export default class ArticleController {
    * @returns {Object} res
    */
   static async socialShareArticle(req, res) {
-    const { user: { id } } = req.user;
+    const {
+      user: { id }
+    } = req.user;
     const { slug } = req.params;
     const { sharedOn } = req;
     const { title } = req;
@@ -330,15 +338,15 @@ export default class ArticleController {
   }
 
   /**
-  * allow a user to get highlighted text in an article
-  *
-  * @author Alain Burindi
-  * @static
-  * @param {object} req the request
-  * @param {object} res the response to be sent
-  * @memberof ArticleController
-  * @returns {Object} res
-  */
+   * allow a user to get highlighted text in an article
+   *
+   * @author Alain Burindi
+   * @static
+   * @param {object} req the request
+   * @param {object} res the response to be sent
+   * @memberof ArticleController
+   * @returns {Object} res
+   */
   static async getHighlight(req, res) {
     const { slug } = req.params;
     const highlighted = await Highlight.findAll({
@@ -354,5 +362,38 @@ export default class ArticleController {
     } else {
       errorSender(NOT_FOUND, res, 'highlited', errorMessage.noHighlight);
     }
+  }
+
+  /**
+   * This function gets all articles that belongs to a specific category
+   *
+   * @static
+   * @param {Object} req the request
+   * @param {Object} res the response to be sent
+   * @memberof Articles
+   * @returns {Object} res
+   */
+  static async getArticlesByCategory(req, res) {
+    const { categoryId } = req.params;
+    const { offset, limit } = req.query;
+    const articles = await Article.findAndCountAll({
+      where: {
+        category: categoryId
+      },
+      offset,
+      limit
+    });
+    if (articles.rows.length === minimumLimit) {
+      return res.status(statusCodes.NOT_FOUND).json({
+        status: statusCodes.NOT_FOUND,
+        message: `Article with category: ${categoryId} not found`
+      });
+    }
+
+    return res.status(statusCodes.OK).json({
+      status: statusCodes.OK,
+      paginationDetails: generatePagination(articles.count, articles.rows, offset, limit),
+      data: articles.rows
+    });
   }
 }

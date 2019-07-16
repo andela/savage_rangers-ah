@@ -123,4 +123,26 @@ describe('create  article', () => {
         done();
       });
   });
+  it('should display all article  by category Id', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/category/1')
+      .end((err, res) => {
+        const { status } = res;
+        expect(status).to.equal(statusCode.OK);
+        done();
+      });
+  });
+  it('should display a message if the article with specific category is not found', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/category/4')
+      .end((err, res) => {
+        const { status, body } = res;
+        expect(status).to.equal(statusCode.NOT_FOUND);
+        expect(body).to.have.property('message');
+        expect(body.message).to.eql('Article with category: 4 not found');
+        done();
+      });
+  });
 });
