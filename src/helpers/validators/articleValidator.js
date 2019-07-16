@@ -8,21 +8,17 @@ const schema = joi.object().keys({
     .required(),
   description: joi
     .string()
-    .required()
     .error(() => errorMessage.description),
   body: joi
     .string()
-    .required()
     .error(() => errorMessage.body),
-  category: joi
-    .string()
-    .required()
-    .uppercase()
-    .error(() => errorMessage.category),
   tags: joi
     .array()
-    .items(joi.string().alphanum())
-    .required()
+    .items(joi.string().alphanum()),
+  category: joi
+    .number()
+    .min(1)
+    .error(() => errorMessage.category)
 });
 
 export default article => joi.validate(article, schema);

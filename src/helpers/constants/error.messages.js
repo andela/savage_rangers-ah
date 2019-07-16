@@ -14,9 +14,9 @@ export default {
   serverError: 'Something went wrong',
   articleCreate: 'Article created',
   title: 'The title is required',
-  description: 'description is required.',
-  body: 'body is required and must be a string',
-  category: 'category is required',
+  description: 'description should be a string.',
+  body: 'body must be a string',
+  category: 'category should be a number',
   country: 'The country is required should only contain alphanumeric characters',
   firstName: 'The firstName should only contain alphanumeric characters',
   lastName: 'The lastName should only contain alphanumeric characters',
@@ -60,4 +60,5 @@ export default {
   noHighlight: 'No highlited text for this article',
   coverImage: 'coverImage is required and must be a string',
   noResult: 'No result found for your request',
+  missingProperty: 'Please update this article and put all fields',
 };

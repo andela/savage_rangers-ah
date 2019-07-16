@@ -28,7 +28,6 @@ describe('Testing the authorization', () => {
       .end((err, res) => {
         const { status, body } = res;
         expect(status).to.equal(statusCode.UNAUTHORIZED);
-
         expect(body).to.have.property('message');
         expect(body.message).to.eql('Forbiden access');
         done();
@@ -82,13 +81,12 @@ describe('create  article', () => {
         done();
       });
   });
-  it('should not post an article without description', (done) => {
-    const { description, ...rest } = fakeArticle;
+  it('should not post with a wrong description', (done) => {
     chai
       .request(server)
       .post('/api/articles')
       .set('authorization', userToken)
-      .send(rest)
+      .send({ title: 'blablabla', description: 1, tags: [] })
       .end((err, res) => {
         const { status, body } = res;
         expect(status).to.equal(statusCode.BAD_REQUEST);
@@ -96,13 +94,12 @@ describe('create  article', () => {
         done();
       });
   });
-  it('should not post an article without body', (done) => {
-    const { body: b, ...rest } = fakeArticle;
+  it('should not post an article with a wrong body', (done) => {
     chai
       .request(server)
       .post('/api/articles')
       .set('authorization', userToken)
-      .send(rest)
+      .send({ title: 'blablabla', body: 1, tags: [] })
       .end((err, res) => {
         const { status, body } = res;
         expect(status).to.equal(statusCode.BAD_REQUEST);
@@ -110,13 +107,12 @@ describe('create  article', () => {
         done();
       });
   });
-  it('should not post an article without category', (done) => {
-    const { category, ...rest } = fakeArticle;
+  it('should not post an article with a wrong category', (done) => {
     chai
       .request(server)
       .post('/api/articles')
       .set('authorization', userToken)
-      .send(rest)
+      .send({ title: 'blablabla', category: 'jhd', tags: [] })
       .end((err, res) => {
         const { status, body } = res;
         expect(status).to.equal(statusCode.BAD_REQUEST);
