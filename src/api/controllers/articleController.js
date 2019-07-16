@@ -5,12 +5,15 @@ import errorMessage from '../../helpers/constants/error.messages';
 import articleValidator from '../../helpers/validators/articleValidator';
 import errorSender from '../../helpers/error.sender';
 import generatePagination from '../../helpers/generate.pagination.details';
+import number from '../../helpers/constants/numbers';
 
 const {
   Article, Category, User, Report, Share, Highlight
 } = models;
 
-const { CREATED, BAD_REQUEST } = statusCodes;
+const {
+  CREATED, BAD_REQUEST, OK, NOT_FOUND
+} = statusCodes;
 
 /**
  * containing all article's model controllers
@@ -324,5 +327,32 @@ export default class ArticleController {
       status: statusCodes.CREATED,
       message: `${title} has been shared successfully on ${sharedOn}, Thanks`
     });
+  }
+
+  /**
+  * allow a user to get highlighted text in an article
+  *
+  * @author Alain Burindi
+  * @static
+  * @param {object} req the request
+  * @param {object} res the response to be sent
+  * @memberof ArticleController
+  * @returns {Object} res
+  */
+  static async getHighlight(req, res) {
+    const { slug } = req.params;
+    const highlighted = await Highlight.findAll({
+      where: {
+        articleSlug: slug
+      }
+    });
+    if (highlighted.length > number.ZERO) {
+      res.status(OK).json({
+        status: OK,
+        highlighted
+      });
+    } else {
+      errorSender(NOT_FOUND, res, 'highlited', errorMessage.noHighlight);
+    }
   }
 }
