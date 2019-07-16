@@ -5,7 +5,8 @@ const slugRandomNumberTwo = 6;
 const SlugDefaultNumber = 0;
 
 export default (sequelize, DataTypes) => {
-  const Article = sequelize.define('Articles',
+  const Article = sequelize.define(
+    'Articles',
     {
       id: {
         allowNull: false,
@@ -40,15 +41,20 @@ export default (sequelize, DataTypes) => {
       paranoid: true,
       hooks: {
         beforeCreate(article) {
-          article.slug = slug(`${article.title}-${(
-            Math.random() * slugRandomNumberOne ** slugRandomNumberTwo || SlugDefaultNumber
-          ).toString(slugRandomNumberOne)}`).toLowerCase();
+          article.slug = slug(
+            `${article.title}-${(
+              Math.random() * slugRandomNumberOne ** slugRandomNumberTwo ||
+              SlugDefaultNumber
+            ).toString(slugRandomNumberOne)}`
+          ).toLowerCase();
         }
       }
-    });
-  Article.associate = (models) => {
+    }
+  );
+  Article.associate = models => {
     Article.belongsTo(models.User, {
       foreignKey: 'author',
+      targetKey: 'id',
       onDelete: 'CASCADE',
       hooks: true
     });
@@ -66,6 +72,12 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'articleSlug',
       onDelete: 'CASCADE',
       sourceKey: 'slug'
+    });
+    Article.hasMany(models.Bookmark, {
+      foreignKey: 'articleSlug',
+      sourceKey: 'slug',
+      onDelete: 'CASCADE',
+      hooks: true
     });
   };
 

@@ -7,8 +7,7 @@ export default {
   invalidLink: 'Invalid link provided',
   incorectPassword: 'Incorect password provided',
   notAllowed: 'Forbiden access',
-  emailLinkInvalid:
-    'The link provided is  corrupt, please request a new one or try to click it again',
+  emailLinkInvalid: 'The link provided is  corrupt, please request a new one or try to click it again',
   noUser: "User doesn't exist.",
   authenticationMessage: 'You have to login to perform this action.',
   serverError: 'Something went wrong',
@@ -48,5 +47,7 @@ export default {
   noComment: 'Invalid parent comment Id provided',
   noCommentFound: 'No comments found. Try to reduce the provided entries or create a comment.',
   parentCommentId: 'You can not reply to a reply',
-  notCommentOwner: 'You must be the owner of the comment in order to proceed'
+  notCommentOwner: 'You must be the owner of the comment in order to proceed',
+  noBookmark: 'You have no bookmarks',
+  noSlug: 'There is no article with the slug provided'
 };

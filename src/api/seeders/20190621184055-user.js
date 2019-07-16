@@ -292,7 +292,7 @@ module.exports = {
         password: hashedPassword,
         createdAt: new Date(),
         updatedAt: new Date()
-      }
+      },
     ],
     {}),
 

@@ -16,7 +16,8 @@ const models = {
   Share: sequelize.import('./share'),
   Highlight: sequelize.import('./highlight'),
   Following: sequelize.import('./following'),
-  Comment: sequelize.import('./comment')
+  Comment: sequelize.import('./comment'),
+  Bookmark: sequelize.import('./bookmark')
 };
 
 Object.keys(models).forEach((key) => {
