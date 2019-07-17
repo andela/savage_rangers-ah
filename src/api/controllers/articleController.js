@@ -8,6 +8,7 @@ import errorSender from '../../helpers/error.sender';
 import generatePagination from '../../helpers/generate.pagination.details';
 import number from '../../helpers/constants/numbers';
 import createTags from '../../helpers/create.article.tags';
+import generateReadtime from '../../helpers/read.time.estimator';
 
 const {
   Article, Category, User, Report, Share, Highlight, Tag, ArticleTag
@@ -41,6 +42,7 @@ export default class ArticleController {
 
     const articleValidInput = await articleValidator(req.body);
     const { category: id } = req.body;
+    const readTime = generateReadtime(req.body.body);
     let coverImage;
     if (req.file) {
       const savedFile = await cloudinary.v2.uploader.upload(req.file.path);
@@ -53,7 +55,8 @@ export default class ArticleController {
       slug: '',
       author,
       category,
-      coverImage
+      coverImage,
+      readTime
     });
 
     if (article) {
@@ -218,13 +221,15 @@ export default class ArticleController {
     };
 
     await ArticleTag.destroy({ where: { articleId: req.article.id } });
+    const readTime = generateReadtime(updateContent.body);
 
     await Article.update({
       title: updateContent.title,
       description: updateContent.description,
       body: updateContent.body,
       coverImage,
-      category: updateContent.category
+      category: updateContent.category,
+      readTime
     },
     {
       where: {
