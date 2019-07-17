@@ -9,6 +9,7 @@ import bookmarkRouter from './bookmarkRouter';
 
 import authenticate from '../../middlewares/authenticate';
 import termsAndConditionsRouter from './termsAndConditions';
+import reactionsRouter from './commentReactionsRoute';
 
 const router = express();
 router.use('/password-reset', resetRouter);
@@ -21,5 +22,6 @@ router.use('/bookmarks', bookmarkRouter);
 
 router.use('/profiles', authenticate, profileRouter);
 router.use('/termsAndConditions', termsAndConditionsRouter);
+router.use('/comment', reactionsRouter);
 
 export default router;

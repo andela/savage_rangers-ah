@@ -52,6 +52,12 @@ export default (sequelize, DataTypes) => {
       sourceKey: 'id',
       as: 'Replies'
     });
+    Comment.hasMany(models.Reaction, {
+      foreignKey: 'commentId',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+      hooks: true
+    });
   };
   return Comment;
 };
