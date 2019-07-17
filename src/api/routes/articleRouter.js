@@ -23,6 +23,8 @@ import validateTagsTableQueryRoute from '../../middlewares/validations/query.tag
 
 const articleRouter = new Router();
 
+articleRouter.get('/search/', articleController.search);
+
 articleRouter.post('/:slug/rating',
   checkValidToken,
   bodyVerifier,

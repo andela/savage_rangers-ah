@@ -1,4 +1,5 @@
 import cloudinary from 'cloudinary';
+import Sequelize from 'sequelize';
 import models from '../models';
 import statusCodes from '../../helpers/constants/status.codes';
 import errorMessage from '../../helpers/constants/error.messages';
@@ -9,13 +10,16 @@ import number from '../../helpers/constants/numbers';
 import createTags from '../../helpers/create.article.tags';
 
 const {
-  Article, Category, User, Report, Share, Highlight, ArticleTag
+  Article, Category, User, Report, Share, Highlight, Tag, ArticleTag
 } = models;
 
 const {
   CREATED, BAD_REQUEST, OK, NOT_FOUND
 } = statusCodes;
 const minimumLimit = 0;
+
+const userAttributes = ['username', 'profileImage', 'email'];
+const articleAttributes = ['title', 'description', 'slug', 'body'];
 
 /**
  * containing all article's model controllers
@@ -403,5 +407,69 @@ export default class ArticleController {
       paginationDetails: generatePagination(articles.count, articles.rows, offset, limit),
       data: articles.rows
     });
+  }
+
+  /**
+  *
+   * search for artcile according to user's request
+   *
+   * @static
+   * @param {*} req the request
+   * @param {*} res the response to be sent
+   * @memberof ArticleController
+   * @returns {Object} res
+   */
+  static async search(req, res) {
+    try {
+      const {
+        title, body, tag, username
+      } = req.query;
+      const articles = await Article.findAll({
+        where: {
+          [Sequelize.Op.or]: [
+            title ? { title: { [Sequelize.Op.substring]: title.trim() } } : '',
+            body ? { body: { [Sequelize.Op.substring]: body.trim() } } : '',
+            tag ? { '$Tags.name$': { [Sequelize.Op.substring]: tag.trim() } } : '',
+            username ? { '$User.username$': { [Sequelize.Op.substring]: username.trim() } } : ''
+          ]
+        },
+        include: [
+          {
+            model: Tag,
+            attributes: ['name'],
+            required: false,
+            through: {
+              model: ArticleTag,
+              attributes: []
+            }
+          },
+          {
+            model: User,
+            attributes: userAttributes
+          },
+          {
+            model: Category,
+            as: 'Category',
+            attributes: ['name']
+          }
+        ],
+        attributes: articleAttributes
+      });
+      const minArticleLength = 0;
+      if (articles.length > minArticleLength) {
+        return res.status(OK).send({
+          status: res.statusCode,
+          articles
+        });
+      }
+      res.status(NOT_FOUND).send({
+        status: res.statusCode,
+        message: errorMessage.noResult
+      });
+    } catch (error) {
+      return res.status(OK).send({
+        error
+      });
+    }
   }
 }

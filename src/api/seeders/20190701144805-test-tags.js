@@ -28,6 +28,12 @@ export default {
           updatedAt: new Date()
         },
         {
+            articleId: 1,
+            tagId: 3,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        },
+        {
           articleId: 2,
           tagId: 1,
           createdAt: new Date(),
