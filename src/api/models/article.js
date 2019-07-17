@@ -5,8 +5,7 @@ const slugRandomNumberTwo = 6;
 const SlugDefaultNumber = 0;
 
 export default (sequelize, DataTypes) => {
-  const Article = sequelize.define(
-    'Articles',
+  const Article = sequelize.define('Articles',
     {
       id: {
         allowNull: false,
@@ -19,11 +18,6 @@ export default (sequelize, DataTypes) => {
       body: { type: DataTypes.TEXT, allowNull: false },
       slug: { type: DataTypes.STRING, allowNull: false },
       coverImage: { type: DataTypes.TEXT, allowNull: false },
-      tagList: {
-        type: DataTypes.ARRAY(DataTypes.TEXT),
-        allowNull: true
-      },
-
       author: {
         allowNull: false,
         type: DataTypes.INTEGER,
@@ -45,17 +39,13 @@ export default (sequelize, DataTypes) => {
       paranoid: true,
       hooks: {
         beforeCreate(article) {
-          article.slug = slug(
-            `${article.title}-${(
-              Math.random() * slugRandomNumberOne ** slugRandomNumberTwo ||
-              SlugDefaultNumber
-            ).toString(slugRandomNumberOne)}`
-          ).toLowerCase();
+          article.slug = slug(`${article.title}-${(
+            Math.random() * slugRandomNumberOne ** slugRandomNumberTwo || SlugDefaultNumber
+          ).toString(slugRandomNumberOne)}`).toLowerCase();
         }
       }
-    }
-  );
-  Article.associate = models => {
+    });
+  Article.associate = (models) => {
     Article.belongsTo(models.User, {
       foreignKey: 'author',
       targetKey: 'id',
@@ -82,6 +72,10 @@ export default (sequelize, DataTypes) => {
       sourceKey: 'slug',
       onDelete: 'CASCADE',
       hooks: true
+    });
+    Article.belongsToMany(models.Tag, {
+      through: 'ArticlesTags',
+      foreignKey: 'articleId'
     });
   };
 

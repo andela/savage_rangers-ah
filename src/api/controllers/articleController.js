@@ -6,9 +6,10 @@ import articleValidator from '../../helpers/validators/articleValidator';
 import errorSender from '../../helpers/error.sender';
 import generatePagination from '../../helpers/generate.pagination.details';
 import number from '../../helpers/constants/numbers';
+import createTags from '../../helpers/create.article.tags';
 
 const {
-  Article, Category, User, Report, Share, Highlight
+  Article, Category, User, Report, Share, Highlight, ArticleTag
 } = models;
 
 const {
@@ -32,6 +33,7 @@ export default class ArticleController {
    */
   static async create(req, res) {
     const { id: author } = req.user.user;
+    let articleTags;
 
     const articleValidInput = await articleValidator(req.body);
     const { category: id } = req.body;
@@ -49,16 +51,20 @@ export default class ArticleController {
       category,
       coverImage
     });
+
     if (article) {
+      req.article = article.get();
+      articleTags = await createTags(req);
       return res.status(CREATED).json({
         message: errorMessage.articleCreate,
-        article: article.get()
+        article: article.get(),
+        tags: articleTags
       });
     }
   }
 
   /**
-   *
+   * A method to delete a single article
    *
    * @static
    * @param {Object} req - request object
@@ -68,9 +74,10 @@ export default class ArticleController {
    */
   static async delete(req, res) {
     const { slug } = req.params;
+    await ArticleTag.destroy({ where: { articleId: req.article.id } });
     await Article.destroy({ where: { slug } });
     res.status(statusCodes.OK).json({
-      statusCodes: res.statusCodes,
+      status: statusCodes.OK,
       message: 'article deleted successfully'
     });
   }
@@ -103,7 +110,6 @@ export default class ArticleController {
         'body',
         'slug',
         'coverImage',
-        'tagList',
         'createdAt',
         'updatedAt'
       ],
@@ -151,7 +157,6 @@ export default class ArticleController {
         'body',
         'slug',
         'coverImage',
-        'tagList',
         'createdAt',
         'updatedAt'
       ],
@@ -191,7 +196,7 @@ export default class ArticleController {
   static async updateArticle(req, res) {
     const { slug } = req.params;
     const {
-      title, description, body, tagList, category
+      title, description, body, category
     } = req.body;
 
     let { coverImage } = req.Existing;
@@ -205,9 +210,10 @@ export default class ArticleController {
       title: title || req.Existing.title,
       description: description || req.Existing.description,
       body: body || req.Existing.body,
-      tagList: tagList || req.Existing.tagList,
       category: category || req.Existing.category
     };
+
+    await ArticleTag.destroy({ where: { articleId: req.article.id } });
 
     await Article.update({
       title: updateContent.title,
@@ -221,6 +227,8 @@ export default class ArticleController {
         slug
       }
     });
+
+    await createTags(req);
     return res.status(statusCodes.OK).json({
       status: statusCodes.OK,
       message: 'Your Article is up-to-date now, Thanks'

@@ -18,7 +18,11 @@ const schema = joi.object().keys({
     .string()
     .required()
     .uppercase()
-    .error(() => errorMessage.category)
+    .error(() => errorMessage.category),
+  tags: joi
+    .array()
+    .items(joi.string().alphanum())
+    .required()
 });
 
 export default article => joi.validate(article, schema);

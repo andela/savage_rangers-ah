@@ -60,7 +60,8 @@ describe('testing the middlewares before reaching the update article controller'
       .patch(`/api/articles/${slug}`)
       .set('authorization', UserToken)
       .send({
-        body: 'how did the classical Latin become'
+        body: 'how did the classical Latin become',
+        tags: ['Laravel', 'php', 'IOT', 'iot2']
       })
       .end((err, res) => {
         expect(res.status).eql(status.ACCESS_DENIED);
@@ -93,7 +94,8 @@ describe('testing for the article update controller', () => {
       .patch(`/api/articles/${slug}`)
       .set('authorization', UserToken)
       .field({
-        body: ['how did the classical Latin become']
+        body: ['how did the classical Latin become'],
+        tags: ['Laravel', 'php', 'IOT', 'iot2']
       })
       .attach('coverImage', './tests/images/eric.jpg', 'eric.jpg')
       .end((err, res) => {
@@ -112,7 +114,8 @@ describe('testing for the article update controller', () => {
       .patch(`/api/articles/${slug}`)
       .set('authorization', UserToken)
       .send({
-        body: ''
+        body: '',
+        tags: ['Laravel', 'php', 'IOT', 'iot2']
       })
       .end((err, res) => {
         expect(res.status).eql(status.OK);

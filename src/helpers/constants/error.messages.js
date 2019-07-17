@@ -7,7 +7,8 @@ export default {
   invalidLink: 'Invalid link provided',
   incorectPassword: 'Incorect password provided',
   notAllowed: 'Forbiden access',
-  emailLinkInvalid: 'The link provided is  corrupt, please request a new one or try to click it again',
+  emailLinkInvalid:
+    'The link provided is  corrupt, please request a new one or try to click it again',
   noUser: "User doesn't exist.",
   authenticationMessage: 'You have to login to perform this action.',
   serverError: 'Something went wrong',
@@ -32,7 +33,12 @@ export default {
   noMoreArticle: 'There  no more articles at the moment.',
   reason: 'a reason can not be a string, Please provide a number starting from 1, Thanks',
   textMatch: 'The text does not match the indexes',
-  authorization: 'Please log in to perform this task',
+  tags: 'tags is required and must be an array',
+  existingTags: 'Tags already exist',
+  emptyTagList: 'No tags found for this article',
+  noTagFoundWithEntries: 'No tags found with the provided entries',
+  tagNotFound: 'The provided tags were not found',
+  noTagFound: 'No tags found with the provided entries',
   followError: "You can't follow yourself",
   followingError: 'You are currently following no one',
   followerError: 'You have no followers',
@@ -52,4 +58,5 @@ export default {
   noSlug: 'There is no article with the slug provided',
   noAccess: 'you must be a Moderator or an Admin to perform this operation',
   noHighlight: 'No highlited text for this article',
+  coverImage: 'coverImage is required and must be a string'
 };

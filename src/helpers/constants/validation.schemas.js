@@ -26,6 +26,9 @@ const validRatings = {
 const SLUG_MIN_LENTH = 3;
 const SLUG_MAX_LENTH = 45;
 
+const TAGNAME_CONTENT_MIN_LENGTH = 1;
+const TAGNAME_CONTENT_MAX_LENGTH = 30;
+
 const DEFAULT_OFFSET = 0;
 const DEFAULT_LIMIT = 10;
 
@@ -110,9 +113,9 @@ export default {
     category: Joi.string()
       .uppercase()
       .allow(''),
-    tagList: Joi.array()
-      .items(Joi.string().alphanum())
-      .allow('')
+    tags: Joi.array()
+      .items(string.alphanum())
+      .required()
   }),
   highlight: Joi.object().keys({
     startIndex: Joi.number()
@@ -152,6 +155,27 @@ export default {
     slug: string
       .min(SLUG_MIN_LENTH)
       .max(SLUG_MAX_LENTH)
+      .required()
+  }),
+  addArticleTag: Joi.object().keys({
+    tags: Joi.array()
+      .items(string.alphanum())
+      .required()
+  }),
+
+  deleteArticleTags: Joi.object().keys({
+    tags: Joi.array()
+      .items(string.alphanum())
+      .required()
+  }),
+
+  queryTagsTable: Joi.object().keys({
+    offset: number.required().default(DEFAULT_OFFSET),
+    limit: number.required().default(DEFAULT_LIMIT),
+    tagNameContent: string
+      .regex(/^[A-Za-z]+$/)
+      .min(TAGNAME_CONTENT_MIN_LENGTH)
+      .max(TAGNAME_CONTENT_MAX_LENGTH)
       .required()
   })
 };
