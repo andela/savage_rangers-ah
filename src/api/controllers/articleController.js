@@ -11,7 +11,7 @@ import createTags from '../../helpers/create.article.tags';
 import generateReadtime from '../../helpers/read.time.estimator';
 
 const {
-  Article, Category, User, Report, Share, Highlight, Tag, ArticleTag
+  Article, Category, User, Report, Share, Highlight, Tag, ArticleTag, Read, Comment
 } = models;
 
 const {
@@ -182,6 +182,25 @@ export default class ArticleController {
     });
 
     if (article) {
+      // count registered users
+      if (req.user) {
+        await Read.findOrCreate({
+          where: {
+            userId: req.user.id || req.user.user.id,
+            articleSlug: article.slug,
+          }
+        });
+      } else {
+        // count unregistered users
+        await Read.findOrCreate({
+          where: {
+            userAgent: req.headers['user-agent'],
+            userIp: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+            articleSlug: article.slug,
+          }
+        });
+      }
+
       res.status(statusCodes.OK).json({
         status: 200,
         article
@@ -476,5 +495,44 @@ export default class ArticleController {
         error
       });
     }
+  }
+
+  /**
+  * allow a user to get statistics of an article
+  *
+  * @author Alain Burindi
+  * @static
+  * @param {object} req the request
+  * @param {object} res the response to be sent
+  * @memberof ArticleController
+  * @returns {Object} res
+  */
+  static async stats(req, res) {
+    const { slug } = req.params;
+    const whereClause = {
+      where: {
+        articleSlug: slug
+      }
+    };
+    const reads = await Read.count({
+      ...whereClause
+    });
+    const shares = await Share.count({
+      ...whereClause
+    });
+    const comments = await Comment.count({
+      ...whereClause
+    });
+    res.status(OK).json({
+      status: OK,
+      article: {
+        slug,
+        stats: {
+          reads,
+          shares,
+          comments
+        }
+      }
+    });
   }
 }

@@ -20,10 +20,12 @@ import checkCommentOwner from '../../middlewares/check.comment.ownership';
 import checkIncomingTags from '../../middlewares/check.incoming.tags';
 import createAndGetNewTags from '../../middlewares/get.new.tags';
 import validateTagsTableQueryRoute from '../../middlewares/validations/query.tags.table.route';
+import optionalAuth from '../../middlewares/optionalAuth';
 
 const articleRouter = new Router();
 
 articleRouter.get('/search/', articleController.search);
+articleRouter.get('/:slug/stats', checkArticle.getArticle, optionalAuth, articleController.stats);
 
 articleRouter.post('/:slug/rating',
   checkValidToken,
@@ -35,8 +37,7 @@ articleRouter.post('/:slug/rating',
 const highlightFields = ['firstIndex', 'lastIndex', 'comment', 'text'];
 
 articleRouter.get('/', articleController.getArticles);
-articleRouter.get('/:slug', articleController.getArticle);
-
+articleRouter.get('/:slug', optionalAuth, articleController.getArticle);
 articleRouter.patch('/:slug',
   uploadImage.single('coverImage'),
   checkValidToken,
