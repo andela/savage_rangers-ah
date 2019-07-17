@@ -19,7 +19,8 @@ const models = {
   Comment: sequelize.import('./comment'),
   Bookmark: sequelize.import('./bookmark'),
   Tag: sequelize.import('./tag'),
-  ArticleTag: sequelize.import('./articlesTags')
+  ArticleTag: sequelize.import('./articlesTags'),
+  TermsAndConditions: sequelize.import('./termsAndConditions')
 };
 
 Object.keys(models).forEach((key) => {

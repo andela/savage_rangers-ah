@@ -7,6 +7,8 @@ import authorsRouter from './authorsRoutes';
 import adminRouter from './adminRouter';
 import bookmarkRouter from './bookmarkRouter';
 
+import authenticate from '../../middlewares/authenticate';
+import termsAndConditionsRouter from './termsAndConditions';
 
 const router = express();
 router.use('/password-reset', resetRouter);
@@ -16,5 +18,8 @@ router.use('/authors', authorsRouter);
 router.use('/profiles', profileRouter);
 router.use('/admin', adminRouter);
 router.use('/bookmarks', bookmarkRouter);
+
+router.use('/profiles', authenticate, profileRouter);
+router.use('/termsAndConditions', termsAndConditionsRouter);
 
 export default router;
