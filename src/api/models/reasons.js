@@ -13,17 +13,16 @@ export default (sequelize, DataTypes) => {
       }
     },
     {});
-  Reasons.associate = ({ Report, ReportedComment }) => {
+  Reasons.associate = ({ Report, Comment }) => {
     Reasons.hasMany(Report, {
       foreignKey: 'reasonId',
       sourceKey: 'id',
       onDelete: 'cascade'
     });
 
-    Reasons.hasMany(ReportedComment, {
+    Reasons.belongsToMany(Comment, {
       foreignKey: 'reasonId',
-      sourceKey: 'id',
-      onDelete: 'cascade'
+      through: 'ReportComments'
     });
   };
   return Reasons;

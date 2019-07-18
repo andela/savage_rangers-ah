@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import authController from '../controllers/authController';
-import adminPermissionsController from '../controllers/adminPermissionsController';
+import adminPermissionsController from '../controllers/admin/adminPermissionsController';
 import ValidateUser from '../../middlewares/ValidateUser';
 import validateToken from '../../middlewares/checkValidToken';
 import checkUser from '../../middlewares/checkUser';
@@ -10,6 +10,7 @@ import articleController from '../controllers/articleController';
 import checkIfArticleExist from '../../middlewares/getOneArticle';
 import CheckIfModerator from '../../middlewares/CheckIfModerator';
 import CheckIfBlocked from '../../middlewares/isArticleBlocked';
+import AdminReportedComment from '../controllers/admin/commentReportController';
 
 const adminRouter = new Router();
 
@@ -91,5 +92,15 @@ adminRouter.patch('/article/:slug/unblock',
   checkIfArticleExist.getArticle,
   CheckIfBlocked.checkUnBlocked,
   adminPermissionsController.unBlockArticle);
+
+adminRouter.get('/comments/reported',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  AdminReportedComment.getAllReportedComments);
+
+adminRouter.get('/comments/:id/reported',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  AdminReportedComment.singleReportedComment);
 
 export default adminRouter;
