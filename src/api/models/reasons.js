@@ -13,8 +13,14 @@ export default (sequelize, DataTypes) => {
       }
     },
     {});
-  Reasons.associate = ({ Report }) => {
+  Reasons.associate = ({ Report, ReportedComment }) => {
     Reasons.hasMany(Report, {
+      foreignKey: 'reasonId',
+      sourceKey: 'id',
+      onDelete: 'cascade'
+    });
+
+    Reasons.hasMany(ReportedComment, {
       foreignKey: 'reasonId',
       sourceKey: 'id',
       onDelete: 'cascade'

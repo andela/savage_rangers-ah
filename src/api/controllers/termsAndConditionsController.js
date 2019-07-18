@@ -41,7 +41,7 @@ export default class TermsAndConditionController {
       }
     });
     if (!termsDocument) {
-      errorSender(statusCode.NOT_FOUND,
+      return errorSender(statusCode.NOT_FOUND,
         res,
         'terms and conditions',
         'terms and conditions not found');
