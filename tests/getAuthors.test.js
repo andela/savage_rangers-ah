@@ -18,7 +18,7 @@ const Authors = {
     pages: 1,
     currentPage: 1,
     pageSize: 2,
-    count: 3
+    count: 5
   },
   data: [
     { id: 1, username: 'Burindi', email: 'alain1@gmail.com' },

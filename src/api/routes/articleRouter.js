@@ -26,6 +26,7 @@ const articleRouter = new Router();
 
 articleRouter.get('/search/', articleController.search);
 articleRouter.get('/:slug/stats', checkArticle.getArticle, optionalAuth, articleController.stats);
+articleRouter.get('/drafts', checkValidToken, articleController.getDraftedArticles);
 
 articleRouter.post('/:slug/rating',
   checkValidToken,
@@ -153,5 +154,8 @@ articleRouter.delete('/:slug/comments/:id',
   getComment,
   checkCommentOwner,
   commentController.deleteComment);
+
+articleRouter.patch('/:slug/publish', checkValidToken, checkArticleOwner.checkOwner,
+  articleController.publish);
 
 export default articleRouter;

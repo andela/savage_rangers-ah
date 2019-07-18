@@ -7,10 +7,10 @@ export default {
       type: Sequelize.INTEGER
     },
     title: { type: Sequelize.STRING, allowNull: false },
-    description: { type: Sequelize.TEXT, allowNull: false },
-    body: { type: Sequelize.TEXT, allowNull: false },
+    description: { type: Sequelize.TEXT },
+    body: { type: Sequelize.TEXT },
     slug: { type: Sequelize.STRING, allowNull: false, unique: true },
-    coverImage: { type: Sequelize.TEXT, allowNull: false },
+    coverImage: { type: Sequelize.TEXT },
     tagList: {
       type: Sequelize.ARRAY(Sequelize.TEXT),
       allowNull: true
@@ -22,7 +22,6 @@ export default {
       references: { model: 'Users', key: 'id' }
     },
     category: {
-      allowNull: false,
       type: Sequelize.INTEGER,
       references: { model: 'Categories', key: 'id' }
     },

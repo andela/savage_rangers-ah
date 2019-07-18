@@ -17,13 +17,29 @@ const {
 const {
   CREATED, BAD_REQUEST, OK, NOT_FOUND
 } = statusCodes;
+
 const minimumLimit = 0;
 
-const userAttributes = ['username', 'profileImage', 'email'];
-const articleAttributes = ['title', 'description', 'slug', 'body'];
+const userAttributes = ['username', 'firstName', 'lastName', 'profileImage'];
+// models to inlude while fecthing article
+const articleInclude = [
+  {
+    model: Category,
+    as: 'Category',
+    attributes: ['name']
+  },
+  {
+    model: User,
+    attributes: userAttributes
+  }
+];
+// pagination constant
+const defaultLimit = 10;
+const defaultOffset = 0;
+const result = {};
+const emptyArticleArray = 0;
 
 /**
- * containing all article's model controllers
  * @export
  * @class ArticleController
  */
@@ -41,15 +57,13 @@ export default class ArticleController {
     let articleTags;
 
     const articleValidInput = await articleValidator(req.body);
-    const { category: id } = req.body;
     const readTime = generateReadtime(req.body.body);
+    const { category } = req.body;
     let coverImage;
     if (req.file) {
       const savedFile = await cloudinary.v2.uploader.upload(req.file.path);
       coverImage = savedFile.secure_url;
     }
-    const getCategory = await Category.findOne({ where: { id } });
-    const { id: category } = getCategory.dataValues;
     const article = await Article.create({
       ...articleValidInput,
       slug: '',
@@ -61,12 +75,92 @@ export default class ArticleController {
 
     if (article) {
       req.article = article.get();
-      articleTags = await createTags(req);
+      if (req.tags) {
+        articleTags = await createTags(req);
+      }
       return res.status(CREATED).json({
         message: errorMessage.articleCreate,
         article: article.get(),
         tags: articleTags
       });
+    }
+  }
+
+  /**
+  * publish a drafted article
+   * @static
+   * @param {Object} req the request
+   * @param {Object} res the response to be sent
+   * @memberof ArticleController
+   * @returns {Object} res
+   */
+  static async publish(req, res) {
+    const { slug } = req.params;
+    const article = await Article.update({
+      status: 'published'
+    },
+    {
+      where: {
+        slug,
+        title: {
+          [Sequelize.Op.ne]: null,
+        },
+        body: {
+          [Sequelize.Op.ne]: null,
+        },
+        description: {
+          [Sequelize.Op.ne]: null,
+        },
+        category: {
+          [Sequelize.Op.ne]: null,
+        },
+        coverImage: {
+          [Sequelize.Op.ne]: null,
+        },
+      }
+    });
+    const published = 1;
+    if (article[0] === published) {
+      res.status(OK).json({
+        message: 'Your article has been published successfully',
+      });
+    } else {
+      errorSender(BAD_REQUEST, res, 'Properties', errorMessage.missingProperty);
+    }
+  }
+
+  /**
+   * This function gets user's drafted articles
+   *
+   * @static
+   * @param {Object} req the request
+   * @param {Object} res the response to be sent
+   * @memberof Articles
+   * @returns {Object} res
+   */
+  static async getDraftedArticles(req, res) {
+    const { id } = req.user.user;
+    const limit = req.query.limit || defaultLimit;
+    const offset = req.query.offset || defaultOffset;
+    const articles = await Article.findAndCountAll({
+      offset,
+      limit,
+      include: articleInclude,
+      where: {
+        status: 'draft',
+        author: id,
+      }
+    });
+
+    result.status = OK;
+    result.pagedArticles = generatePagination(articles.count, articles.rows, offset, limit);
+    result.Articles = articles.rows;
+    if (articles.rows.length > emptyArticleArray) {
+      res.status(statusCodes.OK).json({
+        result
+      });
+    } else {
+      errorSender(statusCodes.NOT_FOUND, res, 'Articles', errorMessage.noMoreArticle);
     }
   }
 
@@ -99,38 +193,17 @@ export default class ArticleController {
    * @returns {Object} res
    */
   static async getArticles(req, res) {
-    // default constants
-    const defaultLimit = 10;
-    const defaultOffset = 0;
-    const result = {};
-    const emptyArticleArray = 0;
-
     const limit = req.query.limit || defaultLimit;
     const offset = req.query.offset || defaultOffset;
     const articles = await Article.findAndCountAll({
       offset,
       limit,
-      attributes: [
-        'id',
-        'title',
-        'description',
-        'body',
-        'slug',
-        'coverImage',
-        'createdAt',
-        'updatedAt'
-      ],
-      include: [
-        {
-          model: Category,
-          as: 'Category',
-          attributes: ['name']
+      include: articleInclude,
+      where: {
+        status: {
+          [Sequelize.Op.ne]: 'draft',
         },
-        {
-          model: User,
-          attributes: ['firstName', 'lastName', 'profileImage']
-        }
-      ]
+      }
     });
 
     result.status = 200;
@@ -157,28 +230,13 @@ export default class ArticleController {
   static async getArticle(req, res) {
     const { slug } = req.params;
     const article = await Article.findOne({
-      attributes: [
-        'id',
-        'title',
-        'description',
-        'body',
-        'slug',
-        'coverImage',
-        'createdAt',
-        'updatedAt'
-      ],
-      where: { slug },
-      include: [
-        {
-          model: Category,
-          as: 'Category',
-          attributes: ['name']
+      where: {
+        slug,
+        status: {
+          [Sequelize.Op.ne]: 'draft',
         },
-        {
-          model: User,
-          attributes: ['firstName', 'lastName', 'profileImage']
-        }
-      ]
+      },
+      include: articleInclude
     });
 
     if (article) {
@@ -477,7 +535,6 @@ export default class ArticleController {
             attributes: ['name']
           }
         ],
-        attributes: articleAttributes
       });
       const minArticleLength = 0;
       if (articles.length > minArticleLength) {

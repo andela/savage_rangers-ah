@@ -11,6 +11,7 @@ export default {
         category: 1,
         readTime: 4,
         author: 1,
+        status: 'published',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -23,6 +24,7 @@ export default {
         category: 1,
         readTime: 4,
         author: 1,
+        status: 'published',
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -36,9 +38,24 @@ export default {
         category: 2,
         readTime: 4,
         author: 1,
+        status: 'published',
         createdAt: new Date(),
         updatedAt: new Date()
-      }
+      },
+      {
+        title: 'How to draft an article',
+        slug: 'Test-draft-22khdb',
+        description: 'How to set dummy data automatically',
+        body:
+            "Suppose we want to insert some data into a few tables by default. If we follow up on previous example we can consider creating a demo user for User table.To manage all data migrations you can use seeders. Seed files are some change in data that can be used to populate database table with sample data or test data.Let's create a seed file which will add a demo user to our User table.",
+        coverImage: 'default.jpeg',
+        category: 1,
+        author: 1,
+        readTime: 3,
+        status: 'draft',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
     ],
     {}),
 

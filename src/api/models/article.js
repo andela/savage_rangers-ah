@@ -14,27 +14,30 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       },
       title: { type: DataTypes.STRING, allowNull: false },
-      description: { type: DataTypes.TEXT, allowNull: false },
-      body: { type: DataTypes.TEXT, allowNull: false },
-      slug: { type: DataTypes.STRING, allowNull: false, unique: true },
-      coverImage: { type: DataTypes.TEXT, allowNull: false },
+      description: { type: DataTypes.TEXT},
+      body: { type: DataTypes.TEXT},
+      slug: { type: DataTypes.STRING, allowNull: false },
       readTime: {
         type: DataTypes.FLOAT,
         allowNull: false
       },
+      coverImage: { type: DataTypes.TEXT },
       author: {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: { model: 'Users', key: 'id' }
       },
       category: {
-        allowNull: false,
         type: DataTypes.INTEGER,
         references: { model: 'Categories', key: 'id' }
       },
       isBlocked: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+      },
+      status: {
+        type: DataTypes.STRING,
+        defaultValue: 'draft'
       }
     },
     {
