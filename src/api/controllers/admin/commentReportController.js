@@ -89,12 +89,75 @@ class AdminReportedCommentController {
       ]
     });
 
-    return response ? res.status(status.OK).send({
+    return response
+      ? res.status(status.OK).send({
+        status: status.OK,
+        data: response
+      })
+      : res.status(status.OK).send({
+        status: status.OK,
+        message: 'No reports for this comment.'
+      });
+  }
+
+  /**
+   * block Comment
+   *
+   * @static
+   * @param {object} req - request body
+   * @param {object} res - response body
+   * @returns { object } - response
+   * @memberof commentReportController
+   */
+  static async blockComment(req, res) {
+    const { id } = req.params;
+    const { body } = req;
+    const isBlocked = true;
+
+    await Comment.update({
+      isBlocked
+    },
+    {
+      where: {
+        id
+      }
+    });
+    return res.status(status.OK).json({
       status: status.OK,
-      data: response
-    }) : res.status(status.OK).send({
+      message: `${body}:: blocked successfully`,
+      data: {
+        body
+      }
+    });
+  }
+
+  /**
+   * unblock Comment
+   *
+   * @static
+   * @param {object} req - request body
+   * @param {object} res - response body
+   * @returns { object } - response
+   * @memberof commentReportController
+   */
+  static async unBlockComment(req, res) {
+    const { id } = req.params;
+    const isBlocked = false;
+    const { body } = req;
+    await Comment.update({
+      isBlocked
+    },
+    {
+      where: {
+        id
+      }
+    });
+    return res.status(status.OK).json({
       status: status.OK,
-      message: 'No reports for this comment.'
+      message: `${body}:: unblocked successfully`,
+      data: {
+        body
+      }
     });
   }
 }

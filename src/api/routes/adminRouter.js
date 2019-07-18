@@ -11,6 +11,8 @@ import checkIfArticleExist from '../../middlewares/getOneArticle';
 import CheckIfModerator from '../../middlewares/CheckIfModerator';
 import CheckIfBlocked from '../../middlewares/isArticleBlocked';
 import AdminReportedComment from '../controllers/admin/commentReportController';
+import CheckIfCommentBlocked from '../../middlewares/isCommentBlocked';
+import checkIfCommentExist from '../../middlewares/checkIfCommentExist';
 
 const adminRouter = new Router();
 
@@ -102,5 +104,18 @@ adminRouter.get('/comments/:id/reported',
   validateToken,
   CheckIfModerator.CheckAdmins,
   AdminReportedComment.singleReportedComment);
+adminRouter.patch('/comments/:id/block',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  checkIfCommentExist.checkIfExist,
+  CheckIfCommentBlocked.checkBlockedUnblocked('unblocked'),
+  AdminReportedComment.blockComment);
+
+adminRouter.patch('/comments/:id/unblock',
+  validateToken,
+  CheckIfModerator.CheckAdmins,
+  checkIfCommentExist.checkIfExist,
+  CheckIfCommentBlocked.checkBlockedUnblocked('blocked'),
+  AdminReportedComment.unBlockComment);
 
 export default adminRouter;
