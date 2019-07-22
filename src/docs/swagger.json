@@ -908,6 +908,79 @@
           }
         }
       },
+      "/admin/comment/block/:id": {
+        "patch": {
+          "tags": ["Admin"],
+          "summary": "allow Admin or moderator to block a comment",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "must be admin or moderator",
+              "required": true
+            },
+            {
+              "in": "path",
+              "name": "id",
+              "description": "block comment using commentId",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "comment blocked successfully"
+            },
+            "401": {
+              "description": "Please you must be the Admin in order to modify the status, Thanks"
+            },
+            "403": {
+              "description": "comment is already a blocked"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        }
+      },
+
+      "/admin/comment/unblock/:id": {
+        "patch": {
+          "tags": ["Admin"],
+          "summary": "allow Admin and moderator to unblock a comment",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "token",
+              "description": "allow admin or moderator to unblock a comment",
+              "required": true
+            },
+            {
+              "in": "path",
+              "name": "id",
+              "description": "unblock comment using commentId",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "comment unblocked successfully"
+            },
+            "401": {
+              "description": "Please you must be the Admin in order to modify the status, Thanks"
+            },
+            "403": {
+              "description": "comment is not blocked"
+            },
+            "default": {
+              "description": "Something went wrong"
+            }
+          }
+        }
+      },
 
       "externalDocs": {
         "description": "Find out more about Swagger",

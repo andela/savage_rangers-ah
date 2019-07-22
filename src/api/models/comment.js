@@ -34,6 +34,10 @@ export default (sequelize, DataTypes) => {
       parentCommentId: {
         type: DataTypes.INTEGER,
         allowNull: true
+      },
+      isBlocked: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {
