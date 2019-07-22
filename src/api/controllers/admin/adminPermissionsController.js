@@ -1,6 +1,6 @@
-import models from '../models';
-import status from '../../helpers/constants/status.codes';
-import paginateUser from '../../helpers/generate.pagination.details';
+import models from '../../models';
+import status from '../../../helpers/constants/status.codes';
+import paginateUser from '../../../helpers/generate.pagination.details';
 
 const generatePagination = paginateUser;
 

@@ -58,6 +58,11 @@ export default (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       hooks: true
     });
+
+    Comment.belongsToMany(models.Reason, {
+      foreignKey: 'reportedCommentId',
+      through: 'ReportComments'
+    });
   };
   return Comment;
 };
