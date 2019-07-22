@@ -22,7 +22,7 @@ class CommentController {
    * @param {object} req - this is the request object
    * @param {object} res - this is the response object
    * @returns {object} - this function returns an object
-   * @memberof RatingsController
+   * @memberof commentController
    */
   static async create(req, res) {
     // Initializing variables
@@ -86,7 +86,7 @@ class CommentController {
    * @param {object} req - this is the request object
    * @param {object} res - this is the response object
    * @returns {object} - this function returns an object
-   * @memberof RatingsController
+   * @memberof commentController
    */
   static async getComments(req, res) {
     // Initializing variables
@@ -133,7 +133,7 @@ class CommentController {
    * @param {object} req - this is the request object
    * @param {object} res - this is the response object
    * @returns {object} - this function returns an object
-   * @memberof RatingsController
+   * @memberof commentController
    */
   static async updateComment(req, res) {
     // Initializing variables
@@ -163,7 +163,7 @@ class CommentController {
    * @param {object} req - this is the request object
    * @param {object} res - this is the response object
    * @returns {object} - this function returns an object
-   * @memberof RatingsController
+   * @memberof commentController
    */
   static async deleteComment(req, res) {
     // Initializing variables
@@ -180,6 +180,37 @@ class CommentController {
       status: status.OK,
       message: 'Comment deleted successfully'
     });
+  }
+
+  /**
+   * A method to get a single comment
+   *
+   * @author Prémices
+   * @static
+   * @param {object} req - this is the request object
+   * @param {object} res - this is the response object
+   * @returns {object} - this function returns an object
+   * @memberof commentController
+   */
+  static async getSingleComment(req, res) {
+    // Initializing variables
+    const { slug, id } = req.params;
+
+    try {
+      const comment = await Comment.findOne({
+        where: {
+          id,
+          articleSlug: slug
+        }
+      });
+
+      res.status(status.OK).json({
+        status: status.OK,
+        data: comment
+      });
+    } catch (error) {
+      sendError(status.NOT_FOUND, res, 'comment', errorMessages.noComment);
+    }
   }
 }
 export default CommentController;

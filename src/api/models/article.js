@@ -1,4 +1,5 @@
 import slug from 'slug';
+import eventEmitter from '../../helpers/event.emitter';
 
 const slugRandomNumberOne = 36;
 const slugRandomNumberTwo = 6;
@@ -14,8 +15,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       },
       title: { type: DataTypes.STRING, allowNull: false },
-      description: { type: DataTypes.TEXT},
-      body: { type: DataTypes.TEXT},
+      description: { type: DataTypes.TEXT },
+      body: { type: DataTypes.TEXT },
       slug: { type: DataTypes.STRING, allowNull: false },
       readTime: {
         type: DataTypes.FLOAT,
@@ -45,10 +46,16 @@ export default (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       hooks: {
-        beforeCreate(article) {
+        beforeCreate: (article) => {
           article.slug = slug(`${article.title}-${(
             Math.random() * slugRandomNumberOne ** slugRandomNumberTwo || SlugDefaultNumber
           ).toString(slugRandomNumberOne)}`).toLowerCase();
+        },
+        afterBulkUpdate: (data) => {
+          const { slug } = data.where[Object.getOwnPropertySymbols(data.where)[0]][1];
+          if (data.attributes.isBlocked) {
+            eventEmitter.emit('blockArticle', 'block', slug);
+          } else eventEmitter.emit('unblockArticle', 'unblock', slug);
         }
       }
     });
@@ -86,7 +93,7 @@ export default (sequelize, DataTypes) => {
     });
     Article.hasMany(models.Read, {
       foreignKey: 'articleSlug',
-      onDelete: 'CASCADE',
+      onDelete: 'CASCADE'
     });
   };
 

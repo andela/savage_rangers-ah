@@ -37,7 +37,8 @@ class CommentReactionController {
         ? errorSender(status.BAD_REQUEST,
           res,
           'Message',
-          'Sorry, You can not report this comment twice with the same comment reason, Thanks ') : res.status(status.CREATED).json({
+          'Sorry, You can not report this comment twice with the same comment reason, Thanks ')
+        : res.status(status.CREATED).json({
           status: status.CREATED,
           message: 'Reported Successfully'
         });

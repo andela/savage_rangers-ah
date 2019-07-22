@@ -1,0 +1,22 @@
+{
+  "inApp": {
+    "articles": {
+      "show": true,
+      "on": ["report", "block"]
+    },
+    "comments": {
+      "show": true,
+      "on": ["report", "block"]
+    }
+  },
+  "email": {
+    "articles": {
+      "show": false,
+      "on": ["report", "block"]
+    },
+    "comments": {
+      "show": false,
+      "on": ["report", "block"]
+    }
+  }
+}

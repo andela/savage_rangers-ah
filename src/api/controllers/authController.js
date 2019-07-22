@@ -8,6 +8,7 @@ import env from '../../configs/environments';
 import sendError from '../../helpers/error.sender';
 import errors from '../../helpers/constants/error.messages';
 import mailer from '../../helpers/Mailer/index';
+import setDefaultConfigs from '../../helpers/create.default.notifications.config';
 
 const { User } = models;
 /**
@@ -35,14 +36,22 @@ export default class Auth {
       email,
       password: hashedPassword
     });
-    await mailer('Please verify your email', 'Email verification', email, 'notifications', {
+    await mailer('Please verify your email',
+      'Email verification',
       email,
-      buttonText: 'Verify',
-      userName: username,
-      message:
-        "Please click on the link to verify your email for authors haven.If you didn't request this, simply ignore this e-mail.",
-      link: `${env.baseUrl}/users/verifyEmail`
-    });
+      'passwordResetEmailConfig',
+      {
+        email,
+        buttonText: 'Verify',
+        userName: username,
+        message:
+          "Please click on the link to verify your email for authors haven.If you didn't request this, simply ignore this e-mail.",
+        link: `${env.baseUrl}/users/verifyEmail`
+      });
+
+    // setting default notifications configurations
+    await setDefaultConfigs(user.dataValues.id);
+
     const tokenData = { id: user.dataValues.id, username, email };
     const token = generateToken(tokenData, env.secret);
     return sendResult(res, status.CREATED, 'user created successfully', user, token);

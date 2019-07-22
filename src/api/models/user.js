@@ -106,6 +106,12 @@ export default (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       hooks: true
     });
+    User.hasMany(models.Notification, {
+      foreignKey: 'userId'
+    });
+    User.hasMany(models.NotificationConfig, {
+      foreignKey: 'userId'
+    });
   };
 
   User.findByEmail = (email) => {

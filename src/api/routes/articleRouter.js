@@ -83,7 +83,6 @@ articleRouter.post('/:slug/highlight',
 
 articleRouter.get('/:slug/highlight', checkArticle.getArticle, articleController.getHighlight);
 
-
 articleRouter.post('/:slug/report',
   checkValidToken,
   bodyVerifier,
@@ -156,7 +155,14 @@ articleRouter.delete('/:slug/comments/:id',
   checkCommentOwner,
   commentController.deleteComment);
 
-articleRouter.patch('/:slug/publish', checkValidToken, checkArticleOwner.checkOwner,
+articleRouter.get('/:slug/comments/:id',
+  checkValidToken,
+  validateCommentUpdateDelete,
+  commentController.getSingleComment);
+
+articleRouter.patch('/:slug/publish',
+  checkValidToken,
+  checkArticleOwner.checkOwner,
   articleController.publish);
 
 articleRouter.post('/:slug/comments/:id/report',
@@ -166,6 +172,5 @@ articleRouter.post('/:slug/comments/:id/report',
   getComment,
   validateInputs('reportComment', ['commentReason']),
   reportCommentController.reportComment);
-
 
 export default articleRouter;

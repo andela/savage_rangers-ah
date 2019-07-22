@@ -1,5 +1,5 @@
 /**
- * Resgister midllemware file
+ * Register middleware file
  * @name register
  */
 import bodyParser from 'body-parser';
@@ -18,9 +18,12 @@ dotenv.config();
  * @returns {Boolean} true
  */
 
-export default (app) => {
+export default (app, io) => {
   app
-  // Parse req object and make data available on req.body
+    .use((req, res, next) => {
+      req.io = io;
+      next();
+    })
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))
     .use(session({
@@ -31,5 +34,7 @@ export default (app) => {
     .use(passport.initialize())
     .use(cors()) // Allow cross origin requests
     .use(logger('dev')); // Logging http requests
+
+  io.on('connection', socket => socket.emit('welcome', 'Welcome to authors heaven'));
   return true;
 };

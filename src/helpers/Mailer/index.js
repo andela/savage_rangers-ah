@@ -27,6 +27,9 @@ export default (messageTitle, emailSubject, reciever, operation, userData) => {
              <div style="padding:35px 10px;text-align:center; font-size: 95%;">
              Copyright, 2019<br>
              Andela, Savage Rangers
+             <a target="_blank" onMouseOver="this.style.color='red'" onMouseOut="this.style.color='blue'" href="${
+  env.baseUrl
+}/api/notifications/configuration/unsubscribe/email">Unsubscribe</a>
              </div>
              </div>`
     };

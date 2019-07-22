@@ -6,6 +6,7 @@ import profileRouter from './profileRouter';
 import authorsRouter from './authorsRoutes';
 import adminRouter from './adminRouter';
 import bookmarkRouter from './bookmarkRouter';
+import notificationRouter from './notificationRouter';
 
 import authenticate from '../../middlewares/authenticate';
 import termsAndConditionsRouter from './termsAndConditions';
@@ -19,6 +20,7 @@ router.use('/authors', authorsRouter);
 router.use('/profiles', profileRouter);
 router.use('/admin', adminRouter);
 router.use('/bookmarks', bookmarkRouter);
+router.use('/notifications', notificationRouter);
 
 router.use('/profiles', authenticate, profileRouter);
 router.use('/termsAndConditions', termsAndConditionsRouter);

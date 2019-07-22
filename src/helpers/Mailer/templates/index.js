@@ -1,5 +1,7 @@
+import passwordResetEmailConfig from './passwordResetEmailConfig';
 import notifications from './notifications';
 
 export default {
-  notifications,
+  passwordResetEmailConfig,
+  notifications
 };

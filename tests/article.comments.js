@@ -94,6 +94,26 @@ describe('Article comments', async () => {
         done();
       });
   });
+  it('should get a single comment of an article', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/How-to-create-sequalize-seeds/comments/1')
+      .set('authorization', `${testUserToken}`)
+      .end((err, res) => {
+        res.should.have.status(status.OK);
+        done();
+      });
+  });
+  it('should return an error when the comment does not exist', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/How-to-create-sequalize-seeds/comments/56424224544')
+      .set('authorization', `${testUserToken}`)
+      .end((err, res) => {
+        res.should.have.status(status.NOT_FOUND);
+        done();
+      });
+  });
   it('should update a comment', (done) => {
     chai
       .request(server)
