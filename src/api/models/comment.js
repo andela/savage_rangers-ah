@@ -1,3 +1,5 @@
+import eventEmitter from '../../helpers/event.emitter';
+
 export default (sequelize, DataTypes) => {
   const Comment = sequelize.define('Comments',
     {
@@ -41,7 +43,14 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      freezeTableName: true
+      freezeTableName: true,
+      hooks: {
+        afterBulkUpdate: (data) => {
+          if (data.attributes.isBlocked) {
+            eventEmitter.emit('blockComment', 'block', data.where.id);
+          } else eventEmitter.emit('unblockComment', 'unblock', data.where.id);
+        }
+      }
     });
 
   Comment.associate = (models) => {

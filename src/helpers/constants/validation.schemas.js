@@ -1,6 +1,6 @@
 /**
  * reset password Validation Schema description file
- * @name reset.password
+ * @name validationSchemas
  */
 
 import Joi from '@hapi/joi';
@@ -31,6 +31,27 @@ const TAGNAME_CONTENT_MAX_LENGTH = 30;
 
 const DEFAULT_OFFSET = 0;
 const DEFAULT_LIMIT = 10;
+
+const configureNotification = Joi.object()
+  .keys({
+    articles: Joi.object()
+      .keys({
+        show: Joi.boolean().required(),
+        on: Joi.array()
+          .items(Joi.string().valid(['report', 'block']))
+          .required()
+      })
+      .required(),
+    comments: Joi.object()
+      .keys({
+        show: Joi.boolean().required(),
+        on: Joi.array()
+          .items(Joi.string().valid(['report', 'block']))
+          .required()
+      })
+      .required()
+  })
+  .required();
 
 export default {
   resetPassword: Joi.object().keys({
@@ -183,5 +204,12 @@ export default {
       .min(1)
       .integer()
       .required()
-  })
+  }),
+
+  notificationConfig: Joi.object()
+    .keys({
+      inApp: configureNotification,
+      email: configureNotification
+    })
+    .required()
 };

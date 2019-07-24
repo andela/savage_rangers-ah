@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import Sequelize from 'sequelize';
 import env from '../../configs/environments';
 
@@ -24,7 +25,9 @@ const models = {
   Reaction: sequelize.import('./reactions'),
   Rating: sequelize.import('./rating'),
   Read: sequelize.import('./read'),
-  ReportedComment: sequelize.import('./reportComment.js')
+  ReportedComment: sequelize.import('./reportComment.js'),
+  Notification: sequelize.import('./notification'),
+  NotificationConfig: sequelize.import('./notificationConfig')
 };
 
 Object.keys(models).forEach((key) => {

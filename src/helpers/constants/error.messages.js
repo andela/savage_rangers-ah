@@ -61,6 +61,11 @@ export default {
   coverImage: 'coverImage is required and must be a string',
   noResult: 'No result found for your request',
   missingProperty: 'Please update this article and put all fields',
-  commentReason: 'commentReason is required and it can not be a string, Please provide a number starting from 1, Thanks'
+  commentReason:
+    'commentReason is required and it can not be a string, Please provide a number starting from 1, Thanks',
 
+  inApp: 'inApp is required and must be an object',
+  configNotModified: 'you already have set configurations',
+  configNotFound: 'you have to set configurations first',
+  notificationNotFound: 'No notifications found for now, Thanks'
 };

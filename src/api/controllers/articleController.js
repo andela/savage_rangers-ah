@@ -11,7 +11,16 @@ import createTags from '../../helpers/create.article.tags';
 import generateReadtime from '../../helpers/read.time.estimator';
 
 const {
-  Article, Category, User, Report, Share, Highlight, Tag, ArticleTag, Read, Comment
+  Article,
+  Category,
+  User,
+  Report,
+  Share,
+  Highlight,
+  Tag,
+  ArticleTag,
+  Read,
+  Comment
 } = models;
 
 const {
@@ -72,10 +81,9 @@ export default class ArticleController {
       coverImage,
       readTime
     });
-
     if (article) {
       req.article = article.get();
-      if (req.tags) {
+      if (req.body.tags) {
         articleTags = await createTags(req);
       }
       return res.status(CREATED).json({
@@ -87,7 +95,7 @@ export default class ArticleController {
   }
 
   /**
-  * publish a drafted article
+   * publish a drafted article
    * @static
    * @param {Object} req the request
    * @param {Object} res the response to be sent
@@ -103,26 +111,26 @@ export default class ArticleController {
       where: {
         slug,
         title: {
-          [Sequelize.Op.ne]: null,
+          [Sequelize.Op.ne]: null
         },
         body: {
-          [Sequelize.Op.ne]: null,
+          [Sequelize.Op.ne]: null
         },
         description: {
-          [Sequelize.Op.ne]: null,
+          [Sequelize.Op.ne]: null
         },
         category: {
-          [Sequelize.Op.ne]: null,
+          [Sequelize.Op.ne]: null
         },
         coverImage: {
-          [Sequelize.Op.ne]: null,
-        },
+          [Sequelize.Op.ne]: null
+        }
       }
     });
     const published = 1;
     if (article[0] === published) {
       res.status(OK).json({
-        message: 'Your article has been published successfully',
+        message: 'Your article has been published successfully'
       });
     } else {
       errorSender(BAD_REQUEST, res, 'Properties', errorMessage.missingProperty);
@@ -148,7 +156,7 @@ export default class ArticleController {
       include: articleInclude,
       where: {
         status: 'draft',
-        author: id,
+        author: id
       }
     });
 
@@ -201,8 +209,8 @@ export default class ArticleController {
       include: articleInclude,
       where: {
         status: {
-          [Sequelize.Op.ne]: 'draft',
-        },
+          [Sequelize.Op.ne]: 'draft'
+        }
       }
     });
 
@@ -233,8 +241,8 @@ export default class ArticleController {
       where: {
         slug,
         status: {
-          [Sequelize.Op.ne]: 'draft',
-        },
+          [Sequelize.Op.ne]: 'draft'
+        }
       },
       include: articleInclude
     });
@@ -245,7 +253,7 @@ export default class ArticleController {
         await Read.findOrCreate({
           where: {
             userId: req.user.id || req.user.user.id,
-            articleSlug: article.slug,
+            articleSlug: article.slug
           }
         });
       } else {
@@ -254,7 +262,7 @@ export default class ArticleController {
           where: {
             userAgent: req.headers['user-agent'],
             userIp: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-            articleSlug: article.slug,
+            articleSlug: article.slug
           }
         });
       }
@@ -492,7 +500,7 @@ export default class ArticleController {
   }
 
   /**
-  *
+   *
    * search for artcile according to user's request
    *
    * @static
@@ -534,7 +542,7 @@ export default class ArticleController {
             as: 'Category',
             attributes: ['name']
           }
-        ],
+        ]
       });
       const minArticleLength = 0;
       if (articles.length > minArticleLength) {
@@ -555,15 +563,15 @@ export default class ArticleController {
   }
 
   /**
-  * allow a user to get statistics of an article
-  *
-  * @author Alain Burindi
-  * @static
-  * @param {object} req the request
-  * @param {object} res the response to be sent
-  * @memberof ArticleController
-  * @returns {Object} res
-  */
+   * allow a user to get statistics of an article
+   *
+   * @author Alain Burindi
+   * @static
+   * @param {object} req the request
+   * @param {object} res the response to be sent
+   * @memberof ArticleController
+   * @returns {Object} res
+   */
   static async stats(req, res) {
     const { slug } = req.params;
     const whereClause = {

@@ -26,15 +26,19 @@ export default class PasswordReset {
     const result = {};
     const { username, email } = req.user;
 
-    await mailer(`Password recovery for ${email}`, 'Password recovery', email, 'notifications', {
+    await mailer(`Password recovery for ${email}`,
+      'Password recovery',
       email,
-      link: `${env.baseUrl}/api/password-reset`,
-      userName: username,
-      buttonText: 'RESET',
-      message:
-        "You are receiving this email because you've requested the recovery "
-        + 'of your Authors Heaven password. Kindly click the button below.'
-    });
+      'passwordResetEmailConfig',
+      {
+        email,
+        link: `${env.baseUrl}/api/password-reset`,
+        userName: username,
+        buttonText: 'RESET',
+        message:
+          "You are receiving this email because you've requested the recovery "
+          + 'of your Authors Heaven password. Kindly click the button below.'
+      });
 
     // Sending the result
     result.status = status.OK;
