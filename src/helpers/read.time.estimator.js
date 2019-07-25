@@ -13,6 +13,7 @@ export default (text) => {
   const LIMIT_TWO = 2;
 
   // number of images in the article
+  /* istanbul ignore next */
   const numberOfImages = (text.split('<img') || []).length - 1;
   // image seconds
   let totalNumberOfSeconds = 0;

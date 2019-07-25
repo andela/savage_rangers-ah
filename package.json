@@ -61,7 +61,6 @@
     "express": "^4.16.4",
     "express-session": "^1.16.2",
     "http": "0.0.0",
-    "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
@@ -105,7 +104,6 @@
       "src/index.js",
       "src/middlewares/errorHandler.js",
       "tests/*",
-      "src/api/models",
       "tests/*",
       "src/index.js",
       "src/api/models"

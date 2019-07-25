@@ -129,7 +129,7 @@ describe('GET /api/profiles/follower', () => {
       .set('Authorization', `${UserToken}`)
       .end((err, res) => {
         res.body.should.have.status(status.NOT_FOUND);
-        res.body.errors.Follower.should.eq(errorMessage.followerError);
+        res.body.errors.follower.should.eq(errorMessage.followerError);
         done();
       });
   });
@@ -164,14 +164,14 @@ describe('GET /api/profiles/following', () => {
         done();
       });
   });
-  it('Should return a message if the user has no follower', (done) => {
+  it('Should return a message if the user is following  no one', (done) => {
     chai
       .request(server)
       .get('/api/profiles/following')
       .set('Authorization', `${UserToken}`)
       .end((err, res) => {
         res.body.should.have.status(status.NOT_FOUND);
-        res.body.errors.Following.should.eq(errorMessage.followingError);
+        res.body.errors.following.should.eq(errorMessage.followingError);
         done();
       });
   });

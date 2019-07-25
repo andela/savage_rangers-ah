@@ -5,7 +5,7 @@ import models from '../../api/models';
 import sendNotification from './sender';
 
 const { Article, User, Comment } = models;
-
+/* istanbul ignore next */
 export default async (operation, commentId) => {
   try {
     const substringInitialIndex = 0;

@@ -63,9 +63,11 @@ export default {
   missingProperty: 'Please update this article and put all fields',
   commentReason:
     'commentReason is required and it can not be a string, Please provide a number starting from 1, Thanks',
-
   inApp: 'inApp is required and must be an object',
   configNotModified: 'you already have set configurations',
   configNotFound: 'you have to set configurations first',
-  notificationNotFound: 'No notifications found for now, Thanks'
+  notificationNotFound: 'No notifications found for now, Thanks',
+  noUserComment: 'You have no comment history on this article.',
+  notModifiedComment: 'The comment is not modifying what is already stored',
+  notAValidReason: 'Sorry, but that reason does not exist, Thanks'
 };

@@ -7,23 +7,9 @@ import getToken from '../src/helpers/tests/signup';
 const { expect } = chai;
 chai.use(chaiHttp);
 const userToken = getToken();
-const slug = 'What-is-a-Version-1-UUID';
-let commentId;
+const slug = 'How-to-create-sequalize-seeds';
+const commentId = 4;
 describe('testing the report comment controller', () => {
-  it('should add a comment on an article', (done) => {
-    chai
-      .request(app)
-      .post(`/api/articles/${slug}/comments`)
-      .set('authorization', `${userToken}`)
-      .send({
-        body: "Really interesting article. I've been searching for this"
-      })
-      .end((err, res) => {
-        res.should.have.status(status.CREATED);
-        commentId = res.body.data.id;
-        done();
-      });
-  });
   it('should be able to report the comment', (done) => {
     chai
       .request(app)

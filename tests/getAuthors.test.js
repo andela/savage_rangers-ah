@@ -22,7 +22,7 @@ const Authors = {
   },
   data: [
     { id: 1, username: 'Burindi', email: 'alain1@gmail.com' },
-    { id: 43, username: 'dianeMurekatete', email: 'diane@gmail.com' }
+    { id: 44, username: 'dianeMurekatete', email: 'diane@gmail.com' }
   ]
 };
 describe('get Authors', () => {

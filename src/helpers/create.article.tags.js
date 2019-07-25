@@ -14,6 +14,10 @@ export default data => new Promise((resolve) => {
 
   // Updating the tags
   // Add new tags to the article
+  /*
+   throwing an error with this module is really tricky.
+  */
+  /* istanbul ignore next  */
   async.each(data.newAddedTags,
     async (addedTag, callback) => {
       await ArticleTag.create({
