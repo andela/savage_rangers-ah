@@ -1,6 +1,8 @@
 import module from '../models';
 import generateToken from '../../helpers/tokens/generate.token';
 import status from '../../helpers/constants/status.codes';
+import response from '../../helpers/commonAction/socialLoginResponse';
+import socialToken from '../../helpers/commonAction/socialTokenGenerator';
 
 const { User } = module;
 
@@ -66,21 +68,19 @@ class socialLogin {
         provider: req.user.provider,
         uniqueId: req.user.id
       });
-      const { username, email } = existingUser.dataValues;
       const token = generateToken({
         username: req.user.displayName,
         id: existingUser.dataValues.id
       },
       process.env.TOKEN_KEY);
-      return res.status(status.CREATED).json({ user: { username, email, token } });
+      response(existingUser.dataValues, token, res);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    const { username, email } = existingUser.dataValues;
-    return res.status(status.CREATED).json({ user: { username, email, token } });
+    response(existingUser.dataValues, token, res);
   }
 
   /**
@@ -106,21 +106,15 @@ class socialLogin {
         provider: req.user.provider,
         uniqueId: req.user.id
       });
-      const { username, email } = existingUser.dataValues;
-      const token = generateToken({
-        username: req.user.displayName,
-        id: existingUser.dataValues.id
-      },
-      process.env.TOKEN_KEY);
-      return res.status(status.CREATED).json({ user: { username, email, token } });
+      const token = socialToken(existingUser, req);
+      response(existingUser.dataValues, token, res);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    const { username, email } = existingUser.dataValues;
-    return res.status(status.CREATED).json({ user: { username, email, token } });
+    response(existingUser.dataValues, token, res);
   }
 }
 
