@@ -8,7 +8,6 @@ import adminRouter from './adminRouter';
 import bookmarkRouter from './bookmarkRouter';
 import notificationRouter from './notificationRouter';
 
-import authenticate from '../../middlewares/authenticate';
 import termsAndConditionsRouter from './termsAndConditions';
 import reactionsRouter from './commentReactionsRoute';
 
@@ -22,7 +21,6 @@ router.use('/admin', adminRouter);
 router.use('/bookmarks', bookmarkRouter);
 router.use('/notifications', notificationRouter);
 
-router.use('/profiles', authenticate, profileRouter);
 router.use('/termsAndConditions', termsAndConditionsRouter);
 router.use('/comment', reactionsRouter);
 

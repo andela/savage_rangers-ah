@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize';
 import models from '../../api/models/index';
 
 const {
@@ -51,6 +52,39 @@ export default {
         model: ReportedComment,
         attributes: ['userId']
       }
+    }
+  ],
+  publish: {
+    title: {
+      [Sequelize.Op.ne]: null
+    },
+    body: {
+      [Sequelize.Op.ne]: null
+    },
+    description: {
+      [Sequelize.Op.ne]: null
+    },
+    category: {
+      [Sequelize.Op.ne]: null
+    },
+    coverImage: {
+      [Sequelize.Op.ne]: null
+    }
+  },
+  getSingleArticle: {
+    status: {
+      [Sequelize.Op.ne]: 'draft'
+    }
+  },
+  getCommentJoin: [
+    {
+      model: User,
+      required: true,
+      attributes: ['username', 'bio', 'profileImage']
+    },
+    {
+      model: Comment,
+      as: 'Replies'
     }
   ]
 };

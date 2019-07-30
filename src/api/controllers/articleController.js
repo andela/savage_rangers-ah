@@ -8,9 +8,13 @@ import errorSender from '../../helpers/error.sender';
 import generatePagination from '../../helpers/generate.pagination.details';
 import createTags from '../../helpers/create.article.tags';
 import generateReadtime from '../../helpers/read.time.estimator';
+import commonQueries from '../../helpers/commonAction/commonQueries';
+import getArticleResult from '../../helpers/commonAction/getArticleResult';
+import getSingleArticleLogic from '../../helpers/commonAction/getSingleArticleLogic';
+import updateArticle from '../../helpers/commonAction/updateArticleLogic';
 
 const {
-  Article, Category, User, ArticleTag, Read,
+  Article, Category, User, ArticleTag,
 } = models;
 
 const {
@@ -36,7 +40,7 @@ const articleInclude = [
 const defaultLimit = 10;
 const defaultOffset = 0;
 const result = {};
-const emptyArticleArray = 0;
+let query = {};
 
 /**
  * @export
@@ -94,28 +98,13 @@ export default class ArticleController {
    */
   static async publish(req, res) {
     const { slug } = req.params;
+    query = commonQueries.publish;
+    query.slug = slug;
     const article = await Article.update({
       status: 'published'
     },
     {
-      where: {
-        slug,
-        title: {
-          [Sequelize.Op.ne]: null
-        },
-        body: {
-          [Sequelize.Op.ne]: null
-        },
-        description: {
-          [Sequelize.Op.ne]: null
-        },
-        category: {
-          [Sequelize.Op.ne]: null
-        },
-        coverImage: {
-          [Sequelize.Op.ne]: null
-        }
-      }
+      where: { ...query }
     });
     const published = 1;
     if (article[0] === published) {
@@ -153,13 +142,8 @@ export default class ArticleController {
     result.status = OK;
     result.pagedArticles = generatePagination(articles.count, articles.rows, offset, limit);
     result.Articles = articles.rows;
-    if (articles.rows.length > emptyArticleArray) {
-      res.status(statusCodes.OK).json({
-        result
-      });
-    } else {
-      errorSender(statusCodes.NOT_FOUND, res, 'Articles', errorMessage.noMoreArticle);
-    }
+
+    getArticleResult(articles.rows.length, res, statusCodes, result);
   }
 
   /**
@@ -207,13 +191,7 @@ export default class ArticleController {
     result.status = 200;
     result.pagedArticles = generatePagination(articles.count, articles.rows, offset, limit);
     result.Articles = articles.rows;
-    if (articles.rows.length > emptyArticleArray) {
-      res.status(statusCodes.OK).json({
-        result
-      });
-    } else {
-      errorSender(statusCodes.NOT_FOUND, res, 'Articles', errorMessage.noMoreArticle);
-    }
+    getArticleResult(articles.rows.length, res, statusCodes, result);
   }
 
   /**
@@ -227,43 +205,14 @@ export default class ArticleController {
    */
   static async getArticle(req, res) {
     const { slug } = req.params;
+    query = commonQueries.getSingleArticle;
+    query.slug = slug;
     const article = await Article.findOne({
-      where: {
-        slug,
-        status: {
-          [Sequelize.Op.ne]: 'draft'
-        }
-      },
+      where: { ...query },
       include: articleInclude
     });
 
-    if (article) {
-      // count registered users
-      if (req.user) {
-        await Read.findOrCreate({
-          where: {
-            userId: req.user.id || req.user.user.id,
-            articleSlug: article.slug
-          }
-        });
-      } else {
-        // count unregistered users
-        await Read.findOrCreate({
-          where: {
-            userAgent: req.headers['user-agent'],
-            userIp: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-            articleSlug: article.slug
-          }
-        });
-      }
-
-      res.status(statusCodes.OK).json({
-        status: 200,
-        article
-      });
-    } else {
-      errorSender(statusCodes.NOT_FOUND, res, 'Article', errorMessage.noArticles);
-    }
+    getSingleArticleLogic(req, res, article, statusCodes);
   }
 
   /**
@@ -298,19 +247,7 @@ export default class ArticleController {
     await ArticleTag.destroy({ where: { articleId: req.article.id } });
     const readTime = generateReadtime(updateContent.body);
 
-    await Article.update({
-      title: updateContent.title,
-      description: updateContent.description,
-      body: updateContent.body,
-      coverImage,
-      category: updateContent.category,
-      readTime
-    },
-    {
-      where: {
-        slug
-      }
-    });
+    await updateArticle(Article, updateContent, { readTime, coverImage }, slug);
 
     await createTags(req);
     return res.status(statusCodes.OK).json({

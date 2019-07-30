@@ -5,8 +5,9 @@ import models from '../models';
 import sendError from '../../helpers/error.sender';
 import errorMessages from '../../helpers/constants/error.messages';
 import generatePaginationDetails from '../../helpers/generate.pagination.details';
+import commonQueries from '../../helpers/commonAction/commonQueries';
 
-const { Comment, User } = models;
+const { Comment } = models;
 
 /**
  *
@@ -25,14 +26,12 @@ class CommentController {
    * @memberof commentController
    */
   static async create(req, res) {
-    // Initializing variables
     const { slug } = req.params;
     const { body, parentCommentId } = req.body;
     let createdComment;
     const {
       user: { id }
     } = req.user;
-
     try {
       if (parentCommentId) {
         const parentComment = await Comment.findOne({
@@ -98,17 +97,7 @@ class CommentController {
         articleSlug: slug,
         parentCommentId: null
       },
-      include: [
-        {
-          model: User,
-          required: true,
-          attributes: ['username', 'bio', 'profileImage']
-        },
-        {
-          model: Comment,
-          as: 'Replies'
-        }
-      ],
+      include: commonQueries.getCommentJoin,
       offset,
       limit
     });
