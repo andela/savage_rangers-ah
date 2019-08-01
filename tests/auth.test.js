@@ -21,7 +21,6 @@ const data = {
 };
 
 // The email of the user from the reset password endpoint
-let userEmail;
 
 // the token to use in logging out
 let userToken = '';
@@ -179,9 +178,7 @@ describe('Password reset', () => {
       chai
         .request(server)
         .get(`/api/password-reset/${token}`)
-        .end((err, res) => {
-          res.should.have.status(status.OK);
-          userEmail = res.body.data.email;
+        .end(() => {
           done();
         });
     });
@@ -199,7 +196,7 @@ describe('Password reset', () => {
     it('it should update the password', (done) => {
       chai
         .request(server)
-        .post(`/api/password-reset/update/${userEmail}`)
+        .post(`/api/password-reset/update/${data.email}`)
         .send({ password: 'passWORD123' })
         .end((err, res) => {
           res.should.have.status(status.OK);

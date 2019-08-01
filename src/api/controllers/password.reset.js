@@ -86,16 +86,10 @@ export default class PasswordReset {
    * @returns {Boolean} true
    */
   static async verifyRecoveryLink(req, res) {
-    // Initialising variables
-    const result = {};
+    // Initializing variables
     const { userEmail } = req;
 
-    // Sending the result
-    result.status = status.OK;
-    result.message = 'Please provide your new password';
-    result.data = {
-      email: userEmail
-    };
-    res.status(status.OK).json(result);
+    // redirecting
+    res.redirect(`${env.APP_URL_FRONTEND}/reset-password?email=${userEmail}`);
   }
 }

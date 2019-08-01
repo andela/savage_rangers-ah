@@ -99,10 +99,7 @@ articleRouter.post('/:slug/report',
 
 articleRouter.get('/category/:categoryId', articleController.getArticlesByCategory);
 
-articleRouter.get('/:slug/tags',
-  checkValidToken,
-  checkArticle.getArticle,
-  articleTagController.getArticleTags);
+articleRouter.get('/:slug/tags', checkArticle.getArticle, articleTagController.getArticleTags);
 
 articleRouter.get('/tags/query',
   checkValidToken,

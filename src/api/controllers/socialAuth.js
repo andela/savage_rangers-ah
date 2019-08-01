@@ -1,7 +1,6 @@
 import module from '../models';
 import generateToken from '../../helpers/tokens/generate.token';
-import status from '../../helpers/constants/status.codes';
-import response from '../../helpers/commonAction/socialLoginResponse';
+import env from '../../configs/environments';
 import socialToken from '../../helpers/commonAction/socialTokenGenerator';
 
 const { User } = module;
@@ -41,7 +40,7 @@ class socialLogin {
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    return res.status(status.CREATED).json({ user: { ...existingUser.get(), token } });
+    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
   }
 
   /**
@@ -73,14 +72,14 @@ class socialLogin {
         id: existingUser.dataValues.id
       },
       process.env.TOKEN_KEY);
-      response(existingUser.dataValues, token, res);
+      return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    response(existingUser.dataValues, token, res);
+    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
   }
 
   /**
@@ -107,14 +106,14 @@ class socialLogin {
         uniqueId: req.user.id
       });
       const token = socialToken(existingUser, req);
-      response(existingUser.dataValues, token, res);
+      return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    response(existingUser.dataValues, token, res);
+    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
   }
 }
 
