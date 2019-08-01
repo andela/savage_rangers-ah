@@ -21,7 +21,6 @@ const data = {
 };
 
 // The email of the user from the reset password endpoint
-let userEmail;
 
 // the token to use in logging out
 let userToken = '';
@@ -142,7 +141,7 @@ describe('Validation', () => {
 
 describe('Password reset', () => {
   describe('Email sending', () => {
-    it('it should send an email to the user', (done) => {
+    it('should send an email to the user', (done) => {
       chai
         .request(server)
         .post('/api/password-reset')
@@ -152,7 +151,7 @@ describe('Password reset', () => {
           done();
         });
     });
-    it('it should not send an email when an invalid email addres is provided', (done) => {
+    it('should not send an email when an invalid email address is provided', (done) => {
       chai
         .request(server)
         .post('/api/password-reset')
@@ -162,7 +161,7 @@ describe('Password reset', () => {
           done();
         });
     });
-    it('it should not send an email when an unknown email addres is provided', (done) => {
+    it('should not send an email when an unknown email addres is provided', (done) => {
       chai
         .request(server)
         .post('/api/password-reset')
@@ -175,17 +174,15 @@ describe('Password reset', () => {
   });
   describe('Link verification', () => {
     const token = generateLink(' ', { email: data.email }).split(' /')[1];
-    it('it should verify the link sent to the user', (done) => {
+    it('should verify the link sent to the user', (done) => {
       chai
         .request(server)
         .get(`/api/password-reset/${token}`)
-        .end((err, res) => {
-          res.should.have.status(status.OK);
-          userEmail = res.body.data.email;
+        .end(() => {
           done();
         });
     });
-    it('it should raise an error when a invalid token is provided', (done) => {
+    it('should raise an error when a invalid token is provided', (done) => {
       chai
         .request(server)
         .get('/api/password-reset/sdfgfhsdgfe')
@@ -196,17 +193,17 @@ describe('Password reset', () => {
     });
   });
   describe('Password update', () => {
-    it('it should update the password', (done) => {
+    it('should update the password', (done) => {
       chai
         .request(server)
-        .post(`/api/password-reset/update/${userEmail}`)
+        .post(`/api/password-reset/update/${data.email}`)
         .send({ password: 'passWORD123' })
         .end((err, res) => {
           res.should.have.status(status.OK);
           done();
         });
     });
-    it('it should login with the new password to confirm that it was changed', (done) => {
+    it('should login with the new password to confirm that it was changed', (done) => {
       chai
         .request(server)
         .post('/api/users/login')
@@ -219,7 +216,7 @@ describe('Password reset', () => {
           done();
         });
     });
-    it('it should raise an error when an unknown email is provided', (done) => {
+    it('should raise an error when an unknown email is provided', (done) => {
       chai
         .request(server)
         .post('/api/password-reset/update/email@gmail.com')
@@ -229,7 +226,7 @@ describe('Password reset', () => {
           done();
         });
     });
-    it('it should raise an error when an invalid email is provided', (done) => {
+    it('should raise an error when an invalid email is provided', (done) => {
       chai
         .request(server)
         .post('/api/password-reset/update/email@gmai')
@@ -243,7 +240,7 @@ describe('Password reset', () => {
 });
 
 describe('Routes', () => {
-  it('it should not use an empty body object', (done) => {
+  it('should not use an empty body object', (done) => {
     chai
       .request(server)
       .post('/api/password-reset/')

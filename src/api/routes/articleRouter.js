@@ -68,7 +68,6 @@ articleRouter.post('/',
   errorHandler(articleController.create));
 
 articleRouter.get('/:slug/ratings/statistics',
-  checkValidToken,
   ratingsController.getArticleRatingStatistics);
 
 articleRouter.get('/:slug/:rating/users',
@@ -99,10 +98,7 @@ articleRouter.post('/:slug/report',
 
 articleRouter.get('/category/:categoryId', articleController.getArticlesByCategory);
 
-articleRouter.get('/:slug/tags',
-  checkValidToken,
-  checkArticle.getArticle,
-  articleTagController.getArticleTags);
+articleRouter.get('/:slug/tags', checkArticle.getArticle, articleTagController.getArticleTags);
 
 articleRouter.get('/tags/query',
   checkValidToken,

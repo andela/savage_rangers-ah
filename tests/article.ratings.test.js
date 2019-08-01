@@ -51,25 +51,6 @@ describe('Article ratings statistics', () => {
         done();
       });
   });
-  it('Should not get the ratings without a token', (done) => {
-    chai
-      .request(server)
-      .get('/api/articles/How-to-create-sequalize-seeds/ratings/statistics')
-      .end((err, res) => {
-        res.should.have.status(status.UNAUTHORIZED);
-        done();
-      });
-  });
-  it('Should not get the ratings with a invalid token', (done) => {
-    chai
-      .request(server)
-      .get('/api/articles/How-to-create-sequalize-seeds/ratings/statistics')
-      .set('authorization', `bearer f${userToken}`)
-      .end((err, res) => {
-        res.should.have.status(status.UNAUTHORIZED);
-        done();
-      });
-  });
 });
 
 describe('Users who rated a particular article with a given rating', () => {

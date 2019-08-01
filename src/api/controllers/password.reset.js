@@ -1,5 +1,6 @@
 import { hashSync, genSaltSync } from 'bcrypt';
 import models from '../models/index';
+import generateToken from '../../helpers/tokens/generate.token';
 import mailer from '../../helpers/Mailer';
 import env from '../../configs/environments';
 import status from '../../helpers/constants/status.codes';
@@ -71,9 +72,14 @@ export default class PasswordReset {
       }
     });
 
+    const tokenData = { id: req.user.id, username: req.user.username, email: req.user.email };
+    const token = generateToken(tokenData, env.secret);
+
     // Sending the result
     result.status = status.OK;
-    result.message = 'Password reset sucessfully';
+    result.message = 'Password reset successfully';
+    result.user = req.user;
+    result.token = token;
     res.status(status.OK).json(result);
   }
 
@@ -86,16 +92,10 @@ export default class PasswordReset {
    * @returns {Boolean} true
    */
   static async verifyRecoveryLink(req, res) {
-    // Initialising variables
-    const result = {};
+    // Initializing variables
     const { userEmail } = req;
 
-    // Sending the result
-    result.status = status.OK;
-    result.message = 'Please provide your new password';
-    result.data = {
-      email: userEmail
-    };
-    res.status(status.OK).json(result);
+    // redirecting
+    res.redirect(`${env.APP_URL_FRONTEND}/reset-password?email=${userEmail}`);
   }
 }
