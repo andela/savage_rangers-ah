@@ -4,7 +4,7 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "start": "npm run migrate && npm run seed && babel-node src/index.js",
+    "start": "npm run setup:dev && babel-node src/index.js",
     "test": "npm run setup:test && NODE_ENV=test nyc --reporter=html --reporter=text --reporter=lcov ./node_modules/.bin/mocha  ./tests/* --require @babel/register --timeout 5000 --exit",
     "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
     "setup:test": "NODE_ENV=test npm run migrate:undo  && NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed",
