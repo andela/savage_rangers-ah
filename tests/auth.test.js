@@ -32,10 +32,7 @@ describe('Signup', () => {
       .request(server)
       .post('/api/users/signup')
       .send({
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        confirmPassword: data.password
+        ...data
       })
       .end((err, res) => {
         res.should.have.status(status.CREATED);
@@ -251,6 +248,21 @@ describe('Routes', () => {
       .send({})
       .end((err, res) => {
         res.should.have.status(status.BAD_REQUEST);
+        done();
+      });
+  });
+
+  it('should not register with a used username', (done) => {
+    data.email = 'data.email@em.com';
+    chai
+      .request(server)
+      .post('/api/users/signup')
+      .send({
+        ...data
+      })
+      .end((err, res) => {
+        res.should.have.status(status.BAD_REQUEST);
+        res.body.errors.should.have.property('username', errors.usernameExists);
         done();
       });
   });
