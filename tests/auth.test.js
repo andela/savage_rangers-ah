@@ -78,10 +78,10 @@ describe('Login', () => {
         password: 'passwor5535'
       })
       .end((err, res) => {
-        res.should.have.status(status.UNAUTHORIZED);
+        res.should.have.status(status.BAD_REQUEST);
         res.body.should.have
           .property('errors')
-          .which.has.property('password', errors.incorectPassword);
+          .which.has.property('error', errors.incorrectCredential);
         done();
       });
   });
@@ -95,8 +95,10 @@ describe('Login', () => {
         password: 'password'
       })
       .end((err, res) => {
-        res.should.have.status(status.NOT_FOUND);
-        res.body.should.have.property('errors').which.has.property('email', errors.unkownEmail);
+        res.should.have.status(status.BAD_REQUEST);
+        res.body.should.have
+          .property('errors')
+          .which.has.property('error', errors.incorrectCredential);
         done();
       });
   });
