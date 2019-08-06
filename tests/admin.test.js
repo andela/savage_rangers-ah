@@ -64,7 +64,7 @@ describe('Users', () => {
       })
       .end((err, res) => {
         res.should.have.status(status.BAD_REQUEST);
-        res.body.errors.should.have.property('email').eql(error.exist);
+        res.body.errors.should.have.property('email').eql(error.emailExists);
         done();
       });
   });

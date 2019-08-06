@@ -2,6 +2,7 @@ import { Router } from 'express';
 import ValidateUser from '../../middlewares/ValidateUser';
 import authController from '../controllers/authController';
 import validateToken from '../../middlewares/checkValidToken';
+import checkUsername from '../../middlewares/checkUsername';
 
 import socialAuthController from '../controllers/socialAuth';
 import passport from '../../configs/passport';
@@ -10,7 +11,7 @@ import EmailVerifier from '../controllers/verifyEmail';
 
 const authRouter = new Router();
 
-authRouter.post('/signup', ValidateUser.validateSignup, authController.signup);
+authRouter.post('/signup', ValidateUser.validateSignup, checkUsername, authController.signup);
 authRouter.post('/login', authController.login);
 authRouter.get('/signout', validateToken, authController.signout);
 

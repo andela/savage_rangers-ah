@@ -2,6 +2,7 @@ import models from '../api/models';
 import signupValidator from '../helpers/validators/signupValidator';
 import statusCode from '../helpers/constants/status.codes';
 import sendError from '../helpers/error.sender';
+import errorMessage from '../helpers/constants/error.messages';
 
 const { User } = models;
 /**
@@ -19,7 +20,7 @@ export default class {
     try {
       await signupValidator(req.body);
       const emailExists = await User.findByEmail(email);
-      if (emailExists) sendError(statusCode.BAD_REQUEST, res, 'email', ' The user already exists');
+      if (emailExists) sendError(statusCode.BAD_REQUEST, res, 'email', errorMessage.emailExists);
       else return next();
     } catch (error) {
       if (error.isJoi) {
