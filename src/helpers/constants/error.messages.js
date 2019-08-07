@@ -5,7 +5,7 @@ export default {
   emptyBody: 'Server unable to process the recieved data',
   unkownEmail: "A user with the provided email doesn't exist",
   invalidLink: 'Invalid link provided',
-  incorectPassword: 'Incorect password provided',
+  incorrectCredential: 'Invalid email or password ',
   notAllowed: 'Forbiden access',
   emailLinkInvalid:
     'The link provided is  corrupt, please request a new one or try to click it again',

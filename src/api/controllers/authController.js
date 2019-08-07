@@ -76,9 +76,9 @@ export default class Auth {
           const token = generateToken(tokenData, env.secret);
           return sendResult(res, status.OK, 'user logged in successfully', user, token);
         }
-        return sendError(status.UNAUTHORIZED, res, 'password', errors.incorectPassword);
+        return sendError(status.BAD_REQUEST, res, 'error', errors.incorrectCredential);
       }
-      return sendError(status.NOT_FOUND, res, 'email', errors.unkownEmail);
+      return sendError(status.BAD_REQUEST, res, 'error', errors.incorrectCredential);
     });
   }
 
