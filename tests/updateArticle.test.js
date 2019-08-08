@@ -34,7 +34,10 @@ describe('testing the middlewares before reaching the update article controller'
         expect(res.status).eql(status.NOT_FOUND);
         expect(res.body)
           .to.have.property('errors')
-          .eql({ slug: 'Article with slug meditate-about-yourself is not found, Thanks' });
+          .eql({
+            slug:
+              'Article with slug meditate-about-yourself is not found, Thanks'
+          });
         done();
       });
   });
@@ -87,15 +90,20 @@ describe('testing for the article update controller', () => {
   });
   it('should update the article with new content', (done) => {
     const slug = 'How-to-create-sequalize-seeds';
+    const updatedArticle = {
+      title: 'lets try to update',
+      dscription: "If we can't test we cant progress",
+      body: 'how did the classical Latin become',
+      tags: ['Laravel', 'php', 'IOT', 'iot2'],
+      coverImage: 'http://localhost:3000/ver.jpg',
+      category: 2
+    };
+
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
       .set('authorization', UserToken)
-      .field({
-        body: ['how did the classical Latin become'],
-        tags: ['Laravel', 'php', 'IOT', 'iot2']
-      })
-      .attach('coverImage', './tests/images/eric.jpg', 'eric.jpg')
+      .send(updatedArticle)
       .end((err, res) => {
         expect(res.status).eql(status.OK);
         expect(res.body)

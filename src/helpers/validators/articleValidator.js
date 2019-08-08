@@ -6,19 +6,14 @@ const schema = joi.object().keys({
     .string()
     .error(() => errorMessage.title)
     .required(),
-  description: joi
-    .string()
-    .error(() => errorMessage.description),
-  body: joi
-    .string()
-    .error(() => errorMessage.body),
-  tags: joi
-    .array()
-    .items(joi.string().alphanum()),
+  description: joi.string().error(() => errorMessage.description),
+  body: joi.string().error(() => errorMessage.body),
+  tags: joi.array().items(joi.string().alphanum()),
   category: joi
     .number()
     .min(1)
-    .error(() => errorMessage.category)
+    .error(() => errorMessage.category),
+  coverImage: joi.string()
 });
 
 export default article => joi.validate(article, schema);
