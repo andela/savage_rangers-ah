@@ -28,6 +28,7 @@ import highlightController from '../controllers/highlightController';
 import shareArticleController from '../controllers/shareArticleController';
 import searchController from '../controllers/searchController';
 import statsController from '../controllers/statsController';
+import popularController from '../controllers/popularArticleController';
 
 const articleRouter = new Router();
 
@@ -180,5 +181,8 @@ articleRouter.post('/:slug/comments/:id/report',
   getComment,
   validateInputs('reportComment', ['commentReason']),
   reportCommentController.reportComment);
+
+articleRouter.get('/most/popular',
+  popularController.getAll);
 
 export default articleRouter;
