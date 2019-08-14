@@ -68,7 +68,6 @@ articleRouter.post('/',
   errorHandler(articleController.create));
 
 articleRouter.get('/:slug/ratings/statistics',
-  checkValidToken,
   ratingsController.getArticleRatingStatistics);
 
 articleRouter.get('/:slug/:rating/users',

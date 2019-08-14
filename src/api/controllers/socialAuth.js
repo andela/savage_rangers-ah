@@ -40,7 +40,10 @@ class socialLogin {
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
+    const user = existingUser.dataValues;
+    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
+      user.email
+    }&profile=${user.profileImage}`);
   }
 
   /**
@@ -72,14 +75,20 @@ class socialLogin {
         id: existingUser.dataValues.id
       },
       process.env.TOKEN_KEY);
-      return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
+      const user = existingUser.dataValues;
+      return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
+        user.email
+      }&profile=${user.profileImage}`);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
+    const user = existingUser.dataValues;
+    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
+      user.email
+    }&profile=${user.profileImage}`);
   }
 
   /**
@@ -106,14 +115,20 @@ class socialLogin {
         uniqueId: req.user.id
       });
       const token = socialToken(existingUser, req);
-      return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
+      const user = existingUser.dataValues;
+      return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
+        user.email
+      }&profile=${user.profileImage}`);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}`);
+    const user = existingUser.dataValues;
+    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
+      user.email
+    }&profile=${user.profileImage}`);
   }
 }
 
