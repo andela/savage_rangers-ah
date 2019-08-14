@@ -28,6 +28,7 @@ import highlightController from '../controllers/highlightController';
 import shareArticleController from '../controllers/shareArticleController';
 import searchController from '../controllers/searchController';
 import statsController from '../controllers/statsController';
+import popularController from '../controllers/popularArticleController';
 
 const articleRouter = new Router();
 
@@ -46,6 +47,7 @@ articleRouter.post('/:slug/rating',
 const highlightFields = ['firstIndex', 'lastIndex', 'comment', 'text'];
 
 articleRouter.get('/', articleController.getArticles);
+articleRouter.get('/popular', popularController.getAll);
 articleRouter.get('/:slug', optionalAuth, articleController.getArticle);
 articleRouter.patch('/:slug',
   uploadImage.single('coverImage'),
