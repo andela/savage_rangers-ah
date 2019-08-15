@@ -8,7 +8,8 @@ export default async (req, res, list, sequelize, error, table) => {
   const defaultLimit = 10;
   let data = {};
 
-  const { username } = req.user.user;
+  const { username } = req.params;
+  const { username: connectedUsername } = req.user.user;
   const offset = req.query.offset || defaultOffset;
   const limit = req.query.limit || defaultLimit;
 
@@ -16,7 +17,7 @@ export default async (req, res, list, sequelize, error, table) => {
     SELECT ${table},u."profileImage"
     FROM followings as f 
     INNER JOIN public."Users" as u ON f.${list} = u.username 
-    WHERE f.${list} = '${username}'
+    WHERE f.${list} = '${username || connectedUsername}'
     LIMIT '${limit}' OFFSET '${offset}'
     `);
   data = generatePagination(followerList[1].rowCount, followerList[1].rows, offset, limit);

@@ -4,7 +4,6 @@ import errorSender from '../../helpers/error.sender';
 import errorMessage from '../../helpers/constants/error.messages';
 import getFollowingScript from '../../helpers/commonAction/getFollowingScript';
 
-
 /**
  * @class
  */
@@ -42,12 +41,12 @@ export default class FollowingController {
   }
 
   /**
- * This function creates the unfollow process by deleting the user
- * @param {object} req request sent by user
- * @param {object} res response after execution of request
- * @memberof Follow
- * @returns {object} res
- */
+   * This function creates the unfollow process by deleting the user
+   * @param {object} req request sent by user
+   * @param {object} res response after execution of request
+   * @memberof Follow
+   * @returns {object} res
+   */
   static async unfollow(req, res) {
     const { username } = req.params;
     const follower = req.user.user.username;
@@ -79,6 +78,7 @@ export default class FollowingController {
    *
    */
   static getUserfollower(req, res) {
+    // res.send(req.params.username || req.user.user.username);
     getFollowingScript(req, res, 'following', sequelize, errorMessage.followerError, 'follower');
   }
 

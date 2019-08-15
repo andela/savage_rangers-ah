@@ -22,13 +22,18 @@ const fields = [
 // follow and following related routes
 profileRouter.post('/:username/follow', authorization, followController.follow);
 profileRouter.delete('/:username/unfollow', authorization, followController.unfollow);
+profileRouter.get('/follower/:username', authorization, followController.getUserfollower);
+profileRouter.get('/following/:username', authorization, followController.getUserfollowing);
 profileRouter.get('/follower', authorization, followController.getUserfollower);
+
 profileRouter.get('/following', authorization, followController.getUserfollowing);
 
-profileRouter.patch('/', authenticate,
+profileRouter.patch('/',
+  authenticate,
   upload.single('profileImage'),
   validateInputs('profile', fields),
   profileController.update);
 profileRouter.get('/:username', authenticate, profileController.read);
+profileRouter.get('/', authorization, profileController.get);
 
 export default profileRouter;

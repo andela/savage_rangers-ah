@@ -70,6 +70,25 @@ describe('Profile', () => {
         done();
       });
   });
+
+  it('should send the user\'s profile', (done) => {
+    chai.request(server)
+      .get('/api/profiles/')
+      .set('Authorization', authToken)
+      .end((err, res) => {
+        res.should.have.status(status.OK);
+        res.body.should.have.property('profile');
+        const { profile } = res.body;
+        profile.should.have.property('country', `${country} Democratic Republic of`);
+        profile.should.have.property('firstName', firstName);
+        profile.should.have.property('lastName', lastName);
+        profile.should.have.property('address', address);
+        profile.should.have.property('gender', gender);
+        profile.should.have.property('profileImage');
+        profile.should.have.property('phoneNumber', phoneNumber);
+        done();
+      });
+  });
 });
 
 describe('Validate data', () => {
