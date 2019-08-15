@@ -51,15 +51,6 @@ describe('Article ratings statistics', () => {
         done();
       });
   });
-  it('Should not get the ratings without a token', (done) => {
-    chai
-      .request(server)
-      .get('/api/articles/How-to-create-sequalize-seeds/ratings/statistics')
-      .end((err, res) => {
-        res.should.have.status(status.UNAUTHORIZED);
-        done();
-      });
-  });
   it('Should not get the ratings with a invalid token', (done) => {
     chai
       .request(server)
@@ -73,16 +64,6 @@ describe('Article ratings statistics', () => {
 });
 
 describe('Users who rated a particular article with a given rating', () => {
-  it('Should get the users', (done) => {
-    chai
-      .request(server)
-      .get('/api/articles/How-to-create-sequalize-seeds/4/users?limit=3&offset=1')
-      .set('authorization', `${userToken}`)
-      .end((err, res) => {
-        res.should.have.status(status.OK);
-        done();
-      });
-  });
   it('Should not get the users with an invalid offset', (done) => {
     chai
       .request(server)

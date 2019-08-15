@@ -33,4 +33,8 @@ router.get('/configuration/unsubscribe/email',
   checkValidToken,
   notificationController.updateConfig);
 
+router.patch('/configuration/snooze', checkValidToken, notificationController.snooze);
+
+router.patch('/configuration/unsnooze', checkValidToken, notificationController.snooze);
+
 export default router;

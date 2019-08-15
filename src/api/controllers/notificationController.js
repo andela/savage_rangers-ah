@@ -43,7 +43,9 @@ export default class NotificationController {
     } = req.user;
 
     const userConfig = await NotificationConfig.findOne({
-      userId: id
+      where: {
+        userId: id
+      }
     });
 
     userConfig.config = JSON.parse(userConfig.config);
@@ -161,6 +163,33 @@ export default class NotificationController {
     }
     result.status = status.OK;
     result.message = 'Notification updated successfully';
+    return res.status(status.OK).json(result);
+  }
+
+  /**
+   * A method to snooze notifications
+   * @param  {object} req
+   * @param  {object} res
+   * @return {object} return an object
+   */
+  static async snooze(req, res) {
+    const result = {};
+    const { user: { id: userId } } = req.user;
+    const isUnsnoozeRequest = req.url.includes('unsnooze');
+    const message = isUnsnoozeRequest ? 'unsnoozed' : 'snoozed';
+    if (isUnsnoozeRequest) {
+      await NotificationConfig.update({
+        isSnoozed: false
+      },
+      { where: { userId } });
+    } else {
+      await NotificationConfig.update({
+        isSnoozed: true
+      },
+      { where: { userId } });
+    }
+    result.status = status.OK;
+    result.message = `successfully ${message}`;
     return res.status(status.OK).json(result);
   }
 }

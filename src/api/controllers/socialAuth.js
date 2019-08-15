@@ -2,6 +2,7 @@ import module from '../models';
 import generateToken from '../../helpers/tokens/generate.token';
 import env from '../../configs/environments';
 import socialToken from '../../helpers/commonAction/socialTokenGenerator';
+import setDefaultConfigs from '../../helpers/create.default.notifications.config';
 
 const { User } = module;
 
@@ -34,6 +35,8 @@ class socialLogin {
         provider: req.user.provider,
         uniqueId: req.user.id
       });
+      // setting default notifications configurations
+      await setDefaultConfigs(existingUser.dataValues.id);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
@@ -70,6 +73,8 @@ class socialLogin {
         provider: req.user.provider,
         uniqueId: req.user.id
       });
+      // setting default notifications configurations
+      await setDefaultConfigs(existingUser.dataValues.id);
       const token = generateToken({
         username: req.user.displayName,
         id: existingUser.dataValues.id
@@ -114,6 +119,8 @@ class socialLogin {
         provider: req.user.provider,
         uniqueId: req.user.id
       });
+      // setting default notifications configurations
+      await setDefaultConfigs(existingUser.dataValues.id);
       const token = socialToken(existingUser, req);
       const user = existingUser.dataValues;
       return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
