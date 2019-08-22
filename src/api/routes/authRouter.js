@@ -3,7 +3,6 @@ import ValidateUser from '../../middlewares/ValidateUser';
 import authController from '../controllers/authController';
 import validateToken from '../../middlewares/checkValidToken';
 import checkUsername from '../../middlewares/checkUsername';
-
 import socialAuthController from '../controllers/socialAuth';
 import passport from '../../configs/passport';
 import social from '../../middlewares/social/social';

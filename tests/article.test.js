@@ -13,6 +13,7 @@ const fakeArticle = {
   title: 'So how did the classical Latin become so incoherent? According to McClintock',
   description:
     ' how did the classical Latin become so incoherent? According to McClintock, a 15th century typesetter likely scrambled part o',
+  coverImage: 'http://jpeg.jpeg',
   body:
     'po how did the classical Latin become so incoherent? According to McClintock, a 15th century typesetter likely scrambled part of Ciceros De Finibus in order to provide placeholder text to mockup various fonts for a type specimen book.It is difficult to find examples of lorem ipsum in use before Letraset made it popular as a dummy text in the 1960s, although McClintock says he remembers coming across the lorem ipsum passage in a book of old metal type samples. So far he hasnt relocated where he once saw the passage, but the popularity of Cicero in the 15th century supports the theory that the filler text has been used for centuries.d anyways, as Cecil Adams reasoned, “[Do you really] think graphic arts supply houses were hiring classics scholars in the 1960s?” Perhaps. But it seems reasonable to imagine that there was a version in use far before the age of Letraset',
   category: 1,
@@ -37,16 +38,14 @@ describe('Testing the authorization', () => {
 
 describe('create  article', () => {
   const user = {
-    username: 'dianeMurekatete',
-    email: 'diane@gmail.com',
-    password: 'password23423',
-    confirmPassword: 'password23423'
+    email: 'alain1@gmail.com',
+    password: 'password23423'
   };
 
   before((done) => {
     chai
       .request(server)
-      .post('/api/users/signup')
+      .post('/api/users/login')
       .send(user)
       .end((err, res) => {
         userToken = res.body.user.token;
@@ -59,8 +58,7 @@ describe('create  article', () => {
       .request(server)
       .post('/api/articles')
       .set('authorization', userToken)
-      .field(rest)
-      .attach('coverImage', './tests/images/image.jpeg', 'image')
+      .send(rest)
       .end((err, res) => {
         const { status } = res;
         expect(status).to.equal(statusCode.CREATED);

@@ -29,7 +29,8 @@ export default async (operation, commentId) => {
       }
     });
 
-    const url = `${env.baseUrl}/api/articles/${comment.dataValues.Article.dataValues.slug}`;
+    const emailUrl = `${env.APP_URL_FRONTEND}/api/articles/${comment.dataValues.Article.dataValues.slug}`;
+    const inApplUrl = `/articles/${comment.dataValues.Article.dataValues.slug}`;
 
     const message = {
       inAppMessage: '',
@@ -47,7 +48,8 @@ export default async (operation, commentId) => {
       'report',
       comment.dataValues.User,
       message,
-      url);
+      emailUrl,
+      inApplUrl);
 
     io.emit(`${operation}Comment`, notification);
   } catch (error) {

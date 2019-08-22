@@ -31,9 +31,8 @@ export default async (commentId) => {
       }
     });
 
-    const url = `${env.baseUrl}/api/articles/${
-      comment.dataValues.Article.dataValues.slug
-    }/comments/${commentId}`;
+    const emailUrl = `${env.APP_URL_FRONTEND}/api/articles/${comment.dataValues.Article.dataValues.slug}/comments/${commentId}`;
+    const inApplUrl = `/articles/${comment.dataValues.Article.dataValues.slug}/comments/${commentId}`;
 
     const message = {
       inAppMessage: '',
@@ -56,12 +55,18 @@ export default async (commentId) => {
       'report',
       comment.dataValues.User,
       message,
-      url);
+      emailUrl,
+      inApplUrl);
 
     io.emit('reportComment', notification);
 
     return moderators.map(async (moderator) => {
-      notification = await sendNotification('articles', 'report', moderator, message, url);
+      notification = await sendNotification('articles',
+        'report',
+        moderator,
+        message,
+        emailUrl,
+        inApplUrl);
       io.emit('reportComment', notification);
     });
   } catch (error) {

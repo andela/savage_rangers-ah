@@ -3,7 +3,7 @@ import Sequelize from 'sequelize';
 import env from '../../configs/environments';
 
 const sequelize = new Sequelize(env.dbUrl, {
-  logging: true,
+  logging: false,
   dialect: 'postgres'
 });
 

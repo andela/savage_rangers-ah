@@ -95,7 +95,8 @@ export default class ProfileController {
           {
             model: Article,
             offset,
-            limit: paginationLimit
+            limit: paginationLimit,
+            order: [['createdAt', 'DESC']]
           }
         ]
       });
@@ -144,7 +145,8 @@ export default class ProfileController {
         {
           model: Article,
           offset,
-          limit: paginationLimit
+          limit: paginationLimit,
+          order: [['createdAt', 'DESC']]
         }
       ]
     });

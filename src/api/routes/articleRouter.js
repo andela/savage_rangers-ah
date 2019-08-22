@@ -8,7 +8,6 @@ import bodyVerifier from '../../middlewares/validations/body.verifier';
 import ratingsController from '../controllers/articleRatingController';
 import validateInputs from '../../middlewares/validations/body.inputs';
 import checkExistingRates from '../../middlewares/checkExistingRating';
-import uploadImage from '../../middlewares/upload';
 import errorHandler from '../../middlewares/errorHandler';
 import shareArticle from '../../middlewares/shareArticle';
 import validateRatingsRoute from '../../middlewares/validations/ratings.routes';
@@ -33,9 +32,14 @@ import popularController from '../controllers/popularArticleController';
 const articleRouter = new Router();
 
 articleRouter.get('/search/', searchController.search);
-articleRouter.get('/:slug/stats', checkArticle.getArticle, optionalAuth, statsController.stats);
+articleRouter.get('/:slug/stats',
+  checkArticle.getArticle,
+  optionalAuth,
+  statsController.stats);
 
-articleRouter.get('/drafts', checkValidToken, articleController.getDraftedArticles);
+articleRouter.get('/drafts',
+  checkValidToken,
+  articleController.getDraftedArticles);
 
 articleRouter.post('/:slug/rating',
   checkValidToken,
@@ -49,12 +53,16 @@ const highlightFields = ['firstIndex', 'lastIndex', 'comment', 'text'];
 articleRouter.get('/', articleController.getArticles);
 articleRouter.get('/:slug', optionalAuth, articleController.getArticle);
 articleRouter.patch('/:slug',
-  uploadImage.single('coverImage'),
   checkValidToken,
   bodyVerifier,
   checkArticle.getArticle,
-  validateInputs('updateArticle', ['title', 'description', 'body', 'category', 'tags']),
-  checkArticle.getArticle,
+  validateInputs('updateArticle', [
+    'title',
+    'description',
+    'body',
+    'category',
+    'tags'
+  ]),
   checkArticleOwner.checkOwner,
   checkIncomingTags,
   createAndGetNewTags,
@@ -62,7 +70,6 @@ articleRouter.patch('/:slug',
 
 articleRouter.post('/',
   checkValidToken,
-  uploadImage.single('coverImage'),
   bodyVerifier,
   checkIncomingTags,
   createAndGetNewTags,
@@ -88,7 +95,9 @@ articleRouter.post('/:slug/highlight',
   validateInputs('highlight', highlightFields),
   highlightController.highlight);
 
-articleRouter.get('/:slug/highlight', checkArticle.getArticle, highlightController.getHighlight);
+articleRouter.get('/:slug/highlight',
+  checkArticle.getArticle,
+  highlightController.getHighlight);
 
 articleRouter.post('/:slug/report',
   checkValidToken,
@@ -97,7 +106,8 @@ articleRouter.post('/:slug/report',
   validateInputs('reportArticle', ['reason']),
   reportArticleController.reportAnArticle);
 
-articleRouter.get('/category/:categoryId', articleController.getArticlesByCategory);
+articleRouter.get('/category/:categoryId',
+  articleController.getArticlesByCategory);
 
 articleRouter.get('/:slug/tags', checkArticle.getArticle, articleTagController.getArticleTags);
 

@@ -75,3 +75,17 @@ describe('Query tags table', () => {
       });
   });
 });
+
+describe('List of Tags', () => {
+  it('should return a list of tags', (done) => {
+    chai
+      .request(server)
+      .get('/api/tags')
+      .end((err, res) => {
+        res.body.should.have.status(status.OK);
+        res.body.tags.should.be.an('array');
+        res.body.tags[0].name.should.eq('Iot');
+        done();
+      });
+  });
+});

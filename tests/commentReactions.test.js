@@ -15,7 +15,7 @@ describe('react on  comment', () => {
       .request(server)
       .post('/api/users/login')
       .send({
-        email: 'diane@gmail.com',
+        email: 'alain1@gmail.com',
         password: 'password23423'
       })
       .end((err, res) => {

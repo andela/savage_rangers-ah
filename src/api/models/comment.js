@@ -54,9 +54,9 @@ export default (sequelize, DataTypes) => {
       freezeTableName: true,
       hooks: {
         afterBulkUpdate: (data) => {
-          if (data.attributes.isBlocked) {
-            eventEmitter.emit('blockComment', 'block', data.where.id);
-          } else eventEmitter.emit('unblockComment', 'unblock', data.where.id);
+          const fields = ['isBlocked', 'updatedAt'];
+          if (data.attributes.isBlocked && data.fields === fields) eventEmitter.emit('blockComment', 'block', data.where.id);
+          if (!data.attributes.isBlocked && data.fields === fields) eventEmitter.emit('unblockComment', 'unblock', data.where.id);
         }
       }
     });
