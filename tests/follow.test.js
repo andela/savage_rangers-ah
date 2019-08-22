@@ -14,14 +14,13 @@ let UserToken;
 let followToken;
 
 describe('POST /api/profiles/:username/follow', () => {
-  it('Sign up user to get token', (done) => {
+  it('login a user to get token', (done) => {
     chai
       .request(server)
-      .post('/api/users/signup')
+      .post('/api/users/login')
       .send({
-        username: 'Ramadhani',
-        email: 'whiteman@gmail.com',
-        password: 'MUfra123qwe'
+        email: 'alain25@gmail.com',
+        password: 'password23423'
       })
       .end((err, res) => {
         UserToken = res.body.user.token;
@@ -43,7 +42,7 @@ describe('POST /api/profiles/:username/follow', () => {
   it('Should prevent a user from following himself', (done) => {
     chai
       .request(server)
-      .post('/api/profiles/Ramadhani/follow')
+      .post('/api/profiles/BurindiAlain25/follow')
       .set('Authorization', `${UserToken}`)
       .send()
       .end((err, res) => {
