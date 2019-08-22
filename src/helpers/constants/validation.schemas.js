@@ -119,9 +119,7 @@ export default {
     title: Joi.string().allow(''),
     description: Joi.string().allow(''),
     body: Joi.string().allow(''),
-    category: Joi.string()
-      .uppercase()
-      .allow(''),
+    category: Joi.number().integer(),
     tags: Joi.array()
       .items(string.alphanum())
       .required()

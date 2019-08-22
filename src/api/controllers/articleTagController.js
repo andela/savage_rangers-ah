@@ -66,8 +66,8 @@ export default class articleTags {
     const firstIndex = 0;
     let querySubstring = req.query.tagNameContent;
 
-    querySubstring = querySubstring
-      .charAt(firstIndex).toUpperCase() + querySubstring.slice(1).toLowerCase();
+    querySubstring = querySubstring.charAt(firstIndex).toUpperCase()
+      + querySubstring.slice(1).toLowerCase();
     // Getting the tags
     const currentTags = await Tag.findAndCountAll({
       where: {
@@ -84,7 +84,9 @@ export default class articleTags {
       sendError(status.NOT_FOUND,
         res,
         'tags',
-        `${errorMessages.emptyTagList} or ${errorMessages.noTagFoundWithEntries}`);
+        `${errorMessages.emptyTagList} or ${
+          errorMessages.noTagFoundWithEntries
+        }`);
     } else {
       result.status = status.OK;
       // Generating pagination details
@@ -95,5 +97,20 @@ export default class articleTags {
       result.data = currentTags.rows;
       res.status(status.OK).json(result);
     }
+  }
+
+  /**
+   * @memberof articleTags
+   * @param {*} req sent by the user
+   * @param {*} res sent back to the user
+   * @return {*} void
+   */
+  static async getAllTags(req, res) {
+    const allTags = await Tag.findAll();
+
+    res.status(status.OK).json({
+      status: status.OK,
+      tags: allTags
+    });
   }
 }
