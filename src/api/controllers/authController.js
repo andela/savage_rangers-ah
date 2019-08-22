@@ -9,6 +9,7 @@ import sendError from '../../helpers/error.sender';
 import errors from '../../helpers/constants/error.messages';
 import mailer from '../../helpers/Mailer/index';
 import setDefaultConfigs from '../../helpers/create.default.notifications.config';
+import successMessage from '../../helpers/constants/success.messages';
 
 const { User } = models;
 /**
@@ -46,15 +47,14 @@ export default class Auth {
         userName: username,
         message:
           "Please click on the link to verify your email for authors haven.If you didn't request this, simply ignore this e-mail.",
-        link: `${env.baseUrl}/users/verifyEmail`
+        link: `${env.baseUrl}/api/users/verifyEmail`
       });
 
     // setting default notifications configurations
     await setDefaultConfigs(user.dataValues.id);
-
-    const tokenData = { id: user.dataValues.id, username, email };
-    const token = generateToken(tokenData, env.secret);
-    return sendResult(res, status.CREATED, 'user created successfully', user, token);
+    return res
+      .status(status.CREATED)
+      .json({ status: status.CREATED, message: successMessage.accountCreated });
   }
 
   /**
@@ -72,6 +72,9 @@ export default class Auth {
       if (user) {
         const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password);
         if (isPasswordValid) {
+          if (user.dataValues.verified !== true) {
+            return sendError(status.BAD_REQUEST, res, 'email', errors.emailNotConfirmed);
+          }
           const tokenData = { id: user.dataValues.id, username: user.dataValues.username, email };
           const token = generateToken(tokenData, env.secret);
           return sendResult(res, status.OK, 'user logged in successfully', user, token);

@@ -6,6 +6,7 @@ import generateToken from '../src/helpers/tokens/generate.token';
 import generateLink from '../src/helpers/tokens/generate.link';
 import status from '../src/helpers/constants/status.codes';
 import errors from '../src/helpers/constants/error.messages';
+import success from '../src/helpers/constants/success.messages';
 
 import server from '../src/index';
 import mailer from '../src/helpers/Mailer';
@@ -35,26 +36,34 @@ describe('Signup', () => {
       })
       .end((err, res) => {
         res.should.have.status(status.CREATED);
-        res.body.should.have.property('user');
-        res.body.user.should.have.property('email');
-        res.body.user.should.have.property('token');
-        res.body.user.should.have.property('username', data.username);
-        userToken = res.body.user.token;
-        const valid = isTokenValid(userToken, data);
-        valid.should.be.a('boolean').equal(true);
+        res.body.should.have.property('message', success.accountCreated);
         done();
       });
   });
 });
 
 describe('Login', () => {
-  it('should login and give a valid token', (done) => {
+  it('should not login if the email is not verified', (done) => {
     chai
       .request(server)
       .post('/api/users/login')
       .send({
         email: data.email,
-        password: data.password
+        password: 'password23423'
+      })
+      .end((err, res) => {
+        res.should.have.status(status.BAD_REQUEST);
+        res.body.errors.should.have.property('email', errors.emailNotConfirmed);
+        done();
+      });
+  });
+  it('should login and give a valid token', (done) => {
+    chai
+      .request(server)
+      .post('/api/users/login')
+      .send({
+        email: 'alain1@gmail.com',
+        password: 'password23423'
       })
       .end((err, res) => {
         res.should.have.status(status.OK);
@@ -62,7 +71,8 @@ describe('Login', () => {
         res.body.user.should.have.property('email');
         res.body.user.should.have.property('token');
         res.body.user.should.have.property('username');
-        const valid = isTokenValid(res.body.user.token, data);
+        userToken = res.body.user.token;
+        const valid = isTokenValid(userToken, res.body.user);
         valid.should.be.a('boolean').equal(true);
         done();
       });
@@ -73,7 +83,7 @@ describe('Login', () => {
       .request(server)
       .post('/api/users/login')
       .send({
-        email: data.email,
+        email: 'alain1@gmail.com',
         password: 'passwor5535'
       })
       .end((err, res) => {
@@ -203,20 +213,7 @@ describe('Password reset', () => {
           done();
         });
     });
-    it('should login with the new password to confirm that it was changed', (done) => {
-      chai
-        .request(server)
-        .post('/api/users/login')
-        .send({
-          email: data.email,
-          password: 'passWORD123'
-        })
-        .end((err, res) => {
-          res.should.have.status(status.OK);
-          done();
-        });
-    });
-    it('should raise an error when an unknown email is provided', (done) => {
+    it('it should raise an error when an unknown email is provided', (done) => {
       chai
         .request(server)
         .post('/api/password-reset/update/email@gmail.com')

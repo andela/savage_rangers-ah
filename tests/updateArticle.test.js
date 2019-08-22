@@ -11,24 +11,10 @@ describe('testing the middlewares before reaching the update article controller'
   it('should signup a user to be checking against', (done) => {
     chai
       .request(app)
-      .post('/api/users/signup')
-      .send({
-        username: 'Danny',
-        email: 'DannyMwangila23@gmail.com',
-        password: 'MUfra123qwe'
-      })
-      .end((err, res) => {
-        UserToken = res.body.user.token;
-        done();
-      });
-  });
-  it('should login a user and get a token to use against', (done) => {
-    chai
-      .request(app)
       .post('/api/users/login')
       .send({
-        email: 'DannyMwangila23@gmail.com',
-        password: 'MUfra123qwe'
+        email: 'alain1@gmail.com',
+        password: 'password23423'
       })
       .end((err, res) => {
         UserToken = res.body.user.token;
@@ -52,7 +38,19 @@ describe('testing the middlewares before reaching the update article controller'
         done();
       });
   });
-
+  it('get the token', (done) => {
+    chai
+      .request(app)
+      .post('/api/users/login')
+      .send({
+        email: 'alain25@gmail.com',
+        password: 'password23423'
+      })
+      .end((err, res) => {
+        UserToken = res.body.user.token;
+        done();
+      });
+  });
   it('should check for the article ownership', (done) => {
     const slug = 'How-to-create-sequalize-seeds';
     chai

@@ -17,13 +17,10 @@ const Authors = {
   paginationDetails: {
     pages: 1,
     currentPage: 1,
-    pageSize: 2,
+    pageSize: 1,
     count: 5
   },
-  data: [
-    { id: 1, username: 'Burindi', email: 'alain1@gmail.com' },
-    { id: 44, username: 'dianeMurekatete', email: 'diane@gmail.com' }
-  ]
+  data: [{ id: 1, username: 'Burindi', email: 'alain1@gmail.com' }]
 };
 describe('get Authors', () => {
   it('should not to verify the token', (done) => {
@@ -49,7 +46,6 @@ describe('get Authors', () => {
         res.body.should.have.status(status.OK);
         res.body.should.be.an('object').eql(Authors);
         res.body.data[0].should.include(Authors.data[0]);
-        res.body.data[1].should.include(Authors.data[1]);
         done();
       });
   });
@@ -63,7 +59,6 @@ describe('get Authors', () => {
         res.should.have.status(status.OK);
         res.body.data.should.be.an('array').eql(Authors.data);
         res.body.data[0].should.include(Authors.data[0]);
-        res.body.data[1].should.include(Authors.data[1]);
         done();
       });
   });

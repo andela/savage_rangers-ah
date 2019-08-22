@@ -37,16 +37,14 @@ describe('Testing the authorization', () => {
 
 describe('create  article', () => {
   const user = {
-    username: 'dianeMurekatete',
-    email: 'diane@gmail.com',
-    password: 'password23423',
-    confirmPassword: 'password23423'
+    email: 'alain1@gmail.com',
+    password: 'password23423'
   };
 
   before((done) => {
     chai
       .request(server)
-      .post('/api/users/signup')
+      .post('/api/users/login')
       .send(user)
       .end((err, res) => {
         userToken = res.body.user.token;
