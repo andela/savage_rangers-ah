@@ -8,7 +8,8 @@ const { Article, User } = models;
 /* istanbul ignore next */
 export default async (articleSlug) => {
   try {
-    const url = `${env.baseUrl}/api/articles/${articleSlug}`;
+    const emailUrl = `${env.APP_URL_FRONTEND}/api/articles/${articleSlug}`;
+    const inApplUrl = `/articles/${articleSlug}`;
 
     const message = {
       inAppMessage: '',
@@ -36,16 +37,24 @@ export default async (articleSlug) => {
     });
 
     message.inAppMessage = `The article ${article.title} has been reported`;
-    message.emailMessage = `The article ${
-      article.title
-    } has been reported. Click the button bellow to follow up`;
+    message.emailMessage = `The article ${article.title} has been reported. Click the button bellow to follow up`;
     message.emailButtonText = 'Follow';
 
-    notification = await sendNotification('articles', 'report', article.User, message, url);
+    notification = await sendNotification('articles',
+      'report',
+      article.User,
+      message,
+      emailUrl,
+      inApplUrl);
     io.emit('reportArticle', notification);
 
     return moderators.map(async (moderator) => {
-      notification = await sendNotification('articles', 'report', moderator, message, url);
+      notification = await sendNotification('articles',
+        'report',
+        moderator,
+        message,
+        emailUrl,
+        inApplUrl);
       io.emit('reportArticle', notification);
     });
   } catch (error) {

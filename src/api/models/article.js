@@ -53,9 +53,9 @@ export default (sequelize, DataTypes) => {
         },
         afterBulkUpdate: (data) => {
           const { slug } = data.where[Object.getOwnPropertySymbols(data.where)[0]][1];
-          if (data.attributes.isBlocked) {
-            eventEmitter.emit('blockArticle', 'block', slug);
-          } else eventEmitter.emit('unblockArticle', 'unblock', slug);
+          const field = 'isBlocked';
+          if (data.attributes.isBlocked && data.fields[0] === field) eventEmitter.emit('blockArticle', 'block', slug);
+          if (!data.attributes.isBlocked && data.fields[0] === field) eventEmitter.emit('unblockArticle', 'unblock', slug);
         }
       }
     });
