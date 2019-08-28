@@ -11,24 +11,10 @@ describe('testing the middlewares before reaching the update article controller'
   it('should signup a user to be checking against', (done) => {
     chai
       .request(app)
-      .post('/api/users/signup')
-      .send({
-        username: 'Danny',
-        email: 'DannyMwangila23@gmail.com',
-        password: 'MUfra123qwe'
-      })
-      .end((err, res) => {
-        UserToken = res.body.user.token;
-        done();
-      });
-  });
-  it('should login a user and get a token to use against', (done) => {
-    chai
-      .request(app)
       .post('/api/users/login')
       .send({
-        email: 'DannyMwangila23@gmail.com',
-        password: 'MUfra123qwe'
+        email: 'alain1@gmail.com',
+        password: 'password23423'
       })
       .end((err, res) => {
         UserToken = res.body.user.token;
@@ -48,11 +34,26 @@ describe('testing the middlewares before reaching the update article controller'
         expect(res.status).eql(status.NOT_FOUND);
         expect(res.body)
           .to.have.property('errors')
-          .eql({ slug: 'Article with slug meditate-about-yourself is not found, Thanks' });
+          .eql({
+            slug:
+              'Article with slug meditate-about-yourself is not found, Thanks'
+          });
         done();
       });
   });
-
+  it('get the token', (done) => {
+    chai
+      .request(app)
+      .post('/api/users/login')
+      .send({
+        email: 'alain25@gmail.com',
+        password: 'password23423'
+      })
+      .end((err, res) => {
+        UserToken = res.body.user.token;
+        done();
+      });
+  });
   it('should check for the article ownership', (done) => {
     const slug = 'How-to-create-sequalize-seeds';
     chai
@@ -89,15 +90,20 @@ describe('testing for the article update controller', () => {
   });
   it('should update the article with new content', (done) => {
     const slug = 'How-to-create-sequalize-seeds';
+    const updatedArticle = {
+      title: 'lets try to update',
+      dscription: "If we can't test we cant progress",
+      body: 'how did the classical Latin become',
+      tags: ['Laravel', 'php', 'IOT', 'iot2'],
+      coverImage: 'http://localhost:3000/ver.jpg',
+      category: 2
+    };
+
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
       .set('authorization', UserToken)
-      .field({
-        body: ['how did the classical Latin become'],
-        tags: ['Laravel', 'php', 'IOT', 'iot2']
-      })
-      .attach('coverImage', './tests/images/eric.jpg', 'eric.jpg')
+      .send(updatedArticle)
       .end((err, res) => {
         expect(res.status).eql(status.OK);
         expect(res.body)

@@ -1,27 +1,23 @@
-
 export default (Sequelize, req, models) => {
   const {
     title, body, tag, username
   } = req.query;
 
   const {
-    Article,
-    ArticleTag,
-    Tag,
-    Category,
-    User
+    Article, ArticleTag, Tag, Category, User
   } = models;
 
-  const userAttributes = ['username', 'profileImage', 'email'];
-  const articleAttributes = ['title', 'description', 'slug', 'body'];
+  const { limit, offset } = req.query;
 
-  const articles = Article.findAll({
+  const userAttributes = ['username', 'profileImage', 'email'];
+
+  const articles = Article.findAndCountAll({
     where: {
       [Sequelize.Op.or]: [
-        title ? { title: { [Sequelize.Op.substring]: title.trim() } } : '',
-        body ? { body: { [Sequelize.Op.substring]: body.trim() } } : '',
-        tag ? { '$Tags.name$': { [Sequelize.Op.substring]: tag.trim() } } : '',
-        username ? { '$User.username$': { [Sequelize.Op.substring]: username.trim() } } : ''
+        title ? { title: { [Sequelize.Op.iLike]: `%${title.trim()}%` } } : '',
+        body ? { body: { [Sequelize.Op.iLike]: `%${body.trim()}%` } } : '',
+        tag ? { '$Tags.name$': { [Sequelize.Op.iLike]: `%${tag.trim()}%` } } : '',
+        username ? { '$User.username$': { [Sequelize.Op.iLike]: `%${username.trim()}%` } } : ''
       ]
     },
     include: [
@@ -44,7 +40,10 @@ export default (Sequelize, req, models) => {
         attributes: ['name']
       }
     ],
-    attributes: articleAttributes
+    distinct: true,
+    offset,
+    limit
   });
+
   return articles;
 };

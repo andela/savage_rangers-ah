@@ -10,9 +10,8 @@ chai.should();
 
 // A user to enable tests
 const user = {
-  username: 'Yvy',
-  email: 'kalim@gmail.com',
-  password: 'Password233'
+  email: 'alain1@gmail.com',
+  password: 'password23423'
 };
 
 let userToken;
@@ -21,10 +20,9 @@ describe('Article ratings statistics', () => {
   before((done) => {
     chai
       .request(server)
-      .post('/api/users/signup')
+      .post('/api/users/login')
       .send(user)
       .end((err, res) => {
-        res.should.have.status(status.CREATED);
         res.body.should.be.an('Object');
         userToken = res.body.user.token;
         done();
@@ -48,16 +46,6 @@ describe('Article ratings statistics', () => {
       .set('authorization', `${userToken}`)
       .end((err, res) => {
         res.should.have.status(status.NOT_FOUND);
-        done();
-      });
-  });
-  it('Should not get the ratings with a invalid token', (done) => {
-    chai
-      .request(server)
-      .get('/api/articles/How-to-create-sequalize-seeds/ratings/statistics')
-      .set('authorization', `bearer f${userToken}`)
-      .end((err, res) => {
-        res.should.have.status(status.UNAUTHORIZED);
         done();
       });
   });

@@ -9,7 +9,7 @@ import errors from '../src/helpers/constants/error.messages';
 chai.use(chaiHttp);
 chai.should();
 
-const { OK, BAD_REQUEST, NOT_FOUND } = status;
+const { OK, BAD_REQUEST } = status;
 const authToken = signup();
 let draftedSlug;
 describe('Drafting', () => {
@@ -20,20 +20,7 @@ describe('Drafting', () => {
       .set('Authorization', authToken)
       .end((err, res) => {
         res.should.have.status(OK);
-        res.body.should.have.property('message',
-          'Your article has been published successfully');
-        done();
-      });
-  });
-  it('should send the empty message', (done) => {
-    chai
-      .request(server)
-      .get('/api/articles/drafts')
-      .set('Authorization', authToken)
-      .end((err, res) => {
-        res.should.have.status(NOT_FOUND);
-        res.body.errors.should.have.property('Articles',
-          errors.noMoreArticle);
+        res.body.should.have.property('message', 'Your article has been published successfully');
         done();
       });
   });
@@ -51,8 +38,7 @@ describe('Drafting', () => {
           .set('Authorization', authToken)
           .end((err, res) => {
             res.should.have.status(BAD_REQUEST);
-            res.body.errors.should.have.property('Properties',
-              errors.missingProperty);
+            res.body.errors.should.have.property('Properties', errors.missingProperty);
           });
         done();
       });

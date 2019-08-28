@@ -24,10 +24,18 @@ export default class ProfileController {
    * @return {Object} The response Object
    */
   static async update(req, res) {
-    let profileImage = 'noimage.jpg';
     const {
-      country, firstName, lastName, address, gender, phoneNumber, bio
+      country,
+      firstName,
+      lastName,
+      address,
+      gender,
+      phoneNumber,
+      bio,
+      profileImage: existing
     } = req.body;
+
+    let profileImage = existing || 'noimage.jpg';
     // upload the image to cloudinary
     if (req.file) {
       const image = await cloudinary.v2.uploader.upload(req.file.path);
@@ -87,7 +95,8 @@ export default class ProfileController {
           {
             model: Article,
             offset,
-            limit: paginationLimit
+            limit: paginationLimit,
+            order: [['createdAt', 'DESC']]
           }
         ]
       });
@@ -137,7 +146,8 @@ export default class ProfileController {
         {
           model: Article,
           offset,
-          limit: paginationLimit
+          limit: paginationLimit,
+          order: [['createdAt', 'DESC']]
         }
       ]
     });

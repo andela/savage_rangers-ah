@@ -5,12 +5,7 @@ import errorMessage from '../../helpers/constants/error.messages';
 import number from '../../helpers/constants/numbers';
 
 const { Highlight } = models;
-const {
-  BAD_REQUEST,
-  CREATED,
-  OK,
-  NOT_FOUND,
-} = statusCodes;
+const { CREATED, OK, NOT_FOUND } = statusCodes;
 /**
  * @class highlightController
  */
@@ -28,28 +23,22 @@ export default class highlightController {
   static async highlight(req, res) {
     const { slug } = req.params;
     const {
-      startIndex, lastIndex, text, comment
+      startIndex, lastIndex, text, comment, nodeId
     } = req.body;
-    const position = lastIndex - startIndex;
-    const correctLength = position + 1;
-
-    if (correctLength === text.length) {
-      const userId = req.user.user.id;
-      const highlighted = await Highlight.create({
-        startIndex,
-        lastIndex,
-        text,
-        comment,
-        articleSlug: slug,
-        userId
-      });
-      res.status(CREATED).json({
-        status: CREATED,
-        highlighted
-      });
-    } else {
-      errorSender(BAD_REQUEST, res, 'text', errorMessage.textMatch);
-    }
+    const userId = req.user.user.id;
+    const highlighted = await Highlight.create({
+      startIndex,
+      lastIndex,
+      text,
+      comment,
+      articleSlug: slug,
+      userId,
+      nodeId
+    });
+    res.status(CREATED).json({
+      status: CREATED,
+      highlighted
+    });
   }
 
   /**

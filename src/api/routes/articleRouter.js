@@ -8,7 +8,6 @@ import bodyVerifier from '../../middlewares/validations/body.verifier';
 import ratingsController from '../controllers/articleRatingController';
 import validateInputs from '../../middlewares/validations/body.inputs';
 import checkExistingRates from '../../middlewares/checkExistingRating';
-import uploadImage from '../../middlewares/upload';
 import errorHandler from '../../middlewares/errorHandler';
 import shareArticle from '../../middlewares/shareArticle';
 import validateRatingsRoute from '../../middlewares/validations/ratings.routes';
@@ -44,17 +43,16 @@ articleRouter.post('/:slug/rating',
   validateInputs('rateArticle', ['rating']),
   checkExistingRates.ExistingRating,
   ratingsController.rateArticle);
-const highlightFields = ['firstIndex', 'lastIndex', 'comment', 'text'];
+const highlightFields = ['firstIndex', 'lastIndex', 'comment', 'text', 'nodeId'];
 
 articleRouter.get('/', articleController.getArticles);
+articleRouter.get('/categories', articleController.getCategories);
 articleRouter.get('/:slug', optionalAuth, articleController.getArticle);
 articleRouter.patch('/:slug',
-  uploadImage.single('coverImage'),
   checkValidToken,
   bodyVerifier,
   checkArticle.getArticle,
   validateInputs('updateArticle', ['title', 'description', 'body', 'category', 'tags']),
-  checkArticle.getArticle,
   checkArticleOwner.checkOwner,
   checkIncomingTags,
   createAndGetNewTags,
@@ -62,19 +60,14 @@ articleRouter.patch('/:slug',
 
 articleRouter.post('/',
   checkValidToken,
-  uploadImage.single('coverImage'),
   bodyVerifier,
   checkIncomingTags,
   createAndGetNewTags,
   errorHandler(articleController.create));
 
-articleRouter.get('/:slug/ratings/statistics',
-  ratingsController.getArticleRatingStatistics);
+articleRouter.get('/:slug/ratings/statistics', ratingsController.getArticleRatingStatistics);
 
-articleRouter.get('/:slug/:rating/users',
-  checkValidToken,
-  validateRatingsRoute,
-  ratingsController.getRatingUsers);
+articleRouter.get('/:slug/:rating/users', validateRatingsRoute, ratingsController.getRatingUsers);
 
 articleRouter.delete('/:slug',
   checkValidToken,
@@ -138,7 +131,6 @@ articleRouter.post('/:slug/comments',
   commentController.create);
 
 articleRouter.get('/:slug/comments',
-  checkValidToken,
   validateGetCommentRoute,
   checkArticle.getArticle,
   commentController.getComments);
@@ -178,7 +170,12 @@ articleRouter.post('/:slug/comments/:id/report',
   validateInputs('reportComment', ['commentReason']),
   reportCommentController.reportComment);
 
-articleRouter.get('/most/popular',
-  popularController.getAll);
+articleRouter.get('/most/popular', popularController.getAll);
+
+articleRouter.get('/drafts/:slug',
+  checkValidToken,
+  checkArticle.getArticle,
+  checkArticleOwner.checkOwner,
+  articleController.getDraftedArticle);
 
 export default articleRouter;

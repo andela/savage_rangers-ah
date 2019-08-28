@@ -5,10 +5,7 @@ import model from '../models/index';
 import generatePagination from '../../helpers/generate.pagination.details';
 
 const {
-  Bookmark,
-  User,
-  Article,
-  Category
+  Bookmark, User, Article, Category
 } = model;
 /**
  * @class
@@ -67,7 +64,7 @@ export default class BookmarkController {
    * @memberof BookmarkController
    */
   static async getBookmarks(req, res) {
-    const { username } = req.user.user;
+    const { username } = req.params;
     const emptyBookmarkList = 0;
     const defaultOffset = 0;
     const defaultLimit = 10;
@@ -84,20 +81,28 @@ export default class BookmarkController {
         model: Article,
         required: true,
         attributes: ['id', 'title', 'description'],
-        include: [{
-          model: User,
-          required: true,
-          attributes: ['firstName', 'lastName', 'profileImage']
-        }, {
-          model: Category,
-          as: 'Category',
-          attributes: ['name']
-        }]
+        include: [
+          {
+            model: User,
+            required: true,
+            attributes: ['firstName', 'lastName', 'profileImage']
+          },
+          {
+            model: Category,
+            as: 'Category',
+            attributes: ['name']
+          }
+        ]
       },
       offset,
-      limit
+      limit,
+      order: [['createdAt', 'DESC']]
     });
-    const count = bookmarkList.length;
+    const count = await Bookmark.count({
+      where: {
+        username
+      }
+    });
 
     const paginationDetail = generatePagination(count, bookmarkList, offset, limit);
     data.paginationDetail = paginationDetail;
@@ -110,6 +115,37 @@ export default class BookmarkController {
       });
     } else {
       errorSender(status.NOT_FOUND, res, 'Bookmark', errorMessage.noBookmark);
+    }
+  }
+
+  /**
+   * @author Alain Burindi
+   * @description This functions stores checks if the user has bookmarked
+   * a specific article
+   * @static
+   * @param {object} req the request sent to be excuted
+   * @param {object} res the response after execution
+   * @return {*} void
+   * @memberof BookmarkController
+   */
+  static async hasBookmarked(req, res) {
+    const { username } = req.user.user;
+    const { slug } = req.params;
+
+    const bookmark = await Bookmark.findOne({
+      where: {
+        username,
+        articleSlug: slug
+      }
+    });
+
+    if (bookmark) {
+      res.status(status.OK).json({
+        status: 200,
+        message: 'Has bookmarked'
+      });
+    } else {
+      errorSender(status.NOT_FOUND, res, 'Bookmark', 'Not in his bookmarked list');
     }
   }
 }

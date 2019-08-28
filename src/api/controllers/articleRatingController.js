@@ -31,12 +31,16 @@ class RatingsController {
       user: { id }
     } = req.user;
 
+    if (req.article.author === req.user.user.id) {
+      return sendError(status.BAD_REQUEST, res, 'auth', 'Sorry, you can not rate your own article');
+    }
+
     Rating.create({
       userId: id,
       articleSlug: slug,
       rating: parseInt(rating, 10)
     });
-    res.status(status.CREATED).json({
+    return res.status(status.CREATED).json({
       status: status.CREATED,
       message: `Rating for ${slug} submitted successfully`
     });

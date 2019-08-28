@@ -99,7 +99,8 @@ class CommentController {
       },
       include: commonQueries.getCommentJoin,
       offset,
-      limit
+      limit,
+      order: [['createdAt', 'DESC']]
     });
 
     if (!_.isEmpty(comments.rows)) {
@@ -132,7 +133,9 @@ class CommentController {
     const { body, iteration, isEdited } = req.newComment;
 
     await Comment.update({
-      body, iteration, isEdited
+      body,
+      iteration,
+      isEdited
     },
     {
       where: {

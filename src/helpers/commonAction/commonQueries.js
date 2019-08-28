@@ -2,11 +2,7 @@ import Sequelize from 'sequelize';
 import models from '../../api/models/index';
 
 const {
-  Reason,
-  User,
-  Article,
-  Comment,
-  ReportedComment
+  Reason, User, Article, Comment, ReportedComment, Reaction
 } = models;
 export default {
   reportArticleJoin: [
@@ -84,7 +80,15 @@ export default {
     },
     {
       model: Comment,
-      as: 'Replies'
+      as: 'Replies',
+      include: {
+        model: Reaction,
+        attributes: ['likes', 'dislikes']
+      }
+    },
+    {
+      model: Reaction,
+      attributes: ['likes', 'dislikes']
     }
   ]
 };

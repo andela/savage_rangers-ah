@@ -7,6 +7,7 @@ import status from '../src/helpers/constants/status.codes';
 import server from '../src/index';
 import error from '../src/helpers/constants/error.messages';
 import signup from '../src/helpers/tests/signup';
+import success from '../src/helpers/constants/success.messages';
 
 chai.use(chaiHttp);
 chai.should();
@@ -47,8 +48,7 @@ describe('Users', () => {
       })
       .end((err, res) => {
         res.should.have.status(status.CREATED);
-        res.body.should.have.property('message').eql('user created successfully');
-        res.body.user.should.have.property('email').eql('alain@gmail.com');
+        res.body.should.have.property('message').eql(success.accountCreated);
         done();
       });
   });

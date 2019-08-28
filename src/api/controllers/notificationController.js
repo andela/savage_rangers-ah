@@ -65,7 +65,9 @@ export default class NotificationController {
   static async updateConfig(req, res) {
     // Initializing variables
     const result = {};
-    const { user: { id } } = req.user;
+    const {
+      user: { id }
+    } = req.user;
     const isUnsubscribeRequest = req.url.includes('email');
     // Updating the configuration
     if (isUnsubscribeRequest) {
@@ -105,14 +107,16 @@ export default class NotificationController {
         where: {
           userId: id,
           status: 'unseen'
-        }
+        },
+        order: [['createdAt', 'DESC']]
       });
     } else {
       notifications = await Notification.findAll({
         where: {
           userId: id,
           status: 'seen'
-        }
+        },
+        order: [['createdAt', 'DESC']]
       });
     }
     sendNotificationResult(notifications, result, res);
@@ -134,7 +138,8 @@ export default class NotificationController {
     const notifications = await Notification.findAll({
       where: {
         userId: id
-      }
+      },
+      order: [['createdAt', 'DESC']]
     });
     sendNotificationResult(notifications, result, res);
   }
@@ -147,7 +152,9 @@ export default class NotificationController {
    */
   static async updateNotification(req, res) {
     const result = {};
-    const { user: { id: userId } } = req.user;
+    const {
+      user: { id: userId }
+    } = req.user;
     const { id } = req.params;
     const isUnseenRequest = req.url.includes('unseen');
     if (isUnseenRequest) {
@@ -174,7 +181,9 @@ export default class NotificationController {
    */
   static async snooze(req, res) {
     const result = {};
-    const { user: { id: userId } } = req.user;
+    const {
+      user: { id: userId }
+    } = req.user;
     const isUnsnoozeRequest = req.url.includes('unsnooze');
     const message = isUnsnoozeRequest ? 'unsnoozed' : 'snoozed';
     if (isUnsnoozeRequest) {

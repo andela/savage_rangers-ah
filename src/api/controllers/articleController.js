@@ -1,4 +1,3 @@
-import cloudinary from 'cloudinary';
 import Sequelize from 'sequelize';
 import models from '../models';
 import statusCodes from '../../helpers/constants/status.codes';
@@ -11,15 +10,13 @@ import generateReadtime from '../../helpers/read.time.estimator';
 import commonQueries from '../../helpers/commonAction/commonQueries';
 import getArticleResult from '../../helpers/commonAction/getArticleResult';
 import getSingleArticleLogic from '../../helpers/commonAction/getSingleArticleLogic';
-import updateArticle from '../../helpers/commonAction/updateArticleLogic';
+import updateArticle from '../../helpers/commonAction/updateArticle';
 
 const {
-  Article, Category, User, ArticleTag,
+  Article, Category, User, ArticleTag
 } = models;
 
-const {
-  CREATED, BAD_REQUEST, OK
-} = statusCodes;
+const { CREATED, BAD_REQUEST, OK } = statusCodes;
 
 const minimumLimit = 0;
 
@@ -61,12 +58,7 @@ export default class ArticleController {
 
     const articleValidInput = await articleValidator(req.body);
     const readTime = generateReadtime(req.body.body);
-    const { category } = req.body;
-    let coverImage;
-    if (req.file) {
-      const savedFile = await cloudinary.v2.uploader.upload(req.file.path);
-      coverImage = savedFile.secure_url;
-    }
+    const { category, coverImage } = req.body;
     const article = await Article.create({
       ...articleValidInput,
       slug: '',
@@ -101,6 +93,7 @@ export default class ArticleController {
     query = commonQueries.publish;
     query.slug = slug;
     const article = await Article.update({
+      ...req.body,
       status: 'published'
     },
     {
@@ -185,7 +178,8 @@ export default class ArticleController {
         status: {
           [Sequelize.Op.ne]: 'draft'
         }
-      }
+      },
+      order: [['createdAt', 'DESC']]
     });
 
     result.status = 200;
@@ -227,27 +221,21 @@ export default class ArticleController {
   static async updateArticle(req, res) {
     const { slug } = req.params;
     const {
-      title, description, body, category
+      title, description, body, category, coverImage
     } = req.body;
-
-    let { coverImage } = req.Existing;
-
-    if (req.file) {
-      const image = await cloudinary.v2.uploader.upload(req.file.path);
-      coverImage = image.secure_url;
-    }
-
     const updateContent = {
       title: title || req.Existing.title,
       description: description || req.Existing.description,
       body: body || req.Existing.body,
-      category: category || req.Existing.category
+      category: category || req.Existing.category,
+      coverImage: coverImage || req.Existing.coverImage
     };
 
     await ArticleTag.destroy({ where: { articleId: req.article.id } });
     const readTime = generateReadtime(updateContent.body);
+    updateContent.readTime = readTime;
 
-    await updateArticle(Article, updateContent, { readTime, coverImage }, slug);
+    await updateArticle(Article, updateContent, slug);
 
     await createTags(req);
     return res.status(statusCodes.OK).json({
@@ -272,6 +260,18 @@ export default class ArticleController {
       where: {
         category: categoryId
       },
+      include: [
+        {
+          model: Category,
+          as: 'Category',
+          required: true
+        },
+        {
+          model: User,
+          required: true,
+          attributes: ['id', 'username', 'firstName', 'lastName', 'profileImage']
+        }
+      ],
       offset,
       limit
     });
@@ -286,6 +286,53 @@ export default class ArticleController {
       status: statusCodes.OK,
       paginationDetails: generatePagination(articles.count, articles.rows, offset, limit),
       data: articles.rows
+    });
+  }
+
+  /**
+   * This function gets a single drafted article
+   *
+   * @static
+   * @param {Object} req the request
+   * @param {Object} res the response to be sent
+   * @memberof Articles
+   * @returns {Object} res
+   */
+  static async getDraftedArticle(req, res) {
+    const { id } = req.user.user;
+    const { slug } = req.params;
+
+    const article = await Article.findOne({
+      include: articleInclude,
+      where: {
+        slug,
+        status: 'draft',
+        author: id
+      }
+    });
+    res.status(statusCodes.OK).json({
+      status: statusCodes.OK,
+      article
+    });
+  }
+
+  /**
+   * This method gets a single drafted article
+   *
+   * @static
+   * @param {Object} req the request
+   * @param {Object} res the response to be sent
+   * @memberof Articles
+   * @returns {Object} res
+   */
+  static async getCategories(req, res) {
+    const limit = 8;
+    const categories = await Category.findAll({
+      limit
+    });
+    res.status(statusCodes.OK).json({
+      status: statusCodes.OK,
+      categories
     });
   }
 }

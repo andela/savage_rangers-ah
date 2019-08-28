@@ -71,5 +71,7 @@ export default {
   notModifiedComment: 'The comment is not modifying what is already stored',
   notAValidReason: 'Sorry, but that reason does not exist, Thanks',
   emailExists: 'The user with the same email already exists',
-  usernameExists: 'The username has already been used'
+  usernameExists: 'The username has already been used',
+  emailNotConfirmed: 'Please, confirm your email first',
+  nodeId: 'Invalid node Id provided'
 };

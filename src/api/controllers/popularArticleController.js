@@ -1,11 +1,5 @@
-import async from 'async';
-import models, { sequelize } from '../models';
+import { sequelize } from '../models';
 import status from '../../helpers/constants/status.codes';
-
-const {
-  Read, Article, User, Category
-} = models;
-
 /**
  * containing all user's
  * profile model controller(update, getUserProfile, read)
@@ -23,50 +17,17 @@ export default class PopularController {
    * @return {Object} The response Object
    */
   static async getAll(req, res) {
-    let resultArray = [];
-    const result = await Read.findAll({
-      group: ['articleSlug'],
-      attributes: ['articleSlug', [sequelize.fn('COUNT', 'articleSlug'), 'count']],
-      order: [['count', 'DESC']],
-      limit: 5
+    const resp = await sequelize.query(`SELECT a.title, a.slug, a.description, a."createdAt", a."coverImage", a."readTime", COUNT(r."articleSlug") slug_count, c.name category, u."firstName", u."lastName", u.username, u."profileImage"
+    FROM "Articles" a
+    INNER JOIN "Reads" r ON r."articleSlug" = a.slug
+    LEFT JOIN "Categories" c ON c.id = a.category
+    INNER JOIN "Users" u ON u.id = a.author
+    GROUP BY a.title, a.slug,  a.description,  a."coverImage", c.name, a."createdAt", u."firstName", u."lastName", u.username, a."readTime", u."profileImage"
+    ORDER BY slug_count DESC
+    LIMIT 4;`);
+    res.status(status.OK).send({
+      status: status.OK,
+      data: resp[0]
     });
-
-    const slugs = result.map(item => item.dataValues.articleSlug);
-
-    async.each(slugs,
-      async (slug, callback) => {
-        const article = await Article.findOne({
-          where: {
-            slug
-          },
-          include: [
-            {
-              model: User,
-              required: true,
-              attributes: ['id', 'username', 'profileImage', 'firstName', 'lastName']
-            },
-            {
-              model: Category,
-              required: true,
-              attributes: ['name'],
-              as: 'Category'
-            }
-          ]
-        });
-        resultArray = [...resultArray, article.dataValues];
-        callback();
-      },
-      (error) => {
-        /*
-   else statement violate style guide rules
-  */
-        /* istanbul ignore next */
-        if (!error) {
-          // sending the result back
-          return res.status(status.OK).json({
-            data: resultArray
-          });
-        }
-      });
   }
 }

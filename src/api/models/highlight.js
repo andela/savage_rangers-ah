@@ -1,18 +1,21 @@
 export default (sequelize, DataTypes) => {
-  const Highlight = sequelize.define('Highlight', {
-    startIndex: DataTypes.INTEGER,
-    lastIndex: DataTypes.INTEGER,
-    text: DataTypes.STRING,
-    comment: DataTypes.STRING,
-    articleSlug: DataTypes.STRING,
-    userId: DataTypes.INTEGER
-  }, {});
+  const Highlight = sequelize.define('Highlight',
+    {
+      startIndex: DataTypes.INTEGER,
+      lastIndex: DataTypes.INTEGER,
+      text: DataTypes.STRING,
+      comment: DataTypes.STRING,
+      articleSlug: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
+      nodeId: DataTypes.STRING
+    },
+    {});
   Highlight.associate = (models) => {
-    Highlight.belongsTo(models.User, { 
+    Highlight.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
     });
-    Highlight.belongsTo(models.Article, { 
+    Highlight.belongsTo(models.Article, {
       foreignKey: 'articleSlug',
       onDelete: 'CASCADE'
     });

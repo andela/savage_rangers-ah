@@ -14,7 +14,7 @@ const { Notification } = models;
  * @returns {object} notification
  */
 /* istanbul ignore next */
-export default async (resource, action, user, message, url) => {
+export default async (resource, action, user, message, emailUrl, inAppUrl) => {
   // Initializing variables
   let inAppNotification = {};
   let emailNotification = {};
@@ -31,7 +31,7 @@ export default async (resource, action, user, message, url) => {
       inAppNotification = await Notification.create({
         userId: user.id,
         message: message.inAppMessage,
-        url,
+        url: inAppUrl,
         type: 'inApp'
       });
 
@@ -43,7 +43,7 @@ export default async (resource, action, user, message, url) => {
       emailNotification = await Notification.create({
         userId: user.id,
         message: message.inAppMessage,
-        url,
+        url: emailUrl,
         type: 'email'
       });
 
@@ -51,7 +51,7 @@ export default async (resource, action, user, message, url) => {
 
       await sendMail('Notification', `${resource} on ${action}`, user.email, 'notifications', {
         message: message.emailMessage,
-        url,
+        url: emailUrl,
         userName: user.username,
         buttonText: message.emailButtonText
       });

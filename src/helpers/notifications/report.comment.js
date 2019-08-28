@@ -31,9 +31,8 @@ export default async (commentId) => {
       }
     });
 
-    const url = `${env.baseUrl}/api/articles/${
-      comment.dataValues.Article.dataValues.slug
-    }/comments/${commentId}`;
+    const emailUrl = `${env.APP_URL_FRONTEND}/articles/${comment.dataValues.Article.dataValues.slug}`;
+    const inApplUrl = `/articles/${comment.dataValues.Article.dataValues.slug}`;
 
     const message = {
       inAppMessage: '',
@@ -46,22 +45,28 @@ export default async (commentId) => {
       where: { role: 'moderator' }
     });
 
-    message.inAppMessage = `The comment '${comment.dataValues.body.substring(substringInitialIndex,
-      substringFinalIndex)}...' has been reported`;
+    message.inAppMessage = `The comment "${comment.dataValues.body.substring(substringInitialIndex,
+      substringFinalIndex)}..." has been reported`;
     message.emailMessage = `The comment '${comment.dataValues.body.substring(substringInitialIndex,
-      substringFinalIndex)}...' has been reported. Click the button bellow to follow up`;
+      substringFinalIndex)}..." has been reported. Click the button bellow to follow up`;
     message.emailButtonText = 'Follow';
 
     notification = await sendNotification('comments',
       'report',
       comment.dataValues.User,
       message,
-      url);
+      emailUrl,
+      inApplUrl);
 
     io.emit('reportComment', notification);
 
     return moderators.map(async (moderator) => {
-      notification = await sendNotification('articles', 'report', moderator, message, url);
+      notification = await sendNotification('articles',
+        'report',
+        moderator,
+        message,
+        emailUrl,
+        inApplUrl);
       io.emit('reportComment', notification);
     });
   } catch (error) {

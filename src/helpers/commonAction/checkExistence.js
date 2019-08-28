@@ -27,7 +27,9 @@ export default async (req, res, next, model, item) => {
 
   const result = await model.findOne({ where });
 
-  if (result) req.article = result.dataValues;
+  if (result) {
+    req.article = result.dataValues;
+  }
 
   return result
     ? next()

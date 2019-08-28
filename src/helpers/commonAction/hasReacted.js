@@ -28,7 +28,14 @@ export default async (req, res, next, action) => {
     msg = 'disliked';
   }
 
-  const didReact = await switchCommentReaction(whereObject, where, status.OK, `You have successfully  ${msg} this comment`);
+  const didReact = await switchCommentReaction(whereObject,
+    where,
+    status.OK,
+    `You have successfully  ${msg} this comment`);
   /* istanbul ignore next  */
-  if (didReact === false) { next(); } else { res.status(status).json(didReact); }
+  if (didReact === false) {
+    next();
+  } else {
+    res.status(status.OK).json(didReact);
+  }
 };

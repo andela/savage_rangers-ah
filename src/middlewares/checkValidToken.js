@@ -22,7 +22,9 @@ const validToken = async (req, res, next) => {
 
     const tokenStatus = await isTokenDropped(token);
     if (tokenStatus === 'dropped') {
-      return res.send({ status: statuses.UNAUTHORIZED, error: 'Token is no longer valid' });
+      return res
+        .status(statuses.UNAUTHORIZED)
+        .send({ status: statuses.UNAUTHORIZED, error: 'Token is no longer valid' });
     }
     next();
   } catch (err) {

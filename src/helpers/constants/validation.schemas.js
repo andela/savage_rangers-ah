@@ -25,7 +25,7 @@ const validRatings = {
 };
 
 const SLUG_MIN_LENGTH = 3;
-const SLUG_MAX_LENGTH = 45;
+const SLUG_MAX_LENGTH = 150;
 
 const TAGNAME_CONTENT_MIN_LENGTH = 1;
 const TAGNAME_CONTENT_MAX_LENGTH = 30;
@@ -105,11 +105,7 @@ export default {
 
   rateArticle: Joi.object().keys({
     rating: number
-      .valid(numbers.ONE,
-        numbers.TWO,
-        numbers.THREE,
-        numbers.FOUR,
-        numbers.FIVE)
+      .valid(numbers.ONE, numbers.TWO, numbers.THREE, numbers.FOUR, numbers.FIVE)
       .required()
   }),
   reportArticle: Joi.object().keys({
@@ -119,12 +115,11 @@ export default {
     title: Joi.string().allow(''),
     description: Joi.string().allow(''),
     body: Joi.string().allow(''),
-    category: Joi.string()
-      .uppercase()
-      .allow(''),
+    category: Joi.number().integer(),
     tags: Joi.array()
       .items(string.alphanum())
-      .required()
+      .required(),
+    coverImage: Joi.string()
   }),
   highlight: Joi.object().keys({
     startIndex: Joi.number()
@@ -137,6 +132,9 @@ export default {
       .trim()
       .required(),
     comment: Joi.string()
+      .trim()
+      .required(),
+    nodeId: Joi.string()
       .trim()
       .required()
   }),

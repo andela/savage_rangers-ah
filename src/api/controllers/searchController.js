@@ -3,18 +3,16 @@ import models from '../models/index';
 import statusCodes from '../../helpers/constants/status.codes';
 import errorMessage from '../../helpers/constants/error.messages';
 import searchArticle from '../../helpers/commonAction/searchArticles';
+import generatePagination from '../../helpers/generate.pagination.details';
 
-const {
-  OK,
-  NOT_FOUND,
-} = statusCodes;
+const { OK, NOT_FOUND } = statusCodes;
 
 /**
  * @class searchController
  */
 export default class searchController {
   /**
-  *
+   *
    * search for artcile according to user's request
    *
    * @static
@@ -27,9 +25,15 @@ export default class searchController {
     try {
       const articles = await searchArticle(Sequelize, req, models);
       const minArticleLength = 0;
-      if (articles.length > minArticleLength) {
+      const defaultLimit = 10;
+      if (articles.count > minArticleLength) {
+        const { limit, offset } = req.query;
         return res.status(OK).send({
           status: res.statusCode,
+          paginationDetails: generatePagination(articles.count,
+            articles.rows,
+            offset || minArticleLength,
+            limit || defaultLimit),
           articles
         });
       }

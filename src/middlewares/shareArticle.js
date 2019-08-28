@@ -1,4 +1,3 @@
-
 import open from 'open';
 import dotenv from 'dotenv';
 import env from '../configs/environments';
@@ -10,14 +9,16 @@ dotenv.config();
 
 const minimumValue = 0;
 const { APP_URL_FRONTEND } = env;
-const facebookShareURL = `https://web.facebook.com/sharer/sharer.php?u=${APP_URL_FRONTEND}/api/articles/`;
-const twitterShareURL = `https://twitter.com/intent/tweet?text=${APP_URL_FRONTEND}/api/articles/`;
-const linkedinShareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${APP_URL_FRONTEND}/api/articles/`;
+const facebookShareURL = `https://web.facebook.com/sharer/sharer.php?u=${APP_URL_FRONTEND}/articles/`;
+const twitterShareURL = `https://twitter.com/intent/tweet?text=${APP_URL_FRONTEND}/articles/`;
+const linkedinShareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${APP_URL_FRONTEND}/articles/`;
 
 export default async (req, res, next) => {
   const { slug } = req.params;
 
-  const { dataValues: { title } } = await Article.findOne({ where: { slug } });
+  const {
+    dataValues: { title }
+  } = await Article.findOne({ where: { slug } });
   req.title = title;
 
   if (req.url.search(/\/facebook/g) > minimumValue) {
@@ -31,10 +32,9 @@ export default async (req, res, next) => {
     await open(`${linkedinShareURL}${slug}`, { wait: false });
   } else if (req.url.search(/\/gmail/g) > minimumValue) {
     req.sharedOn = 'gmail';
-    await open(`mailto:?subject=${title}&body=${APP_URL_FRONTEND}/articles/${slug}`,
-      {
-        wait: false
-      });
+    await open(`mailto:?subject=${title}&body=${APP_URL_FRONTEND}/articles/${slug}`, {
+      wait: false
+    });
   }
 
   next();

@@ -5,7 +5,8 @@ import authorization from '../../middlewares/checkValidToken';
 const route = new Router();
 
 route.post('/:slug', authorization, bookmarkController.addBookmark);
-route.get('/', authorization, bookmarkController.getBookmarks);
+route.get('/:username', authorization, bookmarkController.getBookmarks);
+route.get('/bookmarked/:slug', authorization, bookmarkController.hasBookmarked);
 
 
 export default route;

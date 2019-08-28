@@ -2,6 +2,7 @@ import module from '../models';
 import generateToken from '../../helpers/tokens/generate.token';
 import env from '../../configs/environments';
 import socialToken from '../../helpers/commonAction/socialTokenGenerator';
+import setDefaultConfigs from '../../helpers/create.default.notifications.config';
 
 const { User } = module;
 
@@ -34,16 +35,15 @@ class socialLogin {
         provider: req.user.provider,
         uniqueId: req.user.id
       });
+      // setting default notifications configurations
+      await setDefaultConfigs(existingUser.dataValues.id);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    const user = existingUser.dataValues;
-    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
-      user.email
-    }&profile=${user.profileImage}`);
+    return res.redirect(`${env.APP_URL_FRONTEND}?token=${token}`);
   }
 
   /**
@@ -70,25 +70,21 @@ class socialLogin {
         provider: req.user.provider,
         uniqueId: req.user.id
       });
+      // setting default notifications configurations
+      await setDefaultConfigs(existingUser.dataValues.id);
       const token = generateToken({
         username: req.user.displayName,
         id: existingUser.dataValues.id
       },
       process.env.TOKEN_KEY);
-      const user = existingUser.dataValues;
-      return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
-        user.email
-      }&profile=${user.profileImage}`);
+      return res.redirect(`${env.APP_URL_FRONTEND}?token=${token}`);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    const user = existingUser.dataValues;
-    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
-      user.email
-    }&profile=${user.profileImage}`);
+    return res.redirect(`${env.APP_URL_FRONTEND}?token=${token}`);
   }
 
   /**
@@ -114,21 +110,17 @@ class socialLogin {
         provider: req.user.provider,
         uniqueId: req.user.id
       });
+      // setting default notifications configurations
+      await setDefaultConfigs(existingUser.dataValues.id);
       const token = socialToken(existingUser, req);
-      const user = existingUser.dataValues;
-      return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
-        user.email
-      }&profile=${user.profileImage}`);
+      return res.redirect(`${env.APP_URL_FRONTEND}?token=${token}`);
     }
     const token = generateToken({
       id: existingUser.dataValues.id,
       username: existingUser.dataValues.username
     },
     process.env.TOKEN_KEY);
-    const user = existingUser.dataValues;
-    return res.redirect(`${env.APP_URL_FRONTEND}/redirect?token=${token}&username=${user.username}&email=${
-      user.email
-    }&profile=${user.profileImage}`);
+    return res.redirect(`${env.APP_URL_FRONTEND}?token=${token}`);
   }
 }
 
