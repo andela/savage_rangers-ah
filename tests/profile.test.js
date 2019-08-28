@@ -9,7 +9,6 @@ import errors from '../src/helpers/constants/error.messages';
 chai.use(chaiHttp);
 chai.should();
 
-
 const data = {
   country: 'congo',
   firstName: 'alain',
@@ -20,19 +19,19 @@ const data = {
   profileImage: 'noimage.jpg',
   bio: 'I work at statefarm',
   facebook: 'https://facebook.com/alainburindi',
-  twitter: 'https://twitter.com/alainburindi',
+  twitter: 'https://twitter.com/alainburindi'
 };
 
 const {
-  country, firstName, lastName,
-  address, gender, profileImage, phoneNumber, bio
+  country, firstName, lastName, address, gender, profileImage, phoneNumber, bio
 } = data;
 
 const authToken = signup();
 
 describe('Profile', () => {
-  it('should update the user\'s profile', (done) => {
-    chai.request(server)
+  it("should update the user's profile", (done) => {
+    chai
+      .request(server)
       .patch('/api/profiles')
       .set('Authorization', authToken)
       .field({
@@ -52,9 +51,30 @@ describe('Profile', () => {
       });
   });
 
-  it('should send the user\'s profile', (done) => {
-    chai.request(server)
+  it("should send the user's profile", (done) => {
+    chai
+      .request(server)
       .get('/api/profiles/Burindi?limit=2&offset=1')
+      .set('Authorization', authToken)
+      .end((err, res) => {
+        res.should.have.status(status.OK);
+        res.body.should.have.property('profile');
+        const { profile } = res.body;
+        profile.should.have.property('country', `${country} Democratic Republic of`);
+        profile.should.have.property('firstName', firstName);
+        profile.should.have.property('lastName', lastName);
+        profile.should.have.property('address', address);
+        profile.should.have.property('gender', gender);
+        profile.should.have.property('profileImage');
+        profile.should.have.property('phoneNumber', phoneNumber);
+        done();
+      });
+  });
+
+  it("should send the user's profile", (done) => {
+    chai
+      .request(server)
+      .get('/api/profiles/')
       .set('Authorization', authToken)
       .end((err, res) => {
         res.should.have.status(status.OK);
@@ -74,7 +94,8 @@ describe('Profile', () => {
 
 describe('Validate data', () => {
   it('should require a token', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .patch('/api/profiles')
       .end((err, res) => {
         res.should.have.status(status.ACCESS_DENIED);
@@ -84,18 +105,21 @@ describe('Validate data', () => {
   });
 
   it('should unauthenticate if the token is invalid', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .patch('/api/profiles')
       .set('Authorization', 'wrongtoken')
       .end((err, res) => {
         res.should.have.status(status.UNAUTHORIZED);
-        res.body.should.have.property('message', 'Authentication failed, please check your credentials');
+        res.body.should.have.property('message',
+          'Authentication failed, please check your credentials');
         done();
       });
   });
 
   it('should send country error', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .patch('/api/profiles')
       .set('Authorization', authToken)
       .send({
@@ -115,7 +139,8 @@ describe('Validate data', () => {
   });
 
   it('should send firstName error', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .patch('/api/profiles')
       .set('Authorization', authToken)
       .send({
@@ -135,7 +160,8 @@ describe('Validate data', () => {
   });
 
   it('should send lastName error', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .patch('/api/profiles')
       .set('Authorization', authToken)
       .send({
@@ -155,7 +181,8 @@ describe('Validate data', () => {
   });
 
   it('should send address error', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .patch('/api/profiles')
       .set('Authorization', authToken)
       .send({
@@ -175,7 +202,8 @@ describe('Validate data', () => {
   });
 
   it('should send gender error', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .patch('/api/profiles')
       .set('Authorization', authToken)
       .send({
@@ -195,7 +223,8 @@ describe('Validate data', () => {
   });
 
   it('should send phoneNumber error', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .patch('/api/profiles')
       .set('Authorization', authToken)
       .send({
@@ -215,7 +244,8 @@ describe('Validate data', () => {
   });
 
   it('should send bio error', (done) => {
-    chai.request(server)
+    chai
+      .request(server)
       .patch('/api/profiles')
       .set('Authorization', authToken)
       .send({
@@ -234,8 +264,9 @@ describe('Validate data', () => {
       });
   });
 
-  it('should send user\'s not found error', (done) => {
-    chai.request(server)
+  it("should send user's not found error", (done) => {
+    chai
+      .request(server)
       .get('/api/profiles/wrongname')
       .set('Authorization', authToken)
       .end((err, res) => {
