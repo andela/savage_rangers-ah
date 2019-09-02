@@ -7,6 +7,7 @@ import server from '../src/index';
 chai.use(chaiHttp);
 chai.should();
 let userToken;
+let authorsToken;
 
 const { expect } = chai;
 const fakeArticle = {
@@ -137,6 +138,62 @@ describe('create  article', () => {
         expect(status).to.equal(statusCode.NOT_FOUND);
         expect(body).to.have.property('message');
         expect(body.message).to.eql('Article with category: 4 not found');
+        done();
+      });
+  });
+});
+
+describe('GET /drafts/:slug', () => {
+  it('gets a drafted article', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/drafts/Test-draft-22khdb')
+      .set('authorization', userToken)
+      .end((err, res) => {
+        res.body.should.have.status(statusCode.OK);
+        res.body.should.be.an('object');
+        res.body.article.title.should.eq('How to draft an article');
+        done();
+      });
+  });
+  it('gets a drafted article', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/drafts/Test-draft-22hdb')
+      .set('authorization', userToken)
+      .end((err, res) => {
+        res.body.should.have.status(statusCode.NOT_FOUND);
+        res.body.errors.should.be.an('object');
+        res.body.errors.slug.should.eq('Article with slug Test-draft-22hdb is not found, Thanks');
+        done();
+      });
+  });
+
+  it('login different user', (done) => {
+    const user = {
+      email: 'alain2@gmail.com',
+      password: 'password23423'
+    };
+
+    chai
+      .request(server)
+      .post('/api/users/login')
+      .send(user)
+      .end((err, res) => {
+        authorsToken = res.body.user.token;
+        done();
+      });
+  });
+
+  it('Should refuse if the author is not the owner', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/drafts/Test-draft-22khdb')
+      .set('authorization', authorsToken)
+      .end((err, res) => {
+        res.should.have.status(statusCode.ACCESS_DENIED);
+        res.body.should.be.an('object');
+        res.body.message.should.eq('Please you must be the owner of this Article in order to modify it, Thanks');
         done();
       });
   });

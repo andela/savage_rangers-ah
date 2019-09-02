@@ -122,7 +122,8 @@ export default {
     category: Joi.number().integer(),
     tags: Joi.array()
       .items(string.alphanum())
-      .required()
+      .required(),
+    coverImage: Joi.string()
   }),
   highlight: Joi.object().keys({
     startIndex: Joi.number()

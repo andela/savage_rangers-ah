@@ -234,6 +234,7 @@ export default class ArticleController {
       category: category || req.Existing.category,
       coverImage: coverImage || req.Existing.coverImage
     };
+
     await ArticleTag.destroy({ where: { articleId: req.article.id } });
     const readTime = generateReadtime(updateContent.body);
     updateContent.readTime = readTime;
@@ -280,6 +281,33 @@ export default class ArticleController {
         offset,
         limit),
       data: articles.rows
+    });
+  }
+
+  /**
+   * This function gets a single drafted article
+   *
+   * @static
+   * @param {Object} req the request
+   * @param {Object} res the response to be sent
+   * @memberof Articles
+   * @returns {Object} res
+   */
+  static async getDraftedArticle(req, res) {
+    const { id } = req.user.user;
+    const { slug } = req.params;
+
+    const article = await Article.findOne({
+      include: articleInclude,
+      where: {
+        slug,
+        status: 'draft',
+        author: id
+      }
+    });
+    res.status(statusCodes.OK).json({
+      status: statusCodes.OK,
+      article
     });
   }
 }
