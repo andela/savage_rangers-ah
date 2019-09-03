@@ -8,8 +8,6 @@ const { Article, User } = models;
 /* istanbul ignore next */
 export default async (operation, articleSlug) => {
   try {
-    const url = `${env.baseUrl}/api/articles`;
-
     const message = {
       inAppMessage: '',
       emailMessage: '',
@@ -28,13 +26,19 @@ export default async (operation, articleSlug) => {
       }
     });
 
+    const emailUrl = `${env.APP_URL_FRONTEND}/api/articles/${articleSlug}`;
+    const inApplUrl = `/articles/${articleSlug}`;
+
     message.inAppMessage = `The article ${article.title} has been ${operation}ed`;
-    message.emailMessage = `The article ${
-      article.title
-    } has been ${operation}ed. Click the button bellow to follow up`;
+    message.emailMessage = `The article ${article.title} has been ${operation}ed. Click the button bellow to follow up`;
     message.emailButtonText = 'Follow';
 
-    const notification = await sendNotification('articles', 'report', article.User, message, url);
+    const notification = await sendNotification('articles',
+      'report',
+      article.User,
+      message,
+      emailUrl,
+      inApplUrl);
     io.emit(`${operation}Article`, notification);
 
     return notification;
