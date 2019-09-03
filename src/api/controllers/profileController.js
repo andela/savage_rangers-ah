@@ -15,27 +15,43 @@ const { Article, User } = models;
  */
 export default class ProfileController {
   /**
-     *
-     * update current user's profile
-     * @static
-     * @param {*} req The request Object
-     * @param {*} res The response Object
-     * @memberof ProfileController
-     * @return {Object} The response Object
-     */
+   *
+   * update current user's profile
+   * @static
+   * @param {*} req The request Object
+   * @param {*} res The response Object
+   * @memberof ProfileController
+   * @return {Object} The response Object
+   */
   static async update(req, res) {
-    let profileImage = 'noimage.jpg';
     const {
-      country, firstName, lastName, address, gender, phoneNumber, bio
+      country,
+      firstName,
+      lastName,
+      address,
+      gender,
+      phoneNumber,
+      bio,
+      profileImage: existing
     } = req.body;
+
+    let profileImage = existing || 'noimage.jpg';
     // upload the image to cloudinary
     if (req.file) {
       const image = await cloudinary.v2.uploader.upload(req.file.path);
       profileImage = image.secure_url;
     }
     const updatedProfile = await User.update({
-      country, firstName, lastName, bio, address, gender, profileImage, phoneNumber
-    }, {
+      country,
+      firstName,
+      lastName,
+      bio,
+      address,
+      gender,
+      profileImage,
+      phoneNumber
+    },
+    {
       where: {
         id: req.user.id
       }
@@ -44,14 +60,14 @@ export default class ProfileController {
   }
 
   /**
-     *
-     * get another user's profile
-     * @static
-     * @param {*} req The request Object
-     * @param {*} res The response Object
-     * @memberof ProfileController
-     * @return {Object} The response Object
-     */
+   *
+   * get another user's profile
+   * @static
+   * @param {*} req The request Object
+   * @param {*} res The response Object
+   * @memberof ProfileController
+   * @return {Object} The response Object
+   */
   static async read(req, res) {
     const { username } = req.params;
     const { limit, offset } = req.query;
@@ -63,17 +79,78 @@ export default class ProfileController {
         where: {
           username
         },
-        attributes: ['username', 'email', 'profileImage', 'bio', 'firstName', 'lastName', 'address', 'phoneNumber', 'gender', 'country', 'facebook', 'twitter'],
-        include: [{
-          model: Article,
-          offset,
-          limit: paginationLimit,
-        }],
+        attributes: [
+          'username',
+          'email',
+          'profileImage',
+          'bio',
+          'firstName',
+          'lastName',
+          'address',
+          'phoneNumber',
+          'gender',
+          'country'
+        ],
+        include: [
+          {
+            model: Article,
+            offset,
+            limit: paginationLimit,
+            order: [['createdAt', 'DESC']]
+          }
+        ]
       });
-      if (user) return sendProfile(res, status.OK, undefined, user);
+      const owner = username === req.user.username;
+      if (user) return sendProfile(res, status.OK, undefined, user, owner);
       return sendProfile(res, status.NOT_FOUND, errorMessages.noUser);
     } catch (err) {
       return res.status(status.SERVER_ERROR).json(err);
     }
+  }
+
+  /**
+   *
+   * get a user's profile
+   * @static
+   * @param {*} req The request Object
+   * @param {*} res The response Object
+   * @memberof ProfileController
+   * @return {Object} The response Object
+   */
+  static async get(req, res) {
+    const {
+      user: { id }
+    } = req.user;
+    const { limit, offset } = req.query;
+    // check if the user exists and send his profile
+
+    const defaultPaginationLimit = 10;
+    const paginationLimit = limit || defaultPaginationLimit;
+    const user = await User.findOne({
+      where: {
+        id
+      },
+      attributes: [
+        'username',
+        'email',
+        'profileImage',
+        'bio',
+        'firstName',
+        'lastName',
+        'address',
+        'phoneNumber',
+        'gender',
+        'country'
+      ],
+      include: [
+        {
+          model: Article,
+          offset,
+          limit: paginationLimit,
+          order: [['createdAt', 'DESC']]
+        }
+      ]
+    });
+    sendProfile(res, status.OK, undefined, user, true);
   }
 }
