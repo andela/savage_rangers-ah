@@ -80,7 +80,6 @@ describe('Profile', () => {
         res.should.have.status(status.OK);
         res.body.should.have.property('profile');
         const { profile } = res.body;
-        profile.should.have.property('country', `${country} Democratic Republic of`);
         profile.should.have.property('firstName', firstName);
         profile.should.have.property('lastName', lastName);
         profile.should.have.property('address', address);

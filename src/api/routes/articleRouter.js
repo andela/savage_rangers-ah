@@ -31,14 +31,9 @@ import statsController from '../controllers/statsController';
 const articleRouter = new Router();
 
 articleRouter.get('/search/', searchController.search);
-articleRouter.get('/:slug/stats',
-  checkArticle.getArticle,
-  optionalAuth,
-  statsController.stats);
+articleRouter.get('/:slug/stats', checkArticle.getArticle, optionalAuth, statsController.stats);
 
-articleRouter.get('/drafts',
-  checkValidToken,
-  articleController.getDraftedArticles);
+articleRouter.get('/drafts', checkValidToken, articleController.getDraftedArticles);
 
 articleRouter.post('/:slug/rating',
   checkValidToken,
@@ -55,13 +50,7 @@ articleRouter.patch('/:slug',
   checkValidToken,
   bodyVerifier,
   checkArticle.getArticle,
-  validateInputs('updateArticle', [
-    'title',
-    'description',
-    'body',
-    'category',
-    'tags'
-  ]),
+  validateInputs('updateArticle', ['title', 'description', 'body', 'category', 'tags']),
   checkArticleOwner.checkOwner,
   checkIncomingTags,
   createAndGetNewTags,
@@ -74,8 +63,7 @@ articleRouter.post('/',
   createAndGetNewTags,
   errorHandler(articleController.create));
 
-articleRouter.get('/:slug/ratings/statistics',
-  ratingsController.getArticleRatingStatistics);
+articleRouter.get('/:slug/ratings/statistics', ratingsController.getArticleRatingStatistics);
 
 articleRouter.get('/:slug/:rating/users',
   checkValidToken,
@@ -94,9 +82,7 @@ articleRouter.post('/:slug/highlight',
   validateInputs('highlight', highlightFields),
   highlightController.highlight);
 
-articleRouter.get('/:slug/highlight',
-  checkArticle.getArticle,
-  highlightController.getHighlight);
+articleRouter.get('/:slug/highlight', checkArticle.getArticle, highlightController.getHighlight);
 
 articleRouter.post('/:slug/report',
   checkValidToken,
@@ -105,8 +91,7 @@ articleRouter.post('/:slug/report',
   validateInputs('reportArticle', ['reason']),
   reportArticleController.reportAnArticle);
 
-articleRouter.get('/category/:categoryId',
-  articleController.getArticlesByCategory);
+articleRouter.get('/category/:categoryId', articleController.getArticlesByCategory);
 
 articleRouter.get('/:slug/tags', checkArticle.getArticle, articleTagController.getArticleTags);
 
@@ -116,25 +101,21 @@ articleRouter.get('/tags/query',
   articleTagController.getTagsByQuery);
 
 articleRouter.post('/:slug/share/facebook',
-  checkValidToken,
   checkArticle.getArticle,
   shareArticle,
   shareArticleController.socialShareArticle);
 
 articleRouter.post('/:slug/share/twitter',
-  checkValidToken,
   checkArticle.getArticle,
   shareArticle,
   shareArticleController.socialShareArticle);
 
 articleRouter.post('/:slug/share/linkedin',
-  checkValidToken,
   checkArticle.getArticle,
   shareArticle,
   shareArticleController.socialShareArticle);
 
 articleRouter.post('/:slug/share/gmail',
-  checkValidToken,
   checkArticle.getArticle,
   shareArticle,
   shareArticleController.socialShareArticle);
