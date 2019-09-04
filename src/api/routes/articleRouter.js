@@ -187,4 +187,10 @@ articleRouter.post('/:slug/comments/:id/report',
   validateInputs('reportComment', ['commentReason']),
   reportCommentController.reportComment);
 
+articleRouter.get('/drafts/:slug',
+  checkValidToken,
+  checkArticle.getArticle,
+  checkArticleOwner.checkOwner,
+  articleController.getDraftedArticle);
+
 export default articleRouter;

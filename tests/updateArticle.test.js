@@ -62,7 +62,8 @@ describe('testing the middlewares before reaching the update article controller'
       .set('authorization', UserToken)
       .send({
         body: 'how did the classical Latin become',
-        tags: ['Laravel', 'php', 'IOT', 'iot2']
+        tags: ['Laravel', 'php', 'IOT', 'iot2'],
+        coverImage: 'http://localhost/jpeg'
       })
       .end((err, res) => {
         expect(res.status).eql(status.ACCESS_DENIED);
@@ -121,7 +122,8 @@ describe('testing for the article update controller', () => {
       .set('authorization', UserToken)
       .send({
         body: '',
-        tags: ['Laravel', 'php', 'IOT', 'iot2']
+        tags: ['Laravel', 'php', 'IOT', 'iot2'],
+        coverImage: 'http://localhost:3000/ver.jpg'
       })
       .end((err, res) => {
         expect(res.status).eql(status.OK);
