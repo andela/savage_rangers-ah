@@ -19,15 +19,11 @@ export default class shareArticleController {
    * @returns {Object} res
    */
   static async socialShareArticle(req, res) {
-    const {
-      user: { id }
-    } = req.user;
     const { slug } = req.params;
     const { sharedOn } = req;
     const { title } = req;
 
     await Share.create({
-      userId: id,
       articleSlug: slug,
       sharedOn
     });
