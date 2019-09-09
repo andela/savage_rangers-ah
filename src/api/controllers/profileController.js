@@ -118,9 +118,8 @@ export default class ProfileController {
    * @return {Object} The response Object
    */
   static async get(req, res) {
-    const {
-      user: { id }
-    } = req.user;
+    const { id } = req.user;
+
     const { limit, offset } = req.query;
     // check if the user exists and send his profile
 

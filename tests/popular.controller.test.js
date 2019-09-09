@@ -8,7 +8,6 @@ import server from '../src/index';
 chai.use(chaiHttp);
 chai.should();
 
-
 const dataUsage = {
   email: 'alain1@gmail.com',
   password: 'password23423'
@@ -37,12 +36,18 @@ describe('popular articles', async () => {
       .end((err, res) => {
         const { data } = res.body;
         res.should.have.status(status.OK);
-        res.body.should.have.property('data').tobe('array');
-        data[0].should.have.property('title').equal('How to create sequalize seeds');
-        data[0].should.have.property('slug').equal('How-to-create-sequalize-seeds');
-        data[0].should.have.property('description').equal('How to set dummy data automatically');
+        res.body.should.have.property('data').to.be.an('array');
+        data[0].should.have
+          .property('title')
+          .equal('How to create sequalize seeds');
+        data[0].should.have
+          .property('slug')
+          .equal('How-to-create-sequalize-seeds');
+        data[0].should.have
+          .property('description')
+          .equal('How to set dummy data automatically');
         data[0].should.have.property('coverImage').equal('default.jpeg');
-        data[0].should.have.property('category').equal('Love');
+        data[0].should.have.property('category').equal('LOVE');
         done();
       });
   });
