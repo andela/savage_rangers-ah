@@ -17,10 +17,17 @@ const Authors = {
   paginationDetails: {
     pages: 1,
     currentPage: 1,
-    pageSize: 1,
-    count: 5
+    pageSize: 2,
+    count: 6
   },
-  data: [{ id: 1, username: 'Burindi', email: 'alain1@gmail.com' }]
+  data: [
+    { id: 1, username: 'Burindi', email: 'alain1@gmail.com' },
+    {
+      email: 'alain2@gmail.com',
+      id: 2,
+      username: 'BurindiAlain2'
+    }
+  ]
 };
 describe('get Authors', () => {
   it('should not to verify the token', (done) => {

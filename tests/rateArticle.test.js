@@ -38,7 +38,7 @@ describe('test the rating controller', () => {
       });
   });
   it('should be able to rate an article', (done) => {
-    const slug = 'How-to-create-sequalize-seeds';
+    const slug = 'What-is-a-Version-1-UUID';
     const rate = 5;
     chai
       .request(app)
@@ -59,7 +59,7 @@ describe('test the rating controller', () => {
   });
 
   it('should not be able to rate an article twice', (done) => {
-    const slug = 'How-to-create-sequalize-seeds';
+    const slug = 'What-is-a-Version-1-UUID';
     const rate = 5;
     chai
       .request(app)
@@ -81,7 +81,7 @@ describe('test the rating controller', () => {
   });
 
   it('should be able to rate an article with an updated input', (done) => {
-    const slug = 'How-to-create-sequalize-seeds';
+    const slug = 'What-is-a-Version-1-UUID';
     const rate = 4;
     chai
       .request(app)

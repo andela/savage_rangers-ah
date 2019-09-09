@@ -5,10 +5,7 @@ import model from '../models/index';
 import generatePagination from '../../helpers/generate.pagination.details';
 
 const {
-  Bookmark,
-  User,
-  Article,
-  Category
+  Bookmark, User, Article, Category
 } = model;
 /**
  * @class
@@ -84,15 +81,18 @@ export default class BookmarkController {
         model: Article,
         required: true,
         attributes: ['id', 'title', 'description'],
-        include: [{
-          model: User,
-          required: true,
-          attributes: ['firstName', 'lastName', 'profileImage']
-        }, {
-          model: Category,
-          as: 'Category',
-          attributes: ['name']
-        }]
+        include: [
+          {
+            model: User,
+            required: true,
+            attributes: ['firstName', 'lastName', 'profileImage']
+          },
+          {
+            model: Category,
+            as: 'Category',
+            attributes: ['name']
+          }
+        ]
       },
       offset,
       limit

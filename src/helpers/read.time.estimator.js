@@ -37,5 +37,5 @@ export default (text) => {
   const totalSecondsForAllTheWords = numberOfWords * (SECONDS_PER_MINUTE / WORD_PER_MINUTE);
 
   const totalMinutes = (totalSecondsForAllTheWords + totalNumberOfSeconds) / SECONDS_PER_MINUTE;
-  return Math.round(totalMinutes);
+  return Math.ceil(totalMinutes);
 };
