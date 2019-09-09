@@ -119,7 +119,6 @@ export default class ProfileController {
    */
   static async get(req, res) {
     const { id } = req.user;
-
     const { limit, offset } = req.query;
     // check if the user exists and send his profile
 
