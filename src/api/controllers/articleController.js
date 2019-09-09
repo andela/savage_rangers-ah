@@ -93,6 +93,7 @@ export default class ArticleController {
     query = commonQueries.publish;
     query.slug = slug;
     const article = await Article.update({
+      ...req.body,
       status: 'published'
     },
     {
