@@ -3,6 +3,7 @@ import models from '../models/index';
 import statusCodes from '../../helpers/constants/status.codes';
 import errorMessage from '../../helpers/constants/error.messages';
 import searchArticle from '../../helpers/commonAction/searchArticles';
+import generatePagination from '../../helpers/generate.pagination.details';
 
 const {
   OK,
@@ -27,9 +28,14 @@ export default class searchController {
     try {
       const articles = await searchArticle(Sequelize, req, models);
       const minArticleLength = 0;
-      if (articles.length > minArticleLength) {
+      if (articles.count > minArticleLength) {
+        const { limit, offset } = req.query;
         return res.status(OK).send({
           status: res.statusCode,
+          paginationDetails: generatePagination(articles.count,
+            articles.rows,
+            offset || 0,
+            limit || 10),
           articles
         });
       }
