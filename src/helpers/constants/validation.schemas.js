@@ -25,7 +25,7 @@ const validRatings = {
 };
 
 const SLUG_MIN_LENGTH = 3;
-const SLUG_MAX_LENGTH = 45;
+const SLUG_MAX_LENGTH = 150;
 
 const TAGNAME_CONTENT_MIN_LENGTH = 1;
 const TAGNAME_CONTENT_MAX_LENGTH = 30;
