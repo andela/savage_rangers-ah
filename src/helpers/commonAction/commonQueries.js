@@ -6,7 +6,8 @@ const {
   User,
   Article,
   Comment,
-  ReportedComment
+  ReportedComment,
+  Reaction
 } = models;
 export default {
   reportArticleJoin: [
@@ -85,6 +86,10 @@ export default {
     {
       model: Comment,
       as: 'Replies'
+    },
+    {
+      model: Reaction,
+      attributes: ['likes', 'dislikes']
     }
   ]
 };
