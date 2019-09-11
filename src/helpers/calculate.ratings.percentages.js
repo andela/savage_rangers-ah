@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /**
  * A fuction to calculate the percentage of ratings and to
  * generate a structured object of data
@@ -6,6 +7,7 @@
  */
 export default (data) => {
   // constructing the array to look like excpected
+  const MAX_DATA_LENGTH = 5;
   data = data.map(rating => ({
     rating: rating.dataValues.rating,
     count: parseInt(rating.dataValues.count, 10)
@@ -26,6 +28,28 @@ export default (data) => {
     users: element.count,
     percentage: percentages[data.indexOf(element)]
   }));
+
+  // Creating a default array in order to always return
+  // an array of length = 5 even if there is only one rating
+  if (data.length < MAX_DATA_LENGTH) {
+    const newData = ['1', '2', '3', '4', '5'];
+    data.map((item) => {
+      if (item.rating) newData[item.rating - 1] = item;
+    });
+    newData.map((item) => {
+      if (!item.rating) {
+        newData[newData.indexOf(item)] = {
+          rating: parseInt(item, 10),
+          users: 0,
+          percentage: 0
+        };
+      }
+    });
+    return {
+      allUsers: usersSum,
+      statistics: newData
+    };
+  }
 
   return {
     allUsers: usersSum,

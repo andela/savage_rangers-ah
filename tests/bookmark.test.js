@@ -90,20 +90,19 @@ describe('GET /api/bookmarks', () => {
         res.body.data.bookmarks.should.be.an('Array');
         res.body.data.bookmarks.should.contain.something.like({
           articleSlug: 'How-to-create-sequalize-seedss',
-          Article:
-         {
-           id: 2,
-           title: 'How to create sequalize seedss',
-           description: 'How to set dummy data automaticallyy',
-           User: {
-             firstName: 'Alain',
-             lastName: 'Burindi',
-             profileImage: 'defaultAvatar.jpg'
-           },
-           Category: {
-             name: 'LOVE'
-           }
-         }
+          Article: {
+            id: 2,
+            title: 'How to create sequalize seedss',
+            description: 'How to set dummy data automaticallyy',
+            User: {
+              firstName: 'Alain',
+              lastName: 'Burindi',
+              profileImage: 'defaultAvatar.jpg'
+            },
+            Category: {
+              name: 'LOVE'
+            }
+          }
         });
 
         done();

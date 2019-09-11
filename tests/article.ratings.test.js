@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, { expect } from 'chai';
 import '@babel/polyfill';
 import chaiHttp from 'chai-http';
 import status from '../src/helpers/constants/status.codes';
@@ -39,10 +39,43 @@ describe('Article ratings statistics', () => {
         done();
       });
   });
+
+  it('rates an article for further tests', (done) => {
+    const slug = 'Test-to-update-ratings345hdsf';
+    chai
+      .request(server)
+      .post(`/api/articles/${slug}/rating`)
+      .set('Authorization', userToken)
+      .send({
+        rating: 1
+      })
+      .end((err, res) => {
+        expect(res.body)
+          .to.have.property('status')
+          .eql(status.CREATED);
+        expect(res.body)
+          .to.have.property('message')
+          .eql(`Rating for ${slug} submitted successfully`);
+        done();
+      });
+  });
+
+  it('Should get statictics of an article rated by only one person', (done) => {
+    chai
+      .request(server)
+      .get('/api/articles/Test-to-update-ratings345hdsf/ratings/statistics')
+      .set('authorization', `${userToken}`)
+      .end((err, res) => {
+        res.should.have.status(status.OK);
+        res.body.data.statistics.should.be.an('Array');
+        done();
+      });
+  });
+
   it("Should not get the ratings of an article that doesn't exist", (done) => {
     chai
       .request(server)
-      .get('/api/articles/How-to-create-sequalize-seedss/ratings/statistics')
+      .get('/api/articles/How-to-create-sequalize-seed/ratings/statistics')
       .set('authorization', `${userToken}`)
       .end((err, res) => {
         res.should.have.status(status.NOT_FOUND);

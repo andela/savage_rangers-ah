@@ -35,8 +35,7 @@ describe('testing the middlewares before reaching the update article controller'
         expect(res.body)
           .to.have.property('errors')
           .eql({
-            slug:
-              'Article with slug meditate-about-yourself is not found, Thanks'
+            slug: 'Article with slug meditate-about-yourself is not found, Thanks'
           });
         done();
       });
@@ -115,7 +114,7 @@ describe('testing for the article update controller', () => {
   });
 
   it('should update the article with existing content', (done) => {
-    const slug = 'What-is-a-Version-1-UUID';
+    const slug = 'How-to-create-sequalize-seeds';
     chai
       .request(app)
       .patch(`/api/articles/${slug}`)
